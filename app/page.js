@@ -4,131 +4,152 @@ import { teams2026 } from '../lib/teams';
 
 export default function Home() {
   const [selections, setSelections] = useState([null, null, null, null]);
+  const [showArt, setShowArt] = useState(false);
 
   const updateSlot = (index, teamName) => {
-    const match = teams2026.find(t => t.name.toLowerCase() === teamName.toLowerCase());
+    const match = teams2026.find(t => t.name.toLowerCase() === teamName.toLowerCase() || t.code === teamName.toUpperCase());
     const newPicks = [...selections];
     newPicks[index] = match || null;
     setSelections(newPicks);
+    setShowArt(false);
+  };
+
+  const randomize = () => {
+    const randomPicks = [...Array(4)].map(() => 
+      teams2026[Math.floor(Math.random() * teams2026.length)]
+    );
+    setSelections(randomPicks);
+    setShowArt(true);
+  };
+
+  const handleSubmit = () => {
+    if (selections.some(s => s !== null)) setShowArt(true);
   };
 
   return (
     <main style={{ 
       minHeight: '100vh', 
-      backgroundColor: '#0a0a0a', 
-      color: 'white', 
-      padding: '60px 40px', 
-      fontFamily: 'Inter, system-ui, sans-serif' 
+      backgroundColor: '#F2F2F2', 
+      color: '#000', 
+      fontFamily: 'Helvetica Neue, Arial, sans-serif',
+      padding: '0 0 100px 0'
     }}>
-      {/* HEADER SECTION */}
+      
+      {/* 1. MASSIVE LOGOTYPE */}
       <header style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto 80px auto', 
-        borderLeft: '1px solid #333', 
-        paddingLeft: '30px' 
+        textAlign: 'center', 
+        padding: '80px 20px 20px 20px',
+        borderBottom: '1px solid #000'
       }}>
         <h1 style={{ 
-          fontSize: 'clamp(2rem, 8vw, 5rem)', 
+          fontSize: 'clamp(4rem, 15vw, 12rem)', 
           fontWeight: '900', 
-          lineHeight: '0.9', 
+          lineHeight: '0.8', 
           letterSpacing: '-0.05em', 
-          margin: '0 0 10px 0' 
+          margin: '0',
+          textTransform: 'uppercase',
+          fontStretch: 'extra-condensed'
         }}>
-          TEAM FAIR <br /> WEATHER
+          TEAM FAIR<br/>WEATHER
         </h1>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <p style={{ letterSpacing: '0.3em', fontSize: '0.7rem', color: '#888', fontWeight: 'bold' }}>
-            PROJECT: HERITAGE KIT // REV 001
-          </p>
-          <p style={{ fontSize: '0.7rem', color: '#444' }}>©2026 GLOBAL NEUTRALITY</p>
-        </div>
+        <p style={{ 
+          fontSize: '1.2rem', 
+          fontWeight: '500', 
+          marginTop: '20px',
+          letterSpacing: '-0.02em'
+        }}>
+          For when you just can't make up your mind
+        </p>
       </header>
 
-      {/* MAIN CONTENT GRID */}
-      <div style={{ 
-        maxWidth: '1200px', 
+      {/* 2. COPY BLOCK */}
+      <section style={{ maxWidth: '800px', margin: '60px auto', textAlign: 'center', padding: '0 20px' }}>
+        <p style={{ fontSize: '1.5rem', lineHeight: '1.3', fontWeight: '400' }}>
+          Pick up to four countries that you just so happen to love the most. We'll make a piece of custom art that's just right for you and where your loyalties lie.
+        </p>
+      </section>
+
+      {/* 3. FOUR INPUT FIELDS */}
+      <section style={{ 
+        maxWidth: '1000px', 
         margin: '0 auto', 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-        gap: '100px' 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        gap: '2px',
+        backgroundColor: '#000',
+        border: '2px solid #000'
       }}>
-        
-        {/* LEFT: SELECTION BOXES */}
-        <section>
-          <h2 style={{ fontSize: '0.7rem', color: '#555', letterSpacing: '2px', marginBottom: '30px' }}>
-            INPUT PARAMETERS
-          </h2>
-          { [0,1,2,3].map(i => (
-            <div key={i} style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', fontSize: '0.6rem', color: '#444', marginBottom: '5px' }}>
-                SELECTION_SLOT_0{i+1}
-              </label>
-              <input 
-                list="team-list"
-                placeholder="TYPE COUNTRY..."
-                onChange={(e) => updateSlot(i, e.target.value)}
-                style={{ 
-                  width: '100%', 
-                  padding: '20px', 
-                  backgroundColor: 'transparent', 
-                  border: '1px solid #333', 
-                  color: 'white', 
-                  fontSize: '1rem', 
-                  outline: 'none',
-                  transition: 'border-color 0.3s'
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#666'}
-                onBlur={(e) => e.target.style.borderColor = '#333'}
-              />
-            </div>
-          ))}
-          <datalist id="team-list">
-            {teams2026.map(t => <option key={t.code} value={t.name} />)}
-          </datalist>
-        </section>
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} style={{ backgroundColor: '#FFF', padding: '30px' }}>
+            <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '900', marginBottom: '10px', textTransform: 'uppercase', color: '#FF4500' }}>
+              Team {i + 1}
+            </label>
+            <input 
+              list="team-list"
+              placeholder="ENTER COUNTRY..."
+              onChange={(e) => updateSlot(i, e.target.value)}
+              value={selections[i]?.name || ""}
+              style={{ 
+                width: '100%', 
+                border: 'none', 
+                borderBottom: '2px solid #000',
+                fontSize: '1.2rem', 
+                fontWeight: '700',
+                padding: '10px 0',
+                outline: 'none',
+                textTransform: 'uppercase'
+              }}
+            />
+          </div>
+        ))}
+      </section>
 
-        {/* RIGHT: THE CANVAS PREVIEW */}
-        <section>
-          <h2 style={{ fontSize: '0.7rem', color: '#555', letterSpacing: '2px', marginBottom: '30px' }}>
-            GENERATIVE_OUTPUT
-          </h2>
+      <datalist id="team-list">
+        {teams2026.map(t => <option key={t.code} value={t.name} />)}
+      </datalist>
+
+      {/* 4. ACTIONS */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '40px' }}>
+        <button 
+          onClick={handleSubmit}
+          style={{ backgroundColor: '#000', color: '#FFF', border: 'none', padding: '20px 40px', fontWeight: '900', cursor: 'pointer', textTransform: 'uppercase' }}>
+          Generate Art
+        </button>
+        <button 
+          onClick={randomize}
+          style={{ backgroundColor: 'transparent', color: '#000', border: '2px solid #000', padding: '20px 40px', fontWeight: '900', cursor: 'pointer', textTransform: 'uppercase' }}>
+          Randomizer
+        </button>
+      </div>
+
+      {/* 5. DYNAMIC ART OUTPUT */}
+      {showArt && (
+        <section style={{ maxWidth: '1000px', margin: '80px auto', padding: '0 20px' }}>
           <div style={{ 
-            aspectRatio: '1/1', 
-            border: '1px solid #333', 
-            position: 'relative', 
-            backgroundColor: '#111', 
             display: 'grid', 
             gridTemplateColumns: '1fr 1fr', 
-            gridTemplateRows: '1fr 1fr',
-            overflow: 'hidden'
+            aspectRatio: '1/1', 
+            border: '10px solid #000' 
           }}>
             {selections.map((s, i) => (
               <div key={i} style={{ 
-                backgroundColor: s ? s.color : 'transparent', 
+                backgroundColor: s ? s.color : '#EEE', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                border: '0.5px solid #222',
-                transition: 'background-color 0.5s ease'
+                fontSize: '5rem',
+                border: '1px solid rgba(0,0,0,0.1)'
               }}>
-                {s ? (
-                  <span style={{ fontSize: '1.5rem', opacity: 0.8 }}>{s.icon}</span>
-                ) : (
-                  <span style={{ fontSize: '0.6rem', color: '#222' }}>VOID</span>
-                )}
+                {s?.icon || ""}
               </div>
             ))}
-            
-            {/* CROSSHAIR OVERLAY */}
-            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', backgroundColor: 'rgba(255,255,255,0.1)' }} />
-            <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '1px', backgroundColor: 'rgba(255,255,255,0.1)' }} />
           </div>
-          <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-             <p style={{ fontSize: '0.6rem', color: '#444' }}>STATUS: {selections.filter(s => s).length}/4 READY</p>
-             <p style={{ fontSize: '0.6rem', color: '#444' }}>RENDER_ENGINE: P5_V1</p>
+          <div style={{ marginTop: '20px', textAlign: 'right', fontWeight: '900', fontSize: '2rem', color: '#FF4500' }}>
+            84.5% NEUTRAL
           </div>
         </section>
-      </div>
+      )}
+
     </main>
   );
 }

@@ -20,33 +20,35 @@ export default function Home() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&family=Space+Mono&display=swap');
         
-        /* THE NOISE LAYERS */
+        /* FORCED TACTICAL OVERLAY */
         main::before {
           content: "";
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
           pointer-events: none;
           z-index: 1;
-          /* LAYER 1: HEAVY GRIDS & TACTICAL MARKS */
+          opacity: 0.4;
           background-image: 
-            linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
-            url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="monospace" font-size="20" fill="rgba(0,0,0,0.25)">X</text><text x="50" y="80" font-family="monospace" font-size="20" fill="rgba(0,0,0,0.25)">O</text><path d="M100 20 Q 150 20 150 70" stroke="rgba(0,0,0,0.3)" fill="none" stroke-width="2" /><circle cx="150" cy="150" r="30" stroke="rgba(0,0,0,0.2)" fill="none" /></svg>'),
-            /* LAYER 2: SECONDARY OFFSET NOISE */
-            url('data:image/svg+xml;utf8,<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><path d="M0 200 L400 200 M200 0 L200 400" stroke="rgba(0,0,0,0.1)" stroke-width="1"/><circle cx="200" cy="200" r="80" stroke="rgba(0,0,0,0.15)" fill="none" stroke-width="4" /><path d="M50 50 L150 150" stroke="rgba(255,69,0,0.2)" stroke-width="2" /></svg>');
-          background-size: 40px 40px, 40px 40px, 200px 200px, 800px 800px;
-          opacity: 0.4; /* HIGH VISIBILITY */
+            /* Primary Tactical Grid */
+            linear-gradient(rgba(0,0,0,0.15) 1.5px, transparent 1.5px),
+            linear-gradient(90deg, rgba(0,0,0,0.15) 1.5px, transparent 1.5px),
+            /* X and O Tactical Markers (Simulated with repeating dots/shapes) */
+            radial-gradient(circle, rgba(0,0,0,0.2) 2px, transparent 2px),
+            radial-gradient(circle, rgba(255,69,0,0.3) 4px, transparent 4px);
+          background-size: 60px 60px, 60px 60px, 120px 120px, 300px 300px;
+          background-position: 0 0, 0 0, 30px 30px, 150px 150px;
         }
 
-        /* THE SYSTEM STATIC */
+        /* DATA-SMOKE OVERLAY */
         main::after {
           content: "";
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
           pointer-events: none;
           z-index: 2;
-          background: radial-gradient(circle at 20% 30%, rgba(255, 69, 0, 0.15) 0%, transparent 50%);
-          mix-blend-mode: multiply;
+          background: 
+            radial-gradient(at 10% 10%, rgba(0,0,0,0.1) 0%, transparent 50%),
+            radial-gradient(at 90% 90%, rgba(255, 69, 0, 0.08) 0%, transparent 50%);
         }
 
         header, div, footer { position: relative; z-index: 10; }
@@ -55,19 +57,24 @@ export default function Home() {
           border-bottom: 4px solid #FF4500 !important;
           transition: 0.2s;
         }
+
+        ::placeholder {
+          color: rgba(0,0,0,0.4);
+          font-family: "Space Mono", monospace;
+        }
       `}</style>
 
       {/* Top Metadata Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', borderBottom: '1px solid rgba(0,0,0,0.1)', backgroundColor: 'rgba(175, 178, 152, 0.8)' }}>
-        <div>ANALYSIS_MODE: ALPHA // NEUTRALITY_BUILD_v2.2</div>
-        <div style={{ color: '#FF4500' }}>● STATUS: ACTIVE</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', borderBottom: '2px solid #000', backgroundColor: 'rgba(175, 178, 152, 0.9)' }}>
+        <div>ANALYSIS_MODE: ALPHA // NEUTRALITY_BUILD_v2.3</div>
+        <div style={{ color: '#FF4500', fontWeight: 'bold' }}>● SYSTEM_STATUS: LIVE_FORCE_RENDER</div>
       </div>
 
       <header style={{ 
         textAlign: 'center', 
         padding: '100px 20px 60px 20px', 
         borderBottom: '14px solid #000',
-        backgroundColor: 'rgba(175, 178, 152, 0.96)' 
+        backgroundColor: 'rgba(175, 178, 152, 0.98)' 
       }}>
         <h1 style={{ 
           fontFamily: '"Bebas Neue", sans-serif',
@@ -92,7 +99,7 @@ export default function Home() {
 
       <div style={{ maxWidth: '1100px', margin: '60px auto', padding: '0 30px' }}>
         
-        <div style={{ borderTop: '2px solid #000', borderBottom: '2px solid #000', padding: '15px 0', marginBottom: '80px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(175, 178, 152, 0.8)' }}>
+        <div style={{ borderTop: '2px solid #000', borderBottom: '2px solid #000', padding: '15px 0', marginBottom: '80px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(175, 178, 152, 0.9)' }}>
            <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', fontWeight: '700' }}>INPUT_PROTOCOL_FW_2026</div>
            <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem' }}>[ 04_COORDINATES_REQD ]</div>
         </div>
@@ -154,7 +161,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer style={{ marginTop: '100px', padding: '40px 20px', borderTop: '1px solid rgba(0,0,0,0.1)', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.6rem' }}>
+      <footer style={{ marginTop: '100px', padding: '40px 20px', borderTop: '2px solid #000', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', backgroundColor: 'rgba(175, 178, 152, 0.9)' }}>
         FAIR WEATHER v.2026 // CHICAGO_UNIT // PROPRIETARY LOYALTY MAPPING
       </footer>
     </main>

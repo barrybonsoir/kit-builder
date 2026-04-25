@@ -1,12 +1,16 @@
 "use client";
 import { useState } from 'react';
 
+const countries = [
+  "Argentina", "Australia", "Brazil", "Belgium", "Canada", "Cameroon", "Chile", "Colombia", "Croatia", "Denmark", "Ecuador", "England", "France", "Germany", "Ghana", "Italy", "Japan", "Mexico", "Morocco", "Netherlands", "Nigeria", "Portugal", "Qatar", "Saudi Arabia", "Senegal", "Serbia", "South Korea", "Spain", "Switzerland", "Tunisia", "Uruguay", "USA", "Wales"
+];
+
 export default function Home() {
   const [showArt, setShowArt] = useState(false);
 
   return (
     <main style={{ 
-      backgroundColor: '#F9F9F7', 
+      backgroundColor: '#AFB298', // The muted tactical olive from image_2.png
       color: '#000', 
       minHeight: '100vh', 
       fontFamily: '"Inter", sans-serif',
@@ -16,119 +20,149 @@ export default function Home() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&family=Space+Mono&display=swap');
         
-        /* Tactical Blueprint Grid */
+        /* The High-Fidelity Tactical Background */
         main::before {
           content: "";
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
-          background-image: 
-            linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-          background-size: 40px 40px;
+          pointer-events: none;
+          opacity: 0.15; // Subtle texture
           z-index: 1;
+          background-image: 
+            linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+            /* Subtle X and O pattern derived from the tactical layout */
+            url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="Arial" font-weight="100" font-size="20" fill="rgba(0,0,0,0.2)">X</text><text x="35" y="55" font-family="Arial" font-weight="100" font-size="20" fill="rgba(0,0,0,0.2)">O</text></svg>');
+          background-size: 30px 30px, 30px 30px, 120px 120px;
         }
 
-        .data-dot {
-          width: 6px; height: 6px;
-          background: #FF4500;
-          border-radius: 50%;
-          display: inline-block;
-          margin-right: 8px;
-        }
-
-        .tactical-line {
+        .system-panel {
+          border: 1px solid rgba(0,0,0,0.1);
+          background-color: #AFB298; // Match main BG
           position: absolute;
-          border-top: 1px solid rgba(0,0,0,0.1);
-          z-index: 2;
+          padding: 10px;
+          z-index: 10;
+        }
+
+        input:focus {
+          border-bottom: 3px solid #FF4500 !important;
+          transition: 0.3s;
         }
       `}</style>
 
-      {/* Technical Scouting Overlays */}
-      <div style={{ position: 'absolute', top: '20px', right: '20px', fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', textAlign: 'right', zIndex: 10 }}>
-        [ ANALYSIS MODE: ACTIVE ]<br/>
-        SAM_DEV_ENV // 2026.BETA<br/>
-        <span style={{ color: '#FF4500' }}>● NEUTRALITY_INDEX: 1.0</span>
+      {/* Decorative Technical Panels - Inspired by image_2.png layout */}
+      <div className="system-panel" style={{ top: '20px', left: '20px', width: '250px' }}>
+        <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', display: 'grid', gridTemplateColumns: '80px 1fr' }}>
+          <div>MATCH:</div> <div>T_FW // 2026.PROTO</div>
+          <div>SCOPE:</div> <div>GLOBAL_NEUTRALITY</div>
+          <div>STATUS:</div> <div style={{ color: '#FF4500' }}>[ ACTIVE_SYNTHESIS ]</div>
+        </div>
       </div>
-
+      
+      <div style={{ position: 'absolute', top: '20px', right: '20px', textAlign: 'right' }}>
+         <div style={{ display: 'inline-block', width: '20px', height: '20px', background: '#FF4500', borderRadius: '50%', marginBottom: '5px' }}></div>
+         <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem' }}>BIAS_INDEX: 1.0</div>
+      </div>
+      
       <header style={{ 
         textAlign: 'center', 
-        padding: '50px 20px', 
+        padding: '80px 20px 40px 20px', 
         borderBottom: '10px solid #000',
         position: 'relative',
         zIndex: 10,
-        backgroundColor: '#F9F9F7'
+        backgroundColor: '#AFB298'
       }}>
         <h1 style={{ 
           fontFamily: '"Bebas Neue", sans-serif',
           fontSize: 'clamp(5rem, 24vw, 18rem)', 
-          lineHeight: '0.75', 
+          lineHeight: '0.7', 
           textTransform: 'uppercase',
-          letterSpacing: '-0.06em',
+          letterSpacing: '-0.11em', // CRUSHED KERNING - Dramatic overlap
           margin: 0
         }}>
           TEAM FAIR<br/>WEATHER
         </h1>
+        <p style={{ 
+          fontSize: '1.2rem', 
+          marginTop: '15px', 
+          fontWeight: '900', 
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          color: '#000'
+        }}>
+          For when you just don't know who to root for.
+        </p>
       </header>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', display: 'grid', gridTemplateColumns: '1fr 3fr 1fr', gap: '40px', position: 'relative', zIndex: 10 }}>
+      <div style={{ maxWidth: '1000px', margin: '60px auto', padding: '0 20px', position: 'relative', zIndex: 10 }}>
         
-        {/* LEFT COLUMN: THE DATA PANEL */}
-        <div style={{ borderRight: '1px solid #DDD', paddingRight: '20px' }}>
-            <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '30px' }}>
-                <div style={{ marginBottom: '15px' }}><span className="data-dot"></span>Tactical Bias</div>
-                <div style={{ height: '2px', background: '#000', width: '100%', marginBottom: '5px' }}></div>
-                <div style={{ height: '2px', background: '#FF4500', width: '85%' }}></div>
-                <p style={{ marginTop: '10px' }}>Global Coverage: Optimizing...</p>
+        {/* Technical Instructional Line */}
+        <div style={{ borderTop: '2px solid rgba(0,0,0,0.1)', borderBottom: '2px solid rgba(0,0,0,0.1)', padding: '15px 0', marginBottom: '80px', display: 'flex', justifyContent: 'space-between' }}>
+           <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem' }}>INPUT_SELECTION_PROTOCOL_v4</div>
+           <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', color: '#FF4500' }}>[ FOUR_COORDINATES_REQUIRED ]</div>
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '50px' }}>
+          {[0,1,2,3].map(i => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+                <div style={{ width: '10px', height: '10px', background: '#000' }}></div>
+                <label style={{ 
+                    fontFamily: '"Bebas Neue", sans-serif', 
+                    fontSize: '2.5rem', 
+                    color: '#000',
+                    lineHeight: '1'
+                }}>
+                    COUNTRY
+                </label>
+              </div>
+              <input 
+                list="country-list"
+                placeholder="---"
+                style={{ 
+                    border: 'none', 
+                    borderBottom: '3px solid #000', 
+                    background: 'transparent',
+                    padding: '10px 0', 
+                    fontSize: '1.3rem', 
+                    fontWeight: '700', 
+                    outline: 'none',
+                    textTransform: 'uppercase',
+                    borderRadius: '0',
+                    fontFamily: '"Inter", sans-serif'
+                }}
+              />
             </div>
-            
-            <div style={{ width: '100%', aspectRatio: '1/1', border: '1px solid #000', position: 'relative', overflow: 'hidden' }}>
-                 <div style={{ position: 'absolute', top: '50%', left: '0', width: '100%', height: '1px', background: 'rgba(0,0,0,0.1)' }}></div>
-                 <div style={{ position: 'absolute', left: '50%', top: '0', width: '1px', height: '100%', background: 'rgba(0,0,0,0.1)' }}></div>
-                 <div style={{ position: 'absolute', top: '30%', left: '40%', width: '10px', height: '10px', background: '#FF4500', borderRadius: '50%' }}></div>
-                 <div style={{ position: 'absolute', bottom: '10%', right: '20%', width: '6px', height: '6px', border: '1px solid #000', borderRadius: '50%' }}></div>
-            </div>
+          ))}
         </div>
 
-        {/* MIDDLE COLUMN: THE FORM */}
-        <div>
-            <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.9rem', textAlign: 'center', marginBottom: '60px', textTransform: 'uppercase' }}>
-               Input loyalty coordinates to generate a multi-vector kit asset.
-            </p>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
-                {[1,2,3,4].map(i => (
-                    <div key={i} style={{ border: '1px solid #000', padding: '20px', backgroundColor: '#FFF' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                             <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.6rem' }}>SLOT_0{i}</span>
-                             <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', color: '#FF4500' }}>[ REQUIRED ]</span>
-                        </div>
-                        <input 
-                            placeholder="SELECT NATION"
-                            style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', fontFamily: '"Bebas Neue", sans-serif', fontSize: '2.5rem', textTransform: 'uppercase' }}
-                        />
-                    </div>
-                ))}
-            </div>
+        <datalist id="country-list">
+          {countries.map(c => <option key={c} value={c} />)}
+        </datalist>
 
-            <button style={{ 
-                width: '100%', marginTop: '40px', background: '#000', color: '#FFF', padding: '25px', 
-                fontFamily: '"Bebas Neue", sans-serif', fontSize: '2rem', cursor: 'pointer', border: 'none'
+        <div style={{ marginTop: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px' }}>
+          <button 
+            onClick={() => setShowArt(true)}
+            style={{ 
+              backgroundColor: '#000', 
+              color: '#AFB298', // Invert to the BG color
+              padding: '24px 80px', 
+              fontSize: '1.8rem', 
+              fontFamily: '"Bebas Neue", sans-serif', 
+              letterSpacing: '0.1em',
+              border: 'none',
+              cursor: 'pointer',
+              width: '100%',
+              maxWidth: '600px'
             }}>
-                RUN ANALYTICS & GENERATE
-            </button>
+            GENERATE LOYALTY ART
+          </button>
+          
+          {/* Subtle tactical legend */}
+          <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', textTransform: 'uppercase' }}>
+             Veri: International FairWeather Index // v2026 // NEUTRALITY_INDEX_ALPHA_BUILD
+          </div>
         </div>
-
-        {/* RIGHT COLUMN: MOMENTUM INDEX */}
-        <div style={{ borderLeft: '1px solid #DDD', paddingLeft: '20px', fontFamily: '"Space Mono", monospace', fontSize: '0.7rem' }}>
-            <p>MOMENTUM_INDEX</p>
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2px', height: '100px', marginTop: '20px' }}>
-                {[20, 50, 80, 40, 90, 30, 60].map((h, i) => (
-                    <div key={i} style={{ flex: 1, background: i === 4 ? '#FF4500' : '#000', height: `${h}%` }}></div>
-                ))}
-            </div>
-            <p style={{ marginTop: '20px' }}>v.2026.WorldCup<br/>Protocol: FairWeather</p>
-        </div>
-
       </div>
     </main>
   );

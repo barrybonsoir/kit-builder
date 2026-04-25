@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <main style={{ 
-      backgroundColor: '#AFB298', // The muted tactical olive from image_2.png
+      backgroundColor: '#AFB298', // The muted tactical olive from image_3.png
       color: '#000', 
       minHeight: '100vh', 
       fontFamily: '"Inter", sans-serif',
@@ -20,28 +20,21 @@ export default function Home() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&family=Space+Mono&display=swap');
         
-        /* The High-Fidelity Tactical Background */
+        /* The Deep Technical Static Wallpaper - Merged Tactical Noise */
         main::before {
           content: "";
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
           pointer-events: none;
-          opacity: 0.15; // Subtle texture
+          opacity: 0.08; // Extremely subtle noise
           z-index: 1;
           background-image: 
+            /* Subtle blueprint grid */
             linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-            /* Subtle X and O pattern derived from the tactical layout */
-            url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="Arial" font-weight="100" font-size="20" fill="rgba(0,0,0,0.2)">X</text><text x="35" y="55" font-family="Arial" font-weight="100" font-size="20" fill="rgba(0,0,0,0.2)">O</text></svg>');
-          background-size: 30px 30px, 30px 30px, 120px 120px;
-        }
-
-        .system-panel {
-          border: 1px solid rgba(0,0,0,0.1);
-          background-color: #AFB298; // Match main BG
-          position: absolute;
-          padding: 10px;
-          z-index: 10;
+            /* Merged Tactical Static (charts, arrows, X's, O's) pattern */
+            url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10 L40 40 M40 10 L10 40" stroke="rgba(0,0,0,0.4)" stroke-width="0.5"/><circle cx="70" cy="70" r="15" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="0.5"/><path d="M50 10 A30 30 0 0 1 80 40 L80 10" stroke="rgba(0,0,0,0.4)" stroke-width="0.5" fill="none"/></svg>');
+          background-size: 30px 30px, 30px 30px, 200px 200px;
         }
 
         input:focus {
@@ -50,41 +43,28 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Decorative Technical Panels - Inspired by image_2.png layout */}
-      <div className="system-panel" style={{ top: '20px', left: '20px', width: '250px' }}>
-        <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', display: 'grid', gridTemplateColumns: '80px 1fr' }}>
-          <div>MATCH:</div> <div>T_FW // 2026.PROTO</div>
-          <div>SCOPE:</div> <div>GLOBAL_NEUTRALITY</div>
-          <div>STATUS:</div> <div style={{ color: '#FF4500' }}>[ ACTIVE_SYNTHESIS ]</div>
-        </div>
-      </div>
-      
-      <div style={{ position: 'absolute', top: '20px', right: '20px', textAlign: 'right' }}>
-         <div style={{ display: 'inline-block', width: '20px', height: '20px', background: '#FF4500', borderRadius: '50%', marginBottom: '5px' }}></div>
-         <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem' }}>BIAS_INDEX: 1.0</div>
-      </div>
-      
+      {/* The Actual Application Structure */}
       <header style={{ 
         textAlign: 'center', 
-        padding: '80px 20px 40px 20px', 
+        padding: '100px 20px 60px 20px', 
         borderBottom: '10px solid #000',
         position: 'relative',
-        zIndex: 10,
-        backgroundColor: '#AFB298'
+        zIndex: 10, // Content sits above the static
+        backgroundColor: 'rgba(175, 178, 152, 0.8)' // Semi-opaque to soften the noise
       }}>
         <h1 style={{ 
           fontFamily: '"Bebas Neue", sans-serif',
           fontSize: 'clamp(5rem, 24vw, 18rem)', 
           lineHeight: '0.7', 
           textTransform: 'uppercase',
-          letterSpacing: '-0.11em', // CRUSHED KERNING - Dramatic overlap
+          letterSpacing: '-0.11em', // Dramatic kerning
           margin: 0
         }}>
           TEAM FAIR<br/>WEATHER
         </h1>
         <p style={{ 
           fontSize: '1.2rem', 
-          marginTop: '15px', 
+          marginTop: '25px', 
           fontWeight: '900', 
           letterSpacing: '0.05em',
           textTransform: 'uppercase',
@@ -94,13 +74,11 @@ export default function Home() {
         </p>
       </header>
 
-      <div style={{ maxWidth: '1000px', margin: '60px auto', padding: '0 20px', position: 'relative', zIndex: 10 }}>
+      <div style={{ maxWidth: '1000px', margin: '80px auto', padding: '0 20px', position: 'relative', zIndex: 10 }}>
         
-        {/* Technical Instructional Line */}
-        <div style={{ borderTop: '2px solid rgba(0,0,0,0.1)', borderBottom: '2px solid rgba(0,0,0,0.1)', padding: '15px 0', marginBottom: '80px', display: 'flex', justifyContent: 'space-between' }}>
-           <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem' }}>INPUT_SELECTION_PROTOCOL_v4</div>
-           <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', color: '#FF4500' }}>[ FOUR_COORDINATES_REQUIRED ]</div>
-        </div>
+        <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', textAlign: 'center', marginBottom: '80px', textTransform: 'uppercase' }}>
+           Input loyalty coordinates // System synthesis asset for global distribution
+        </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '50px' }}>
           {[0,1,2,3].map(i => (
@@ -118,7 +96,7 @@ export default function Home() {
               </div>
               <input 
                 list="country-list"
-                placeholder="---"
+                placeholder="TYPE_NATION"
                 style={{ 
                     border: 'none', 
                     borderBottom: '3px solid #000', 
@@ -145,7 +123,7 @@ export default function Home() {
             onClick={() => setShowArt(true)}
             style={{ 
               backgroundColor: '#000', 
-              color: '#AFB298', // Invert to the BG color
+              color: '#AFB298', 
               padding: '24px 80px', 
               fontSize: '1.8rem', 
               fontFamily: '"Bebas Neue", sans-serif', 
@@ -158,9 +136,8 @@ export default function Home() {
             GENERATE LOYALTY ART
           </button>
           
-          {/* Subtle tactical legend */}
-          <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', textTransform: 'uppercase' }}>
-             Veri: International FairWeather Index // v2026 // NEUTRALITY_INDEX_ALPHA_BUILD
+          <div style={{ paddingTop: '20px', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', textTransform: 'uppercase' }}>
+             Veri: International FairWeather Index // v2026 // NEUTRALITY_BUILD
           </div>
         </div>
       </div>

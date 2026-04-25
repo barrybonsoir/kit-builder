@@ -1,93 +1,131 @@
 "use client";
 import { useState } from 'react';
 
-// Team data bundled directly to avoid file-linking errors
-const teams = [
-  { name: "Mexico", color: "#006847", icon: "🇲🇽" },
-  { name: "USA", color: "#B22234", icon: "🇺🇸" },
-  { name: "Nigeria", color: "#008751", icon: "🇳🇬" },
-  { name: "South Korea", color: "#0047A0", icon: "🇰🇷" },
-  { name: "Argentina", color: "#74ACDF", icon: "🇦🇷" },
-  { name: "France", color: "#002395", icon: "🇫🇷" },
-  { name: "Brazil", color: "#FFDC00", icon: "🇧🇷" },
-  { name: "Italy", color: "#004B94", icon: "🇮🇹" }
+const countries = [
+  "Argentina", "Australia", "Brazil", "Belgium", "Canada", "Cameroon", "Chile", "Colombia", "Croatia", "Denmark", "Ecuador", "England", "France", "Germany", "Ghana", "Italy", "Japan", "Mexico", "Morocco", "Netherlands", "Nigeria", "Portugal", "Qatar", "Saudi Arabia", "Senegal", "Serbia", "South Korea", "Spain", "Switzerland", "Tunisia", "Uruguay", "USA", "Wales"
 ];
 
 export default function Home() {
-  const [selections, setSelections] = useState([null, null, null, null]);
   const [showArt, setShowArt] = useState(false);
 
-  const updateSlot = (index, val) => {
-    const match = teams.find(t => t.name.toLowerCase() === val.toLowerCase());
-    const newPicks = [...selections];
-    newPicks[index] = match || { name: val, color: "#DDD", icon: "🏳️" };
-    setSelections(newPicks);
-  };
-
-  const randomize = () => {
-    const randomPicks = [...Array(4)].map(() => teams[Math.floor(Math.random() * teams.length)]);
-    setSelections(randomPicks);
-    setShowArt(true);
-  }
-
   return (
-    <main style={{ backgroundColor: '#FFF', color: '#000', minHeight: '100vh', paddingBottom: '100px' }}>
+    <main style={{ 
+      backgroundColor: '#F9F9F7', // Gallery/Paper White
+      color: '#000', 
+      minHeight: '100vh', 
+      fontFamily: '"Inter", sans-serif',
+      position: 'relative',
+      overflowX: 'hidden'
+    }}>
+      {/* Import the dramatic fonts */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;900&display=swap');
+        
+        /* The Texture Overlay */
+        main::before {
+          content: "";
+          position: fixed;
+          top: 0; left: 0; width: 100%; height: 100%;
+          opacity: 0.04;
+          pointer-events: none;
+          background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+          z-index: 10;
+        }
+
+        input:focus {
+          border-bottom: 3px solid #FF4500 !important;
+          transition: 0.3s;
+        }
+      `}</style>
       
-      {/* HEADER SECTION */}
-      <header style={{ textAlign: 'center', padding: '100px 20px', borderBottom: '2px solid #000' }}>
+      <header style={{ textAlign: 'center', padding: '120px 20px', borderBottom: '5px solid #000' }}>
         <h1 style={{ 
-          fontSize: 'clamp(3rem, 12vw, 10rem)', 
-          fontWeight: '900', 
-          lineHeight: '0.8', 
+          fontFamily: '"Bebas Neue", sans-serif',
+          fontSize: 'clamp(5rem, 20vw, 16rem)', 
+          lineHeight: '0.75', 
           textTransform: 'uppercase',
-          letterSpacing: '-0.05em',
+          letterSpacing: '-0.04em',
           margin: 0
         }}>
           TEAM FAIR<br/>WEATHER
         </h1>
-        <p style={{ fontSize: '1.2rem', marginTop: '20px', fontWeight: '600' }}>
-          For when you just can't make up your mind
+        <p style={{ 
+          fontSize: '1.4rem', 
+          marginTop: '30px', 
+          fontWeight: '600', 
+          letterSpacing: '-0.02em',
+          textTransform: 'uppercase'
+        }}>
+          For when you just don't know who to root for.
         </p>
       </header>
 
-      {/* INPUT SECTION */}
-      <div style={{ maxWidth: '900px', margin: '50px auto', padding: '0 20px' }}>
-        <p style={{ fontSize: '1.4rem', textAlign: 'center', marginBottom: '40px' }}>
-          Pick up to four countries that you just so happen to love the most. We'll make a piece of custom art that's just right for you and where your loyalties lie.
+      <div style={{ maxWidth: '1000px', margin: '80px auto', padding: '0 20px' }}>
+        <p style={{ 
+          fontSize: '1.2rem', 
+          textAlign: 'center', 
+          marginBottom: '80px', 
+          maxWidth: '550px', 
+          margin: '0 auto 80px auto', 
+          lineHeight: '1.5',
+          fontWeight: '400'
+        }}>
+          Pick up to four countries that you happen to love the most. We'll create a piece of custom art that will cover all your bases.
         </p>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '50px' }}>
           {[0,1,2,3].map(i => (
-            <div key={i} style={{ border: '2px solid #000', padding: '15px' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: '900', color: '#FF4500' }}>TEAM {i+1}</span>
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <label style={{ 
+                fontFamily: '"Bebas Neue", sans-serif', 
+                fontSize: '2rem', 
+                color: '#000',
+                letterSpacing: '0.02em'
+              }}>
+                COUNTRY 0{i+1}
+              </label>
               <input 
-                onChange={(e) => updateSlot(i, e.target.value)}
-                placeholder="TYPE COUNTRY..."
-                style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase' }}
+                list="country-list"
+                placeholder="TYPE NATION..."
+                style={{ 
+                    border: 'none', 
+                    borderBottom: '3px solid #000', 
+                    background: 'transparent',
+                    padding: '12px 0', 
+                    fontSize: '1.1rem', 
+                    fontWeight: '700', 
+                    outline: 'none',
+                    textTransform: 'uppercase',
+                    borderRadius: '0',
+                    fontFamily: '"Inter", sans-serif'
+                }}
               />
             </div>
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-          <button onClick={() => setShowArt(true)} style={{ flex: 2, padding: '20px', backgroundColor: '#000', color: '#FFF', fontWeight: '900', cursor: 'pointer' }}>GENERATE ART</button>
-          <button onClick={randomize} style={{ flex: 1, padding: '20px', border: '2px solid #000', backgroundColor: 'transparent', fontWeight: '900', cursor: 'pointer' }}>RANDOMIZER</button>
+        <datalist id="country-list">
+          {countries.map(c => <option key={c} value={c} />)}
+        </datalist>
+
+        <div style={{ marginTop: '100px', display: 'flex', justifyContent: 'center' }}>
+          <button 
+            onClick={() => setShowArt(true)}
+            style={{ 
+              backgroundColor: '#000', 
+              color: '#FFF', 
+              padding: '24px 80px', 
+              fontSize: '1.6rem', 
+              fontFamily: '"Bebas Neue", sans-serif', 
+              letterSpacing: '0.1em',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '10px 10px 0px #FF4500' // Brutalist shadow
+            }}>
+            GENERATE LOYALTY ART
+          </button>
         </div>
       </div>
-
-      {/* ART OUTPUT */}
-      {showArt && (
-        <div style={{ maxWidth: '800px', margin: '50px auto', padding: '0 20px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '10px solid #000', aspectRatio: '1/1' }}>
-                {selections.map((s, i) => (
-                    <div key={i} style={{ backgroundColor: s?.color || '#EEE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>
-                        {s?.icon || ""}
-                    </div>
-                ))}
-            </div>
-            <div style={{ textAlign: 'right', color: '#FF4500', fontWeight: '900', fontSize: '3rem', marginTop: '10px' }}>84.5% NEUTRAL</div>
-        </div>
-      )}
     </main>
   );
 }

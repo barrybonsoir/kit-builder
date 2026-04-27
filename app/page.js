@@ -96,20 +96,16 @@ export default function Home() {
              <image href={paths[1]} x="0" y="100" width="100" height="100" filter="grayscale(1)" opacity="0.5" transform="scale(1, -1) translate(0, -200)" />
           </pattern>
         </defs>
-
         <rect width="500" height="600" fill="url(#diagStripes)" />
-
         <g clipPath="url(#shieldPath)">
           <rect width="500" height="600" fill={s[0]?.color} />
           <rect width="500" height="600" fill="url(#kaleido)" style={{ mixBlendMode: 'multiply' }} />
           <image href={paths[0]} x="-50" y="-50" width="600" height="600" opacity="0.3" filter="contrast(300%) grayscale(1)" />
-          
           <g transform="translate(250, 300)">
             <path d="M-160,0 L0,-190 L160,0 L0,190 Z" fill="#000" />
             <image href={paths[2]} x="-110" y="-110" width="220" height="220" filter="invert(1) brightness(1.5)" />
           </g>
         </g>
-
         <rect x="0" y="550" width="500" height="50" fill="#000" />
         <text x="250" y="582" fontFamily="monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">
           REF: {s[0].code}x{s[1].code}x{s[2].code} // COMPOSITE_V4
@@ -123,8 +119,12 @@ export default function Home() {
       {!showResult ? (
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h1 style={{ fontFamily: 'impact, sans-serif', fontSize: '5rem', margin: 0, textTransform: 'uppercase', borderBottom: '15px solid #FF0000', display: 'inline-block' }}>FAIR WEATHER</h1>
-            <p style={{ fontFamily: 'monospace', fontSize: '1rem', letterSpacing: '0.2em' }}>SYNTHESIZING HERALDRY // VER 4.0</p>
+            <img src="/logo-red.png" alt="FAIR WEATHER FANDOM" style={{ width: '100%', maxWidth: '700px', marginBottom: '20px' }} />
+            <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
+              <p style={{ fontFamily: 'monospace', fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em' }}>
+                SYNTHESIZING HERALDRY FOR THE UNDECIDED. 48 NATIONS // INFINITE COMBINATIONS.
+              </p>
+            </div>
           </header>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>

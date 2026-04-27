@@ -68,8 +68,9 @@ export default function Home() {
   };
 
   const getTextColor = (hex) => {
+    if (!hex) return "#000";
     const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA", "#FED100", "#FFD700", "#FFD931"];
-    return light.includes(hex?.toUpperCase()) ? "#000" : "#FFF";
+    return light.includes(hex.toUpperCase()) ? "#000" : "#FFF";
   };
 
   const RenderHeraldicCrest = () => {
@@ -84,6 +85,7 @@ export default function Home() {
         display: 'block'
       }}>
         <defs>
+          <style>{`@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');`}</style>
           <pattern id="diagStripes" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="2" height="10" fill="#000" fillOpacity="0.15" />
           </pattern>
@@ -107,7 +109,7 @@ export default function Home() {
           </g>
         </g>
         <rect x="0" y="550" width="500" height="50" fill="#000" />
-        <text x="250" y="582" fontFamily="monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">
+        <text x="250" y="582" fontFamily="'Space Mono', monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">
           REF: {s[0].code}x{s[1].code}x{s[2].code} // COMPOSITE_V4
         </text>
       </svg>
@@ -116,12 +118,16 @@ export default function Home() {
 
   return (
     <main style={{ backgroundColor: '#FFF', minHeight: '100vh', position: 'relative' }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
+      ` }} />
+
       {!showResult ? (
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '60px' }}>
             <img src="/logo-red.png" alt="FAIR WEATHER FANDOM" style={{ width: '100%', maxWidth: '700px', marginBottom: '20px' }} />
             <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
-              <p style={{ fontFamily: 'monospace', fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em' }}>
+              <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em', color: '#000' }}>
                 SYNTHESIZING HERALDRY FOR THE UNDECIDED. 48 NATIONS // INFINITE COMBINATIONS.
               </p>
             </div>
@@ -134,11 +140,12 @@ export default function Home() {
                 onClick={() => setActiveSlot(i)}
                 style={{ 
                   height: '220px', border: '5px solid #000', backgroundColor: selections[i]?.color || '#FFF',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                  transition: 'opacity 0.2s'
                 }}
               >
-                <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: getTextColor(selections[i]?.color || '#FFF') }}>{label}</span>
-                <span style={{ fontFamily: 'impact, sans-serif', fontSize: '5rem', color: getTextColor(selections[i]?.color || '#FFF') }}>
+                <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.8rem', color: getTextColor(selections[i]?.color || '#FFF'), marginBottom: '10px' }}>{label}</span>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '6rem', lineHeight: '1', color: getTextColor(selections[i]?.color || '#FFF') }}>
                   {selections[i] ? selections[i].code : "+"}
                 </span>
               </button>
@@ -150,8 +157,8 @@ export default function Home() {
             onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }}
             style={{ 
               width: '100%', marginTop: '40px', padding: '30px', background: '#000', color: '#FFF', 
-              fontSize: '2.5rem', fontFamily: 'impact, sans-serif', cursor: 'pointer',
-              opacity: selections.includes(null) ? 0.2 : 1
+              fontSize: '3rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer',
+              opacity: selections.includes(null) ? 0.2 : 1, border: 'none'
             }}
           >
             COMPILE EMBLEM
@@ -160,15 +167,15 @@ export default function Home() {
       ) : (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
           <RenderHeraldicCrest />
-          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '40px', padding: '20px 40px', background: '#000', color: '#FFF', fontFamily: 'impact, sans-serif', fontSize: '1.5rem', border: 'none', cursor: 'pointer' }}>NEW SESSION [X]</button>
+          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '40px', padding: '20px 40px', background: '#000', color: '#FFF', fontFamily: "'Bebas Neue', sans-serif", fontSize: '2rem', border: 'none', cursor: 'pointer' }}>NEW SESSION [X]</button>
         </div>
       )}
 
       {activeSlot !== null && (
         <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 1000, overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: '#FFF', fontFamily: 'monospace' }}>SELECT_STREAM // {nationLabels[activeSlot]}</span>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '5px 15px', cursor: 'pointer' }}>CLOSE</button>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#FFF', fontFamily: "'Space Mono', monospace", fontSize: '1rem' }}>SELECT_STREAM // {nationLabels[activeSlot]}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', cursor: 'pointer', fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.2rem' }}>CLOSE</button>
           </div>
           {countries.map(c => (
             <button 
@@ -176,7 +183,8 @@ export default function Home() {
               onClick={() => selectCountry(c)} 
               style={{ 
                 width: '100%', padding: '20px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)',
-                textAlign: 'left', fontFamily: 'impact, sans-serif', fontSize: '2.5rem', color: getTextColor(c.color), cursor: 'pointer'
+                textAlign: 'left', fontFamily: "'Bebas Neue', sans-serif", fontSize: '3rem', color: getTextColor(c.color), cursor: 'pointer',
+                display: 'block'
               }}
             >
               {c.name}
@@ -187,10 +195,13 @@ export default function Home() {
 
       {isGenerating && (
         <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 2000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h1 style={{ color: '#FFF', fontSize: '4rem', fontFamily: 'impact, sans-serif' }}>GENERATING_EMBLEM</h1>
-          <div style={{ width: '300px', height: '10px', background: '#333', marginTop: '20px' }}>
-            <div style={{ height: '100%', background: '#FF0000', width: '60%' }}></div>
+          <h1 style={{ color: '#FFF', fontSize: '5rem', fontFamily: "'Bebas Neue', sans-serif", margin: 0 }}>GENERATING_EMBLEM</h1>
+          <div style={{ width: '400px', height: '15px', background: '#333', marginTop: '20px', overflow: 'hidden' }}>
+            <div style={{ height: '100%', background: '#FF0000', width: '100%', transformOrigin: 'left', animation: 'progress 2.5s ease-in-out' }}></div>
           </div>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes progress { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
+          ` }} />
         </div>
       )}
     </main>

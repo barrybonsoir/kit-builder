@@ -36,7 +36,6 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  // HELPER FUNCTIONS INSIDE COMPONENT FOR BUILD SAFETY
   const getImagePath = (country) => {
     if (!country) return "";
     const fileName = country.name.toLowerCase().replace(/\s+/g, '-');
@@ -57,7 +56,10 @@ export default function Home() {
   };
 
   const RenderHeraldicCrest = () => {
-    const positions = ['right bottom', 'left bottom', 'right top', 'left top'];
+    // Quadrant mapping to pin corners to the center
+    // 0: TL, 1: TR, 2: BL, 3: BR
+    const alignments = ['bottom right', 'bottom left', 'top right', 'top left'];
+
     return (
       <div style={{ 
         width: '500px', 
@@ -67,29 +69,55 @@ export default function Home() {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: '1fr 1fr',
-        gap: '4px',
+        gap: '2px', // Minimal stitch line
         boxShadow: '40px 40px 0px rgba(0,0,0,0.1)',
-        position: 'relative'
+        position: 'relative',
+        overflow: 'visible'
       }}>
         {selections.map((country, i) => (
-          <div key={i} style={{ backgroundColor: country.color, overflow: 'hidden', display: 'flex' }}>
+          <div key={i} style={{ 
+            backgroundColor: country.color, 
+            overflow: 'hidden', 
+            position: 'relative',
+            display: 'flex'
+          }}>
             <img 
               src={getImagePath(country)} 
               alt={country.name}
               style={{
-                width: '200%',
-                height: '200%',
+                position: 'absolute',
+                width: '500px', // Full size of the composite to ensure centering
+                height: '500px',
                 objectFit: 'contain',
-                objectPosition: positions[i],
+                objectPosition: alignments[i],
                 mixBlendMode: 'multiply',
-                opacity: 0.85
+                opacity: 0.9,
+                // These offsets force the logo center to hit the grid corner
+                right: i % 2 === 0 ? '0' : 'auto',
+                left: i % 2 !== 0 ? '0' : 'auto',
+                bottom: i < 2 ? '0' : 'auto',
+                top: i >= 2 ? '0' : 'auto'
               }}
             />
           </div>
         ))}
-        <div style={{ position: 'absolute', bottom: '-45px', left: '-20px', width: 'calc(100% + 40px)', display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: '10px', color: '#000', background: '#FFF', padding: '5px 10px' }}>
-          <span>REF: {selections.map(s => s.code).join('x')}</span>
-          <span>COMPOSITE_BUILD_V5</span>
+        {/* Bottom Technical Bar */}
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '-55px', 
+          left: '-20px', 
+          width: 'calc(100% + 40px)', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          fontFamily: "'Space Mono', monospace", 
+          fontSize: '11px', 
+          color: '#000', 
+          background: '#FFF', 
+          padding: '8px 12px',
+          borderBottom: '4px solid #000'
+        }}>
+          <span style={{ fontWeight: 'bold' }}>REF: {selections.map(s => s.code).join('x')}</span>
+          <span>SYSTEM_VERSION: STITCH_V1.0</span>
         </div>
       </div>
     );
@@ -124,7 +152,7 @@ export default function Home() {
       ) : (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
           <RenderHeraldicCrest />
-          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '80px', padding: '20px 40px', background: '#000', color: '#FFF', fontFamily: "'Bebas Neue', sans-serif", fontSize: '2rem', border: 'none', cursor: 'pointer' }}>NEW SESSION [X]</button>
+          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '100px', padding: '20px 40px', background: '#000', color: '#FFF', fontFamily: "'Bebas Neue', sans-serif", fontSize: '2rem', border: 'none', cursor: 'pointer' }}>NEW SESSION [X]</button>
         </div>
       )}
 

@@ -13,7 +13,43 @@ const countries = [
   { name: "Netherlands", code: "NED", color: "#F36C21" },
   { name: "Italy", code: "ITA", color: "#008C45" },
   { name: "France", code: "FRA", color: "#002395" },
-  { name: "Spain", code: "ESP", color: "#C60B1E" }
+  { name: "Spain", code: "ESP", color: "#C60B1E" },
+  { name: "Canada", code: "CAN", color: "#FF0000" },
+  { name: "Morocco", code: "MAR", color: "#C1272D" },
+  { name: "Portugal", code: "POR", color: "#FF0000" },
+  { name: "Belgium", code: "BEL", color: "#EF3340" },
+  { name: "Colombia", code: "COL", color: "#FCD116" },
+  { name: "Uruguay", code: "URU", color: "#0081C6" },
+  { name: "Switzerland", code: "SUI", color: "#FF0000" },
+  { name: "Senegal", code: "SEN", color: "#00853F" },
+  { name: "Korea Republic", code: "KOR", color: "#CD2E3A" },
+  { name: "Denmark", code: "DEN", color: "#C60C30" },
+  { name: "Poland", code: "POL", color: "#DC143C" },
+  { name: "Australia", code: "AUS", color: "#00008B" },
+  { name: "Sweden", code: "SWE", color: "#006AA7" },
+  { name: "Ukraine", code: "UKR", color: "#FFD700" },
+  { name: "Austria", code: "AUT", color: "#ED2939" },
+  { name: "Ecuador", code: "ECU", color: "#FFD931" },
+  { name: "Peru", code: "PER", color: "#D91023" },
+  { name: "Chile", code: "CHI", color: "#0039A6" },
+  { name: "Nigeria", code: "NGA", color: "#008751" },
+  { name: "Cameroon", code: "CMR", color: "#478A3E" },
+  { name: "Ghana", code: "GHA", color: "#EF3340" },
+  { name: "Egypt", code: "EGY", color: "#C1272D" },
+  { name: "Tunisia", code: "TUN", color: "#E70013" },
+  { name: "Algeria", code: "ALG", color: "#006233" },
+  { name: "Saudi Arabia", code: "KSA", color: "#006C35" },
+  { name: "Iran", code: "IRN", color: "#239f40" },
+  { name: "Iraq", code: "IRQ", color: "#007A3D" },
+  { name: "Qatar", code: "QAT", color: "#8D1B3D" },
+  { name: "Panama", code: "PAN", color: "#DA121A" },
+  { name: "Costa Rica", code: "CRC", color: "#EF3340" },
+  { name: "Jamaica", code: "JAM", color: "#FED100" },
+  { name: "Norway", code: "NOR", color: "#BA0C2F" },
+  { name: "Turkey", code: "TUR", color: "#E30A17" },
+  { name: "Scotland", code: "SCO", color: "#005EB8" },
+  { name: "Wales", code: "WAL", color: "#D30731" },
+  { name: "New Zealand", code: "NZL", color: "#000000" }
 ];
 
 const nationLabels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
@@ -40,7 +76,7 @@ export default function Home() {
   };
 
   const getTextColor = (hex) => {
-    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA"];
+    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA", "#FED100", "#FFD700"];
     return light.includes(hex?.toUpperCase()) ? "#000" : "#FFF";
   };
 
@@ -80,9 +116,9 @@ export default function Home() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
         .country-row {
-          width: 100%; border: none; text-align: left; padding: 10px 40px;
-          font-family: "Bebas Neue", sans-serif; font-size: 2.5rem; cursor: pointer;
-          border-bottom: 1px solid rgba(0,0,0,0.1); transition: opacity 0.2s;
+          width: 100%; border: none; text-align: left; padding: 12px 40px;
+          font-family: "Bebas Neue", sans-serif; font-size: 2.2rem; cursor: pointer;
+          border-bottom: 1px solid rgba(255,255,255,0.1); transition: opacity 0.2s;
         }
         .country-row:hover { opacity: 0.8; }
         .nation-btn {
@@ -148,9 +184,9 @@ export default function Home() {
 
       {activeSlot !== null && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 3000, overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 3001 }}>
-             <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.2rem' }}>SELECT {nationLabels[activeSlot]}</span>
-             <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: 'Bebas Neue', fontSize: '1.2rem', cursor: 'pointer' }}>CLOSE</button>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '15px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 3001 }}>
+             <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.1rem' }}>SELECT DATA // {nationLabels[activeSlot]}</span>
+             <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '8px 15px', fontFamily: 'Bebas Neue', fontSize: '1rem', cursor: 'pointer' }}>CLOSE</button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {countries.map(c => (

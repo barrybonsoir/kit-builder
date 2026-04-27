@@ -25,7 +25,6 @@ export default function Home() {
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
-    // Handling body scroll locking for overlays
     if (activeSlot !== null || isGenerating) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -81,10 +80,11 @@ export default function Home() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
         .country-row {
-          width: 100%; border: none; text-align: left; padding: 20px 40px;
-          font-family: "Bebas Neue", sans-serif; font-size: 4.5rem; cursor: pointer;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
+          width: 100%; border: none; text-align: left; padding: 10px 40px;
+          font-family: "Bebas Neue", sans-serif; font-size: 2.5rem; cursor: pointer;
+          border-bottom: 1px solid rgba(0,0,0,0.1); transition: opacity 0.2s;
         }
+        .country-row:hover { opacity: 0.8; }
         .nation-btn {
           border: 4px solid #000; display: flex; flex-direction: column; 
           align-items: center; justify-content: center; min-height: 220px; cursor: pointer;
@@ -137,7 +137,7 @@ export default function Home() {
           </div>
         </>
       ) : (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F9F7F2', padding: '40px' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center', backgroundColor: '#F9F7F2', padding: '40px' }}>
           <RenderHeraldicCrest />
           <div style={{ marginTop: '60px', display: 'flex', gap: '20px' }}>
              <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ background: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: 'Bebas Neue', fontSize: '1.8rem', cursor: 'pointer' }}>NEW SESSION [X]</button>
@@ -147,29 +147,10 @@ export default function Home() {
 
       {activeSlot !== null && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 3000, overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '25px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 3001 }}>
              <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.2rem' }}>SELECT {nationLabels[activeSlot]}</span>
              <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: 'Bebas Neue', fontSize: '1.2rem', cursor: 'pointer' }}>CLOSE</button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {countries.map(c => (
-              <button key={c.name} className="country-row" onClick={() => selectCountry(c)} style={{ backgroundColor: c.color, color: getTextColor(c.color) }}>
-                {c.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {isGenerating && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 4000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: '#FFF' }}>SYNTHESIZING_HERALDRY</h2>
-          <div style={{ width: '300px', height: '6px', background: '#222', marginTop: '20px' }}>
-            <div style={{ height: '100%', background: '#FF0000', animation: 'load 3s forwards' }} />
-          </div>
-          <style>{`@keyframes load { from { width: 0% } to { width: 100% } }`}</style>
-        </div>
-      )}
-    </main>
-  );
-}
+              <button key={c.name} className="country-row

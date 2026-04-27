@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const countries = [
   { name: "Argentina", code: "ARG", color: "#74ACDF" },
@@ -52,7 +52,7 @@ const countries = [
   { name: "New Zealand", code: "NZL", color: "#000000" }
 ];
 
-const nationLabels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
+const labels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
 
 export default function Home() {
   const [activeSlot, setActiveSlot] = useState(null);
@@ -60,38 +60,20 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  const selectCountry = (country) => {
-    const newSels = [...selections];
-    newSels[activeSlot] = country;
-    setSelections(newSels);
-    setActiveSlot(null);
-  };
-
   const getTextColor = (hex) => {
-    if (!hex) return "#000";
+    if (!hex) return "#000000";
     const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA", "#FED100", "#FFD700", "#FFD931"];
-    return light.includes(hex.toUpperCase()) ? "#000" : "#FFF";
+    return light.includes(hex.toUpperCase()) ? "#000000" : "#FFFFFF";
   };
 
   const RenderHeraldicCrest = () => {
     const s = selections;
     const paths = s.map(n => `/logos/${n.code}.png`);
-
     return (
-      <svg width="500" height="600" viewBox="0 0 500 600" style={{ 
-        backgroundColor: s[3]?.color || '#000', 
-        border: '20px solid #000',
-        boxShadow: '40px 40px 0px rgba(0,0,0,0.1)',
-        display: 'block'
-      }}>
+      <svg width="500" height="600" viewBox="0 0 500 600" style={{ backgroundColor: s[3]?.color || '#000', border: '20px solid #000', boxShadow: '40px 40px 0px rgba(0,0,0,0.1)', display: 'block' }}>
         <defs>
-          <style>{`@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');`}</style>
-          <pattern id="diagStripes" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="2" height="10" fill="#000" fillOpacity="0.15" />
-          </pattern>
-          <clipPath id="shieldPath">
-            <path d="M50,20 L450,20 L450,400 C450,550 250,580 250,580 C250,580 50,550 50,400 Z" />
-          </clipPath>
+          <pattern id="diagStripes" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="10" fill="#000" fillOpacity="0.15" /></pattern>
+          <clipPath id="shieldPath"><path d="M50,20 L450,20 L450,400 C450,550 250,580 250,580 C250,580 50,550 50,400 Z" /></clipPath>
           <pattern id="kaleido" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
              <image href={paths[1]} x="0" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.5" />
              <image href={paths[1]} x="100" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.5" transform="scale(-1, 1) translate(-200, 0)" />
@@ -109,43 +91,40 @@ export default function Home() {
           </g>
         </g>
         <rect x="0" y="550" width="500" height="50" fill="#000" />
-        <text x="250" y="582" fontFamily="'Space Mono', monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">
-          REF: {s[0].code}x{s[1].code}x{s[2].code} // COMPOSITE_V4
-        </text>
+        <text x="250" y="582" fontFamily="monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">REF: {s[0]?.code}x{s[1]?.code}x{s[2]?.code} // COMPOSITE_V4</text>
       </svg>
     );
   };
 
   return (
-    <main style={{ backgroundColor: '#FFF', minHeight: '100vh', position: 'relative' }}>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
-      ` }} />
+    <main style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', width: '100%' }}>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap" rel="stylesheet" />
 
       {!showResult ? (
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <img src="/logo-red.png" alt="FAIR WEATHER FANDOM" style={{ width: '100%', maxWidth: '700px', marginBottom: '20px' }} />
-            <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
-              <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em', color: '#000' }}>
+            <img src="/logo-red.png" alt="FAIR WEATHER" style={{ width: '100%', maxWidth: '600px', marginBottom: '20px' }} />
+            <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+              <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.9rem', margin: 0, color: '#000', letterSpacing: '0.05em' }}>
                 SYNTHESIZING HERALDRY FOR THE UNDECIDED. 48 NATIONS // INFINITE COMBINATIONS.
               </p>
             </div>
           </header>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-            {nationLabels.map((label, i) => (
+            {labels.map((label, i) => (
               <button 
-                key={i}
+                key={i} 
                 onClick={() => setActiveSlot(i)}
                 style={{ 
-                  height: '220px', border: '5px solid #000', backgroundColor: selections[i]?.color || '#FFF',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-                  transition: 'opacity 0.2s'
+                  height: '220px', border: '6px solid #000', borderRadius: 0,
+                  backgroundColor: selections[i]?.color || '#FFFFFF',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
+                  cursor: 'pointer', appearance: 'none'
                 }}
               >
-                <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.8rem', color: getTextColor(selections[i]?.color || '#FFF'), marginBottom: '10px' }}>{label}</span>
-                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '6rem', lineHeight: '1', color: getTextColor(selections[i]?.color || '#FFF') }}>
+                <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.85rem', color: getTextColor(selections[i]?.color), marginBottom: '10px', display: 'block' }}>{label}</span>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '6rem', lineHeight: '1', color: getTextColor(selections[i]?.color), display: 'block' }}>
                   {selections[i] ? selections[i].code : "+"}
                 </span>
               </button>
@@ -156,9 +135,9 @@ export default function Home() {
             disabled={selections.includes(null)}
             onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }}
             style={{ 
-              width: '100%', marginTop: '40px', padding: '30px', background: '#000', color: '#FFF', 
-              fontSize: '3rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer',
-              opacity: selections.includes(null) ? 0.2 : 1, border: 'none'
+              width: '100%', marginTop: '40px', padding: '30px', background: '#000000', color: '#FFFFFF', 
+              fontSize: '3.5rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer',
+              opacity: selections.includes(null) ? 0.2 : 1, border: 'none', display: 'block'
             }}
           >
             COMPILE EMBLEM
@@ -172,21 +151,13 @@ export default function Home() {
       )}
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 1000, overflowY: 'auto' }}>
+        <div style={{ position: 'fixed', inset: 0, background: '#000000', zIndex: 9999, overflowY: 'auto' }}>
           <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: '#FFF', fontFamily: "'Space Mono', monospace", fontSize: '1rem' }}>SELECT_STREAM // {nationLabels[activeSlot]}</span>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', cursor: 'pointer', fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.2rem' }}>CLOSE</button>
+            <span style={{ color: '#FFFFFF', fontFamily: "'Space Mono', monospace", fontSize: '1.2rem' }}>SELECT_STREAM // {labels[activeSlot]}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000000', color: '#FFFFFF', border: 'none', padding: '10px 20px', cursor: 'pointer', fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.5rem' }}>CLOSE</button>
           </div>
           {countries.map(c => (
-            <button 
-              key={c.code} 
-              onClick={() => selectCountry(c)} 
-              style={{ 
-                width: '100%', padding: '20px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)',
-                textAlign: 'left', fontFamily: "'Bebas Neue', sans-serif", fontSize: '3rem', color: getTextColor(c.color), cursor: 'pointer',
-                display: 'block'
-              }}
-            >
+            <button key={c.code} onClick={() => selectCountry(c)} style={{ width: '100%', padding: '25px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', fontFamily: "'Bebas Neue', sans-serif", fontSize: '3.5rem', color: getTextColor(c.color), cursor: 'pointer', display: 'block' }}>
               {c.name}
             </button>
           ))}
@@ -194,16 +165,14 @@ export default function Home() {
       )}
 
       {isGenerating && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 2000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h1 style={{ color: '#FFF', fontSize: '5rem', fontFamily: "'Bebas Neue', sans-serif", margin: 0 }}>GENERATING_EMBLEM</h1>
-          <div style={{ width: '400px', height: '15px', background: '#333', marginTop: '20px', overflow: 'hidden' }}>
-            <div style={{ height: '100%', background: '#FF0000', width: '100%', transformOrigin: 'left', animation: 'progress 2.5s ease-in-out' }}></div>
+        <div style={{ position: 'fixed', inset: 0, background: '#000000', zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h1 style={{ color: '#FFFFFF', fontSize: '6rem', fontFamily: "'Bebas Neue', sans-serif", margin: 0 }}>GENERATING_EMBLEM</h1>
+          <div style={{ width: '400px', height: '20px', background: '#333333', marginTop: '30px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ height: '100%', background: '#FF0000', width: '100%', transformOrigin: 'left', animation: 'progress 2.5s ease-in-out forwards' }}></div>
           </div>
-          <style dangerouslySetInnerHTML={{ __html: `
-            @keyframes progress { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
-          ` }} />
         </div>
       )}
+      <style>{`@keyframes progress { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }`}</style>
     </main>
   );
 }

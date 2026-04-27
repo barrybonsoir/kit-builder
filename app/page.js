@@ -40,18 +40,18 @@ export default function Home() {
     setActiveSlot(null);
   };
 
-  const generateArt = () => {
-    if (selections.some(s => s === null)) return alert("FOUR NATIONS REQUIRED FOR SYNTHESIS.");
+  const triggerSynthesis = () => {
+    if (selections.includes(null)) return;
     setIsGenerating(true);
     setTimeout(() => {
       setIsGenerating(false);
       setShowResult(true);
-    }, 3000); // 3 second "Crunch" time
+    }, 3200);
   };
 
   const getTextColor = (hex) => {
-    const lightColors = ["#FFFFFF", "#FCD116", "#FFCD00", "#FFDD00"];
-    return lightColors.includes(hex?.toUpperCase()) ? "#000" : "#FFF";
+    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#FFDD00", "#74ACDF"];
+    return light.includes(hex?.toUpperCase()) ? "#000" : "#FFF";
   };
 
   return (
@@ -74,12 +74,12 @@ export default function Home() {
           border: none;
           padding: 20px;
           cursor: pointer;
-          transition: 0.2s;
+          transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1);
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          min-height: 220px;
+          min-height: 240px;
           position: relative;
           z-index: 5;
         }
@@ -89,21 +89,15 @@ export default function Home() {
           top: 0; left: 0; width: 100vw; height: 100vh;
           background: #000;
           z-index: 1000;
-          overflow-y: auto;
           display: flex;
           flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
 
-        .crunching-bar {
-          height: 10px;
-          background: #FF0000;
-          animation: load 3s linear forwards;
-        }
-
-        @keyframes load {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
+        .bar-container { width: 300px; height: 4px; background: #222; margin-top: 20px; overflow: hidden; }
+        .bar-fill { height: 100%; background: #FF0000; animation: fill 3s forwards; }
+        @keyframes fill { 0% { width: 0%; } 100% { width: 100%; } }
 
         .result-quad {
           display: grid;
@@ -111,19 +105,17 @@ export default function Home() {
           width: 90vw;
           max-width: 600px;
           aspect-ratio: 1/1;
-          border: 10px solid #000;
-          box-shadow: 20px 20px 0px #FF0000;
+          border: 15px solid #000;
         }
       `}</style>
 
-      {/* Main UI */}
-      {!showResult && (
+      {!showResult ? (
         <>
           <header style={{ textAlign: 'center', padding: '60px 20px 40px 20px', borderBottom: '25px solid #FF0000', position: 'relative', zIndex: 10, backgroundColor: '#FFF' }}>
             <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '750px', marginBottom: '30px' }} />
             <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
               <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '1rem', margin: 0 }}>
-                Select four nations to generate your high-contrast loyalty asset.
+                Pick up to four countries that you happen to love. We’ll create a piece of custom art that will cover all your bases.
               </p>
             </div>
           </header>
@@ -137,9 +129,9 @@ export default function Home() {
                   onClick={() => setActiveSlot(i)}
                   style={{ backgroundColor: selections[i]?.color || "#000", color: getTextColor(selections[i]?.color || "#000") }}
                 >
-                  <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem', opacity: 0.8, position: 'absolute', top: '20px' }}>{label}</span>
-                  <h2 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: selections[i] ? '8rem' : '3.5rem', margin: 0 }}>
-                    {selections[i] ? selections[i].code : "SELECT_"}
+                  <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem', position: 'absolute', top: '20px', opacity: 0.8 }}>{label}</span>
+                  <h2 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: selections[i] ? '9rem' : '3.5rem', margin: 0 }}>
+                    {selections[i] ? selections[i].code : "SELECT"}
                   </h2>
                 </button>
               ))}
@@ -147,58 +139,62 @@ export default function Home() {
 
             <div style={{ marginTop: '80px', textAlign: 'center' }}>
               <button 
-                onClick={generateArt}
-                style={{ backgroundColor: '#000', color: '#FFF', padding: '30px 0', width: '100%', maxWidth: '850px', fontSize: '2.5rem', fontFamily: '"Bebas Neue", sans-serif', border: 'none', cursor: 'pointer', boxShadow: '15px 15px 0px #FF0000' }}>
+                onClick={triggerSynthesis}
+                disabled={selections.includes(null)}
+                style={{ 
+                  backgroundColor: selections.includes(null) ? '#CCC' : '#000', 
+                  color: '#FFF', 
+                  padding: '35px 0', 
+                  width: '100%', 
+                  maxWidth: '850px', 
+                  fontSize: '2.5rem', 
+                  fontFamily: '"Bebas Neue", sans-serif', 
+                  border: 'none', 
+                  cursor: selections.includes(null) ? 'not-allowed' : 'pointer',
+                  boxShadow: selections.includes(null) ? 'none' : '15px 15px 0px #FF0000',
+                  letterSpacing: '0.15em'
+                }}
+              >
                 GENERATE ART
               </button>
             </div>
           </div>
         </>
+      ) : (
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFF', position: 'relative', zIndex: 10 }}>
+           <h1 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '4rem', marginBottom: '40px' }}>LOYALTY_ASSET_v01</h1>
+           <div className="result-quad">
+              {selections.map((s, i) => (
+                <div key={i} style={{ backgroundColor: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '10rem', color: getTextColor(s.color) }}>{s.code}</span>
+                </div>
+              ))}
+           </div>
+           <button 
+             onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }}
+             style={{ marginTop: '80px', backgroundColor: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}
+           >
+             RESET_PROTOCOL [X]
+           </button>
+        </div>
       )}
 
-      {/* Synthesis / Loading State */}
       {isGenerating && (
-        <div className="overlay" style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ textAlign: 'center', width: '80%' }}>
-            <h2 style={{ color: '#FFF', fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', marginBottom: '10px' }}>SYNTHESIZING_ART</h2>
-            <p style={{ color: '#FF0000', fontFamily: '"Space Mono", monospace', marginBottom: '40px' }}>MAPPING COORDINATES // {selections.map(s => s.code).join(' + ')}</p>
-            <div style={{ width: '100%', background: '#333', height: '10px' }}>
-              <div className="crunching-bar"></div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Result Display */}
-      {showResult && (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', position: 'relative', zIndex: 10 }}>
-          <h1 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '4rem', marginBottom: '40px' }}>GENERATED_LOYALTY_ASSET</h1>
-          
-          <div className="result-quad">
-            {selections.map((s, i) => (
-              <div key={i} style={{ backgroundColor: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '8rem', color: getTextColor(s.color) }}>{s.code}</span>
-              </div>
-            ))}
-          </div>
-
-          <button 
-            onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }}
-            style={{ marginTop: '80px', background: '#000', color: '#FFF', padding: '20px 40px', fontFamily: '"Space Mono", monospace', border: 'none', cursor: 'pointer' }}>
-            RESET_PROTOCOL [X]
-          </button>
-        </div>
-      )}
-
-      {/* Selection Overlay */}
-      {activeSlot !== null && (
         <div className="overlay">
+          <h2 style={{ color: '#FFF', fontFamily: '"Bebas Neue", sans-serif', fontSize: '6rem', margin: 0 }}>SYNTHESIZING</h2>
+          <p style={{ color: '#FF0000', fontFamily: '"Space Mono", monospace' }}>MAPPING COORDINATES: {selections.map(s => s.code).join(' // ')}</p>
+          <div className="bar-container"><div className="bar-fill"></div></div>
+        </div>
+      )}
+
+      {activeSlot !== null && (
+        <div className="overlay" style={{ display: 'block', overflowY: 'auto' }}>
           <div style={{ position: 'sticky', top: 0, background: '#000', padding: '20px', display: 'flex', justifyContent: 'space-between', borderBottom: '5px solid #FFF' }}>
-            <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>{nationLabels[activeSlot]}</h3>
+            <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>SELECT {nationLabels[activeSlot]}</h3>
             <button onClick={() => setActiveSlot(null)} style={{ background: '#FF0000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}>CLOSE [X]</button>
           </div>
           {countries.map((c) => (
-            <button key={c.name} className="country-row" style={{ backgroundColor: c.color, color: getTextColor(c.color), width: '100%', border: 'none', textAlign: 'left', padding: '30px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem' }} onClick={() => selectCountry(c)}>
+            <button key={c.name} className="country-row" style={{ backgroundColor: c.color, color: getTextColor(c.color), width: '100%', border: 'none', textAlign: 'left', padding: '30px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', cursor: 'pointer' }} onClick={() => selectCountry(c)}>
               {c.name}
             </button>
           ))}

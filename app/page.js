@@ -10,8 +10,8 @@ export default function Home() {
 
   return (
     <main style={{ 
-      backgroundColor: '#AFB298', 
-      color: '#000', 
+      backgroundColor: '#FFFFFF', // Pure White
+      color: '#000000', // Black
       minHeight: '100vh', 
       fontFamily: '"Inter", sans-serif',
       position: 'relative',
@@ -20,93 +20,85 @@ export default function Home() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&family=Space+Mono&display=swap');
         
-        /* THE TACTICAL TEXTURE LAYER */
+        /* THE TACTICAL WHITEBOARD CHAOS */
         main::before {
           content: "";
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
           pointer-events: none;
-          opacity: 0.12; /* Subtle chaos visibility */
+          opacity: 0.18;
           z-index: 1;
           background-image: 
-            /* Subtle grid overlay */
-            linear-gradient(rgba(0,0,0,0.1) 1.5px, transparent 1.5px),
-            linear-gradient(90deg, rgba(0,0,0,0.1) 1.5px, transparent 1.5px),
-            /* Layered tactical elements (arcs, X's, vectors) from inspiration */
-            url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10 L30 30 M30 10 L10 30" stroke="black" stroke-width="1"/><circle cx="70" cy="70" r="15" fill="none" stroke="black" stroke-width="1"/><path d="M50 10 A30 30 0 0 1 80 40 L80 10" stroke="black" stroke-width="1" fill="none"/></svg>');
-          background-size: 30px 30px, 30px 30px, 150px 150px;
+            linear-gradient(#FF0000 1px, transparent 1px),
+            linear-gradient(90deg, #FF0000 1px, transparent 1px),
+            /* X and O Tactical Markings */
+            url('data:image/svg+xml;utf8,<svg width="180" height="180" xmlns="http://www.w3.org/2000/svg"><path d="M20 20 L50 50 M50 20 L20 50" stroke="black" stroke-width="2"/><circle cx="120" cy="40" r="18" fill="none" stroke="black" stroke-width="2"/><path d="M40 120 Q 80 80 150 140" stroke="red" stroke-width="2.5" fill="none" stroke-dasharray="5,5"/><text x="10" y="170" font-family="monospace" font-size="8" fill="red">ZONE_14</text></svg>');
+          background-size: 80px 80px, 80px 80px, 350px 350px;
         }
 
-        /* Brutalist input protocol */
-        input:focus {
-          border-bottom: 3px solid #FF4500 !important; /* International Orange focus */
-          transition: 0.3s;
-        }
-
-        /* Fixed symmetrical 2x2 grid */
         .grid-container {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 60px 100px; /* Symmetry gaps */
+          gap: 60px 100px;
+        }
+
+        @media (max-width: 768px) {
+          .grid-container { grid-template-columns: 1fr; }
+        }
+
+        input:focus {
+          border-bottom: 10px solid #FF0000 !important;
+          outline: none;
         }
       `}</style>
 
-      {/* HEADER: Shortened Height, No Top Abstract Copy */}
+      {/* HEADER: Shortened, Red Bottom Border, Script Logo */}
       <header style={{ 
         textAlign: 'center', 
-        padding: '50px 20px', // Dramatically reduced height
-        borderBottom: '14px solid #000',
+        padding: '60px 20px 40px 20px', 
+        borderBottom: '25px solid #FF0000',
         position: 'relative',
         zIndex: 10,
-        backgroundColor: '#AFB298'
+        backgroundColor: '#FFFFFF',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}>
-        <h1 style={{ 
-          fontFamily: '"Bebas Neue", sans-serif',
-          fontSize: 'clamp(5rem, 25vw, 20rem)', 
-          lineHeight: '0.8', 
-          textTransform: 'uppercase',
-          letterSpacing: '0.02em', 
-          margin: 0
-        }}>
-          FAIR WEATHER<br/>FANDOM
-        </h1>
+        {/* LOGOTYPE PNG */}
+        <img 
+          src="/logo-red.png" 
+          alt="Fair Weather Fandom" 
+          style={{ width: '100%', maxWidth: '750px', height: 'auto', marginBottom: '30px' }} 
+        />
         
-        {/* Instructional Copy Restyled: Mono Font, No All-Caps */}
-        <div style={{ maxWidth: '650px', margin: '30px auto 0 auto' }}>
+        {/* Instructional Copy: Mono Font, Standard Case */}
+        <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px' }}>
           <p style={{ 
-            fontFamily: '"Space Mono", monospace', // Mono requirement
-            fontSize: '1.2rem', 
-            fontWeight: '400', 
-            lineHeight: '1.4', 
-            opacity: 0.85,
-            color: '#000' // Ensure standard case legibility
+            fontFamily: '"Space Mono", monospace', 
+            fontSize: '1.1rem', 
+            lineHeight: '1.5', 
+            margin: 0,
+            color: '#000'
           }}>
             For when you just don’t know who to root for. Pick up to four countries that you happen to love the most. We’ll create a piece of custom art that will cover all your bases.
           </p>
         </div>
       </header>
 
-      {/* Input Section */}
       <div style={{ maxWidth: '1000px', margin: '60px auto', padding: '0 30px', position: 'relative', zIndex: 10 }}>
         
-        {/* Technical Instructional Block */}
-        <div style={{ borderTop: '2px solid #000', borderBottom: '2px solid #000', padding: '15px 0', marginBottom: '80px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-           <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', fontWeight: '700' }}>INPUT_PROTOCOL_FW_v2</div>
-           <div style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem', textTransform: 'uppercase' }}>[ 04_NATIONS_REQD ]</div>
-        </div>
-        
-        {/* Brutal, Symmetrical Input Grid */}
+        {/* 2x2 Symmetrical Grid */}
         <div className="grid-container">
           {[1,2,3,4].map(i => (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '15px', height: '15px', background: '#000' }}></div>
-                <label style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '4.5rem', lineHeight: '1' }}>NATION_{i}</label>
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '20px', height: '20px', background: '#000' }}></div>
+                <label style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', lineHeight: '1' }}>NATION</label>
               </div>
               <input 
                 list="country-list"
                 placeholder="TYPE_ID"
-                style={{ border: 'none', borderBottom: '5px solid #000', background: 'transparent', padding: '15px 0', fontSize: '1.6rem', fontWeight: '900', outline: 'none', textTransform: 'uppercase', borderRadius: '0' }}
+                style={{ border: 'none', borderBottom: '10px solid #000', background: 'transparent', padding: '15px 0', fontSize: '2rem', fontWeight: '900', textTransform: 'uppercase', borderRadius: '0' }}
               />
             </div>
           ))}
@@ -116,16 +108,15 @@ export default function Home() {
           {countries.map(c => <option key={c} value={c} />)}
         </datalist>
 
-        {/* Action synthesis */}
-        <div style={{ marginTop: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <button onClick={() => setShowArt(true)} style={{ backgroundColor: '#000', color: '#AFB298', padding: '30px 120px', fontSize: '2.2rem', fontFamily: '"Bebas Neue", sans-serif', letterSpacing: '0.15em', border: 'none', cursor: 'pointer', width: '100%', maxWidth: '700px', transition: '0.2s' }}>
+        <div style={{ marginTop: '100px', display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => setShowArt(true)} style={{ backgroundColor: '#000', color: '#FFF', padding: '35px 0', fontSize: '2.8rem', fontFamily: '"Bebas Neue", sans-serif', letterSpacing: '0.2em', border: 'none', cursor: 'pointer', width: '100%', maxWidth: '850px', boxShadow: '15px 15px 0px #FF0000' }}>
             GENERATE LOYALTY ART
           </button>
         </div>
       </div>
 
-      <footer style={{ marginTop: '120px', padding: '60px 20px', borderTop: '2px solid #000', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.7rem' }}>
-        FAIR WEATHER // CHICAGO_UNIT // ALL DATA_POINTS FINAL // 2026_VERSION
+      <footer style={{ marginTop: '150px', padding: '80px 20px', borderTop: '5px solid #000', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+        FAIR WEATHER FANDOM // CHICAGO_CORE // 2026_FWF
       </footer>
     </main>
   );

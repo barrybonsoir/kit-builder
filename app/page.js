@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const countries = [
   { name: "Algeria", code: "ALG", color: "#006233" }, { name: "Argentina", code: "ARG", color: "#74ACDF" },
@@ -66,22 +66,22 @@ Unified by an intricate network of fine geometric line work that partitions the 
   };
 
   const handleExecute = () => {
-    const protocol = constructProtocol();
-    setFinalProtocol(protocol);
+    setFinalProtocol(constructProtocol());
     setIsGenerating(true);
-    // This string is now ready to be processed by an AI image generation model.
-    console.log("PROTOCOL GENERATED:", protocol);
   };
 
   return (
-    <main style={{ backgroundColor: '#FFF', minHeight: '100vh' }}>
-      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap" rel="stylesheet" />
+    <main style={{ backgroundColor: '#FFF', minHeight: '100vh', color: '#000' }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
+        body { margin: 0; padding: 0; }
+      `}} />
 
       {!isGenerating ? (
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px' }}>
           <header style={{ borderBottom: '10px solid #000', marginBottom: '40px', paddingBottom: '20px' }}>
-            <h1 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', margin: 0 }}>GEN_PROTOCOL_V7.0</h1>
-            <p style={{ fontFamily: 'Space Mono', fontSize: '12px' }}>STATUS: READY_FOR_SYNTHESIS</p>
+            <h1 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', margin: 0 }}>GEN_PROTOCOL_V7.0</h1>
+            <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '12px' }}>STATUS: READY_FOR_SYNTHESIS</p>
           </header>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -96,8 +96,8 @@ Unified by an intricate network of fine geometric line work that partitions the 
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <span style={{ fontFamily: 'Space Mono', fontSize: '10px', color: getTextColor(selections[i]?.color) }}>SOURCE_0{i + 1}</span>
-                <span style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: getTextColor(selections[i]?.color) }}>
+                <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '10px', color: getTextColor(selections[i]?.color) }}>SOURCE_0{i + 1}</span>
+                <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', color: getTextColor(selections[i]?.color) }}>
                   {selections[i] ? selections[i].code : "+"}
                 </span>
               </button>
@@ -110,25 +110,25 @@ Unified by an intricate network of fine geometric line work that partitions the 
             style={{ 
               width: '100%', marginTop: '30px', padding: '30px', 
               background: '#000', color: '#FFF', 
-              fontFamily: 'Bebas Neue', fontSize: '3rem', 
+              fontFamily: '"Bebas Neue", sans-serif', fontSize: '3rem', 
               cursor: 'pointer', opacity: selections.includes(null) ? 0.3 : 1,
               border: 'none'
             }}
           >EXECUTE_SYNTHESIS</button>
         </div>
       ) : (
-        <div style={{ minHeight: '100vh', background: '#000', color: '#0F0', padding: '40px', fontFamily: 'Space Mono', fontSize: '13px' }}>
+        <div style={{ minHeight: '100vh', background: '#000', color: '#0F0', padding: '40px', fontFamily: '"Space Mono", monospace', fontSize: '13px' }}>
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
             <p>>>> INITIALIZING PROTOCOL V7.0...</p>
             <p>>>> ASSET FILENAMES EXTRACTED...</p>
             <div style={{ border: '1px solid #0F0', padding: '30px', margin: '20px 0', color: '#0F0', lineHeight: '1.6' }}>
-              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{finalProtocol}</pre>
+              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontFamily: 'inherit' }}>{finalProtocol}</pre>
             </div>
             <p>>>> SENDING TO GENERATIVE ENGINE...</p>
             <p>>>> WAITING FOR MARK SYNTHESIS...</p>
             <button 
               onClick={() => setIsGenerating(false)} 
-              style={{ marginTop: '40px', background: '#0F0', color: '#000', border: 'none', padding: '15px 30px', fontFamily: 'Bebas Neue', fontSize: '1.5rem', cursor: 'pointer' }}
+              style={{ marginTop: '40px', background: '#0F0', color: '#000', border: 'none', padding: '15px 30px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.5rem', cursor: 'pointer' }}
             >RETURN_TO_SELECTOR</button>
           </div>
         </div>
@@ -137,12 +137,12 @@ Unified by an intricate network of fine geometric line work that partitions the 
       {activeSlot !== null && (
         <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, overflowY: 'auto' }}>
           <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: '#FFF', fontFamily: 'Space Mono' }}>LOADING_ASSET_FOR_SLOT_0{activeSlot + 1}</span>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: 'Bebas Neue', cursor: 'pointer' }}>BACK</button>
+            <span style={{ color: '#FFF', fontFamily: '"Space Mono", monospace' }}>LOADING_ASSET_FOR_SLOT_0{activeSlot + 1}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Bebas Neue", sans-serif', cursor: 'pointer' }}>BACK</button>
           </div>
           {countries.map(c => (
             <button key={c.code} onClick={() => { const s = [...selections]; s[activeSlot] = c; setSelections(s); setActiveSlot(null); }} style={{ width: '100%', padding: '30px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', cursor: 'pointer' }}>
-              <span style={{ fontFamily: 'Bebas Neue', fontSize: '4rem', color: getTextColor(c.color) }}>{c.name}</span>
+              <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '4rem', color: getTextColor(c.color) }}>{c.name}</span>
             </button>
           ))}
         </div>

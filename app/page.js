@@ -107,6 +107,22 @@ export default function Home() {
           aspect-ratio: 1/1;
           border: 15px solid #000;
         }
+
+        .country-row {
+          width: 100%;
+          border: none;
+          text-align: left;
+          padding: 12px 30px; /* Reduced vertical padding */
+          font-family: "Bebas Neue", sans-serif;
+          font-size: 4rem; /* Adjusted size for compactness */
+          cursor: pointer;
+          transition: padding-left 0.2s ease;
+        }
+
+        .country-row:hover {
+          padding-left: 50px;
+          filter: brightness(1.1);
+        }
       `}</style>
 
       {!showResult ? (
@@ -189,15 +205,22 @@ export default function Home() {
 
       {activeSlot !== null && (
         <div className="overlay" style={{ display: 'block', overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#000', padding: '20px', display: 'flex', justifyContent: 'space-between', borderBottom: '5px solid #FFF' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#000', padding: '20px', display: 'flex', justifyContent: 'space-between', borderBottom: '5px solid #FFF', zIndex: 1100 }}>
             <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>SELECT {nationLabels[activeSlot]}</h3>
             <button onClick={() => setActiveSlot(null)} style={{ background: '#FF0000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}>CLOSE [X]</button>
           </div>
-          {countries.map((c) => (
-            <button key={c.name} className="country-row" style={{ backgroundColor: c.color, color: getTextColor(c.color), width: '100%', border: 'none', textAlign: 'left', padding: '30px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', cursor: 'pointer' }} onClick={() => selectCountry(c)}>
-              {c.name}
-            </button>
-          ))}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {countries.map((c) => (
+              <button 
+                key={c.name} 
+                className="country-row" 
+                style={{ backgroundColor: c.color, color: getTextColor(c.color) }} 
+                onClick={() => selectCountry(c)}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </main>

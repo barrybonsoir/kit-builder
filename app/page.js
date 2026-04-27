@@ -28,6 +28,7 @@ export default function Home() {
   const [selections, setSelections] = useState([null, null, null, null]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [uiHidden, setUiHidden] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = (activeSlot !== null || isGenerating) ? 'hidden' : 'unset';
@@ -103,25 +104,31 @@ export default function Home() {
           display: grid;
           grid-template-columns: 1fr 1fr;
           width: 90vw;
-          max-width: 600px;
+          max-width: 550px;
           aspect-ratio: 1/1;
           border: 15px solid #000;
+          position: relative;
         }
 
         .country-row {
           width: 100%;
           border: none;
           text-align: left;
-          padding: 12px 30px; /* Reduced vertical padding */
+          padding: 12px 30px;
           font-family: "Bebas Neue", sans-serif;
-          font-size: 4rem; /* Adjusted size for compactness */
+          font-size: 4rem;
           cursor: pointer;
-          transition: padding-left 0.2s ease;
         }
 
-        .country-row:hover {
-          padding-left: 50px;
-          filter: brightness(1.1);
+        .meta-tag {
+          font-family: "Space Mono", monospace;
+          font-size: 0.65rem;
+          text-transform: uppercase;
+          background: #000;
+          color: #FFF;
+          padding: 4px 8px;
+          margin-bottom: 2px;
+          display: inline-block;
         }
       `}</style>
 
@@ -131,7 +138,7 @@ export default function Home() {
             <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '750px', marginBottom: '30px' }} />
             <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
               <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '1rem', margin: 0 }}>
-                Pick up to four countries that you happen to love. We’ll create a piece of custom art that will cover all your bases.
+                SYNTHESIZING MULTIPLE LOYALTIES INTO A SINGLE VISUAL ASSET.
               </p>
             </div>
           </header>
@@ -177,50 +184,82 @@ export default function Home() {
           </div>
         </>
       ) : (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFF', position: 'relative', zIndex: 10 }}>
-           <h1 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '4rem', marginBottom: '40px' }}>LOYALTY_ASSET_v01</h1>
-           <div className="result-quad">
-              {selections.map((s, i) => (
-                <div key={i} style={{ backgroundColor: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '10rem', color: getTextColor(s.color) }}>{s.code}</span>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFF', position: 'relative', zIndex: 10, padding: '20px' }}>
+           
+           {!uiHidden && <h1 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '3rem', marginBottom: '30px' }}>LOYALTY_MAPPING_COMPLETE</h1>}
+           
+           <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
+              {/* Metadata Column */}
+              {!uiHidden && (
+                <div style={{ width: '180px', textAlign: 'left' }}>
+                  <div className="meta-tag">Device: Web_V1</div>
+                  <div className="meta-tag">Loc: Chicago_Core</div>
+                  <div className="meta-tag">Date: 04.27.2026</div>
+                  <div style={{ marginTop: '20px', borderTop: '2px solid #000', paddingTop: '10px' }}>
+                    {selections.map((s, i) => (
+                      <div key={i} style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.6rem', marginBottom: '5px' }}>
+                        [{s.code}] HEX: {s.color}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              )}
+
+              {/* The Core Asset */}
+              <div className="result-quad">
+                  {selections.map((s, i) => (
+                    <div key={i} style={{ backgroundColor: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '9rem', color: getTextColor(s.color) }}>{s.code}</span>
+                    </div>
+                  ))}
+                  {/* Subtle Branding Overlays */}
+                  <div style={{ position: 'absolute', bottom: '10px', right: '10px', background: '#000', color: '#FFF', padding: '2px 6px', fontFamily: '"Space Mono", monospace', fontSize: '0.5rem' }}>
+                    FWF_2026_GEN
+                  </div>
+              </div>
            </div>
-           <button 
-             onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }}
-             style={{ marginTop: '80px', backgroundColor: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}
-           >
-             RESET_PROTOCOL [X]
-           </button>
+
+           {!uiHidden && (
+             <div style={{ display: 'flex', gap: '15px', marginTop: '60px' }}>
+                <button 
+                  onClick={() => { setUiHidden(true); setTimeout(() => setUiHidden(false), 5000); }}
+                  style={{ background: '#FF0000', color: '#FFF', padding: '15px 30px', border: 'none', fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.5rem', cursor: 'pointer' }}
+                >
+                  CLEAN VIEW FOR SCREENSHOT
+                </button>
+                <button 
+                  onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }}
+                  style={{ background: '#000', color: '#FFF', padding: '15px 30px', border: 'none', fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.5rem', cursor: 'pointer' }}
+                >
+                  NEW SESSION [X]
+                </button>
+             </div>
+           )}
+
+           {uiHidden && <div style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', color: '#888' }}>UI HIDDEN FOR CAPTURE... RESTORING IN 5S</div>}
         </div>
       )}
 
+      {/* Loading Overlay */}
       {isGenerating && (
         <div className="overlay">
           <h2 style={{ color: '#FFF', fontFamily: '"Bebas Neue", sans-serif', fontSize: '6rem', margin: 0 }}>SYNTHESIZING</h2>
-          <p style={{ color: '#FF0000', fontFamily: '"Space Mono", monospace' }}>MAPPING COORDINATES: {selections.map(s => s.code).join(' // ')}</p>
           <div className="bar-container"><div className="bar-fill"></div></div>
         </div>
       )}
 
+      {/* Country List Overlay */}
       {activeSlot !== null && (
         <div className="overlay" style={{ display: 'block', overflowY: 'auto' }}>
           <div style={{ position: 'sticky', top: 0, background: '#000', padding: '20px', display: 'flex', justifyContent: 'space-between', borderBottom: '5px solid #FFF', zIndex: 1100 }}>
-            <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>SELECT {nationLabels[activeSlot]}</h3>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#FF0000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}>CLOSE [X]</button>
+            <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>ASSIGNING NATION {activeSlot + 1}</h3>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#FF0000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}>BACK</button>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {countries.map((c) => (
-              <button 
-                key={c.name} 
-                className="country-row" 
-                style={{ backgroundColor: c.color, color: getTextColor(c.color) }} 
-                onClick={() => selectCountry(c)}
-              >
-                {c.name}
-              </button>
-            ))}
-          </div>
+          {countries.map((c) => (
+            <button key={c.name} className="country-row" style={{ backgroundColor: c.color, color: getTextColor(c.color) }} onClick={() => selectCountry(c)}>
+              {c.name}
+            </button>
+          ))}
         </div>
       )}
     </main>

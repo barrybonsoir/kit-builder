@@ -30,7 +30,6 @@ const countries = [
 
 const labels = ["TOP LEFT", "TOP RIGHT", "BOTTOM LEFT", "BOTTOM RIGHT"];
 
-// Sub-component moved outside of main Home export for build stability
 const RenderHeraldicCrest = ({ selections, getImagePath }) => {
   const clips = [
     'inset(0 50% 50% 0)', 
@@ -39,12 +38,21 @@ const RenderHeraldicCrest = ({ selections, getImagePath }) => {
     'inset(50% 0 0 50%)'  
   ];
 
+  const CornerPlus = ({ style }) => (
+    <div style={{ position: 'absolute', fontFamily: 'monospace', fontSize: '24px', color: '#000', fontWeight: 'bold', ...style }}>+</div>
+  );
+
   return (
     <div style={{ position: 'relative', width: '500px', height: '500px' }}>
+      {/* Corner Pluses as Register Marks */}
+      <CornerPlus style={{ top: '-10px', left: '-10px' }} />
+      <CornerPlus style={{ top: '-10px', right: '-10px' }} />
+      <CornerPlus style={{ bottom: '-10px', left: '-10px' }} />
+      <CornerPlus style={{ bottom: '-10px', right: '-10px' }} />
+
       <div style={{ 
         width: '500px', 
         height: '500px', 
-        border: '15px solid #000', 
         position: 'relative', 
         overflow: 'hidden', 
         backgroundColor: '#FFF' 
@@ -61,33 +69,35 @@ const RenderHeraldicCrest = ({ selections, getImagePath }) => {
           }}>
             <img 
               src={getImagePath(country)} 
-              alt={country?.name || "emblem part"}
+              alt={country?.name}
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '100%', // Normalizing scale across all variants
                 height: '100%',
                 objectFit: 'contain',
-                padding: '15px'
+                padding: '20px'
               }}
             />
           </div>
         ))}
-        <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '1px', background: '#000', opacity: 0.1, zIndex: 10 }}></div>
-        <div style={{ position: 'absolute', top: 0, left: '50%', width: '1px', height: '100%', background: '#000', opacity: 0.1, zIndex: 10 }}></div>
+        {/* Hairline Stitch Guide */}
+        <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '1px', background: 'rgba(0,0,0,0.05)', zIndex: 10 }}></div>
+        <div style={{ position: 'absolute', top: 0, left: '50%', width: '1px', height: '100%', background: 'rgba(0,0,0,0.05)', zIndex: 10 }}></div>
       </div>
+
       <div style={{ 
-        marginTop: '15px', 
+        marginTop: '30px', 
         fontFamily: 'monospace', 
-        fontSize: '10px', 
+        fontSize: '11px', 
         color: '#000', 
         display: 'flex', 
-        justifyContent: 'space-between',
-        letterSpacing: '0.1em'
+        justifyContent: 'space-between'
       }}>
-        <span>COMPOSITE // {selections.map(s => s?.code || "??").join('.') }</span>
-        <span>STITCH_MARK_V4_PROD</span>
+        <span>SYSTEM_STATUS // ASSET_STITCH_NORM</span>
+        <span>{selections.map(s => s?.code).join(' / ')}</span>
       </div>
     </div>
   );
@@ -119,18 +129,13 @@ export default function Home() {
   };
 
   return (
-    <main style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', width: '100%' }}>
+    <main style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
       <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap" rel="stylesheet" />
 
       {!showResult ? (
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '60px' }}>
             <img src="/logo-red.png" alt="FAIR WEATHER" style={{ width: '100%', maxWidth: '600px', marginBottom: '20px' }} />
-            <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
-              <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.9rem', margin: 0, color: '#000', letterSpacing: '0.05em' }}>
-                STITCHING RAW PNG ASSETS // NO COLOR OVERLAYS.
-              </p>
-            </div>
           </header>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -144,10 +149,10 @@ export default function Home() {
             ))}
           </div>
 
-          <button disabled={selections.includes(null)} onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }} style={{ width: '100%', marginTop: '40px', padding: '30px', background: '#000000', color: '#FFFFFF', fontSize: '3.5rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer', opacity: selections.includes(null) ? 0.2 : 1, border: 'none' }}>COMPILE EMBLEM</button>
+          <button disabled={selections.includes(null)} onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }} style={{ width: '100%', marginTop: '40px', padding: '30px', background: '#000', color: '#FFF', fontSize: '3.5rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer', opacity: selections.includes(null) ? 0.2 : 1, border: 'none' }}>COMPILE EMBLEM</button>
         </div>
       ) : (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <RenderHeraldicCrest selections={selections} getImagePath={getImagePath} />
           <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '80px', padding: '20px 40px', background: '#000', color: '#FFF', fontFamily: "'Bebas Neue', sans-serif", fontSize: '2rem', border: 'none', cursor: 'pointer' }}>NEW SESSION [X]</button>
         </div>
@@ -155,13 +160,13 @@ export default function Home() {
 
       {activeSlot !== null && (
         <div style={{ position: 'fixed', inset: 0, background: '#000000', zIndex: 9999, overflowY: 'scroll' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10000 }}>
-            <span style={{ color: '#FFFFFF', fontFamily: "'Space Mono', monospace", fontSize: '1.2rem' }}>SELECT_COMPONENT // {labels[activeSlot]}</span>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', cursor: 'pointer', fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.5rem' }}>BACK</button>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#FFF', fontFamily: "'Space Mono', monospace" }}>SELECT_QUADRANT // {labels[activeSlot]}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', cursor: 'pointer' }}>BACK</button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {countries.map(c => (
-              <button key={c.code} onClick={() => selectCountry(c)} style={{ width: '100%', padding: '30px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.2)', textAlign: 'left', cursor: 'pointer' }}>
+              <button key={c.code} onClick={() => selectCountry(c)} style={{ width: '100%', padding: '30px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', cursor: 'pointer' }}>
                 <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '4rem', color: getTextColor(c.color) }}>{c.name}</span>
               </button>
             ))}
@@ -170,14 +175,10 @@ export default function Home() {
       )}
 
       {isGenerating && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000000', zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h1 style={{ color: '#FFFFFF', fontSize: '6rem', fontFamily: "'Bebas Neue', sans-serif", margin: 0 }}>SYNTHESIZING_MARK</h1>
-          <div style={{ width: '400px', height: '2px', background: '#333', marginTop: '30px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ height: '100%', background: '#FFF', width: '100%', transformOrigin: 'left', animation: 'progress 2.5s ease-in-out forwards' }}></div>
-          </div>
+        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 10000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h1 style={{ color: '#FFF', fontSize: '6rem', fontFamily: "'Bebas Neue', sans-serif" }}>SYNCHRONIZING</h1>
         </div>
       )}
-      <style>{`@keyframes progress { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }`}</style>
     </main>
   );
 }

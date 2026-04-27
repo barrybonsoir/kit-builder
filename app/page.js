@@ -80,7 +80,7 @@ export default function Home() {
             margin: 0,
             color: '#000'
           }}>
-            For when you just don’t know who to root for. Pick up to four countries that you happen to love the most. We’ll create a piece of custom art that will cover all your bases.
+            For when you just don’t know who to root for. Pick up to four countries from the 48 that are participating in this year's tournament. The tool will create a piece of custom art that will cover all your bases.
           </p>
         </div>
       </header>

@@ -87,4 +87,91 @@ export default function Home() {
           width: 100%;
           padding: 30px 20px;
           cursor: pointer;
-          font-family: 'B
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(3rem, 7vw, 6rem);
+          line-height: 0.8;
+          text-transform: uppercase;
+          border: none;
+          text-align: left;
+        }
+
+        .country-row:hover {
+          filter: brightness(1.2);
+          padding-left: 50px;
+          transition: 0.2s;
+        }
+      `}</style>
+
+      <header style={{ textAlign: 'center', padding: '60px 20px 40px 20px', borderBottom: '25px solid #FF0000', position: 'relative', zIndex: 10, backgroundColor: '#FFF' }}>
+        <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '750px', marginBottom: '30px' }} />
+        <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
+          <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '1rem', margin: 0 }}>
+            Pick up to four countries to generate your custom loyalty art.
+          </p>
+        </div>
+      </header>
+
+      <div style={{ maxWidth: '1100px', margin: '60px auto', padding: '0 40px', position: 'relative', zIndex: 10 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+          {nationLabels.map((label, i) => {
+            const selection = selections[i];
+            const bgColor = selection ? selection.color : "#000";
+            const textColor = selection ? getTextColor(selection.color) : "#FFF";
+
+            return (
+              <button 
+                key={i} 
+                className="nation-btn" 
+                onClick={() => setActiveSlot(i)}
+                style={{ backgroundColor: bgColor, color: textColor }}
+              >
+                <span style={{ 
+                  fontFamily: '"Space Mono", monospace', 
+                  fontSize: '0.7rem', 
+                  opacity: 0.8, 
+                  position: 'absolute', 
+                  top: '20px' 
+                }}>
+                  {label}
+                </span>
+                <h2 style={{ 
+                  fontFamily: '"Bebas Neue", sans-serif', 
+                  fontSize: selection ? '8rem' : '3.5rem', 
+                  margin: 0, 
+                  lineHeight: '1' 
+                }}>
+                  {selection ? selection.code : "SELECT_"}
+                </h2>
+              </button>
+            );
+          })}
+        </div>
+
+        <div style={{ marginTop: '80px', textAlign: 'center' }}>
+          <button style={{ backgroundColor: '#000', color: '#FFF', padding: '30px 0', width: '100%', maxWidth: '850px', fontSize: '2.5rem', fontFamily: '"Bebas Neue", sans-serif', border: 'none', cursor: 'pointer', boxShadow: '15px 15px 0px #FF0000' }}>
+            GENERATE ART
+          </button>
+        </div>
+      </div>
+
+      {activeSlot !== null && (
+        <div className="overlay">
+          <div style={{ position: 'sticky', top: 0, background: '#000', padding: '20px', display: 'flex', justifyContent: 'space-between', borderBottom: '5px solid #FFF' }}>
+            <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>{nationLabels[activeSlot]}</h3>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#FF0000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}>CLOSE [X]</button>
+          </div>
+          {countries.map((c) => (
+            <button 
+              key={c.name} 
+              className="country-row" 
+              style={{ backgroundColor: c.color, color: getTextColor(c.color) }}
+              onClick={() => selectCountry(c)}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </main>
+  );
+}

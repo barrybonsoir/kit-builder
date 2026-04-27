@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from 'react';
+import { useState } from 'react';
 
 const countries = [
   { name: "Algeria", code: "ALG", color: "#006233" }, { name: "Argentina", code: "ARG", color: "#74ACDF" },
@@ -28,28 +28,104 @@ const countries = [
   { name: "Uruguay", code: "URU", color: "#0081C6" }, { name: "Uzbekistan", code: "UZB", color: "#0099B5" }
 ];
 
+const labels = ["QUAD_01", "QUAD_02", "CORE_GEOM", "BG_TINT"];
+
+const getImagePath = (country) => {
+  if (!country) return "";
+  const fileName = country.name.toLowerCase().replace(/\s+/g, '-');
+  return `/logos/${fileName}.png`;
+};
+
+const RenderHeraldicCrest = ({ selections }) => {
+  if (selections.includes(null)) return null;
+
+  const bgImage = getImagePath(selections[0]);
+  const coreImage = getImagePath(selections[2]);
+
+  return (
+    <div style={{ position: 'relative', width: '600px', height: '600px', backgroundColor: selections[3]?.color || '#000', overflow: 'hidden' }}>
+      
+      {/* LAYER 1: RORSCHACH BASE */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.2, filter: 'grayscale(1) contrast(300%)' }}>
+        <img src={bgImage} style={{ position: 'absolute', top: 0, left: 0, width: '50%', height: '50%', objectFit: 'contain' }} alt="" />
+        <img src={bgImage} style={{ position: 'absolute', top: 0, right: 0, width: '50%', height: '50%', objectFit: 'contain', transform: 'scaleX(-1)' }} alt="" />
+        <img src={bgImage} style={{ position: 'absolute', bottom: 0, left: 0, width: '50%', height: '50%', objectFit: 'contain', transform: 'scaleY(-1)' }} alt="" />
+        <img src={bgImage} style={{ position: 'absolute', bottom: 0, right: 0, width: '50%', height: '50%', objectFit: 'contain', transform: 'scale(-1, -1)' }} alt="" />
+      </div>
+
+      {/* LAYER 2: KALEIDOSCOPE GRID */}
+      <div style={{ 
+        position: 'absolute', 
+        inset: '40px', 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(4, 1fr)', 
+        gridTemplateRows: 'repeat(4, 1fr)',
+        mixBlendMode: 'screen',
+      }}>
+        {[...Array(16)].map((_, index) => {
+          const isFlippedX = index % 2 === 1;
+          const isFlippedY = Math.floor(index / 4) % 2 === 1;
+          return (
+            <div key={index} style={{ position: 'relative', width: '100%', height: '100%' }}>
+              <img 
+                src={coreImage} 
+                style={{
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'contain',
+                  transform: `scale(${isFlippedX ? -1 : 1}, ${isFlippedY ? -1 : 1})`,
+                  opacity: 0.8
+                }} 
+                alt=""
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* LAYER 3: FIXED TOP OVERLAY (GRID & + MARKS) */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 50, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '1px', background: '#000', opacity: 0.2 }}></div>
+        <div style={{ position: 'absolute', top: 0, left: '50%', width: '1px', height: '100%', background: '#000', opacity: 0.2 }}></div>
+        
+        {/* Registration Pluses */}
+        {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map(pos => (
+          <div key={pos} style={{ 
+            position: 'absolute', 
+            fontFamily: 'monospace', 
+            fontSize: '24px', 
+            color: '#000', 
+            fontWeight: 'bold',
+            top: pos.includes('top') ? '10px' : 'auto',
+            bottom: pos.includes('bottom') ? '10px' : 'auto',
+            left: pos.includes('left') ? '10px' : 'auto',
+            right: pos.includes('right') ? '10px' : 'auto'
+          }}>+</div>
+        ))}
+
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '40px', 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          fontFamily: 'monospace', 
+          fontSize: '10px', 
+          color: '#FFF', 
+          backgroundColor: '#000', 
+          padding: '5px 12px',
+          letterSpacing: '2px'
+        }}>
+          ARTEFACT_{selections.map(s => s?.code).join('_')}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   const [activeSlot, setActiveSlot] = useState(null);
   const [selections, setSelections] = useState([null, null, null, null]);
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const protocolText = useMemo(() => {
-    if (selections.includes(null)) return "";
-    const f = selections.map(s => `${s.name.toLowerCase().replace(/\s+/g, '-')}.png`);
-    return `SYSTEM COMMAND:
-Execute multi-source i2i synthesis. Reference: image_6.png.
-
-CONTENT COMMAND:
-16-fold radial symmetry. Solid black background.
-Complex mosaic from:
-1. ${f[0]}
-2. ${f[1]}
-3. ${f[2]}
-4. ${f[3]}
-
-INSTRUCTIONS:
-Shatter all heraldic elements into geometric slivers. Names become unrecognizable glyphs. Intermix all colors/textures into a high-complexity visual puzzle. Sharp vector clarity.`;
-  }, [selections]);
+  const [showResult, setShowResult] = useState(false);
 
   const getTextColor = (hex) => {
     const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21"];
@@ -57,62 +133,48 @@ Shatter all heraldic elements into geometric slivers. Names become unrecognizabl
   };
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: '#FFF', color: '#000', fontFamily: 'sans-serif' }}>
-      {!isGenerating ? (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px' }}>
-          <div style={{ borderBottom: '5px solid #000', marginBottom: '30px' }}>
-            <h1 style={{ fontSize: '3rem', margin: 0, fontWeight: '900' }}>GEN_PROTOCOL_V7</h1>
-          </div>
+    <main style={{ backgroundColor: '#FFF', minHeight: '100vh' }}>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap" rel="stylesheet" />
 
+      {!showResult ? (
+        <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-            {selections.map((s, i) => (
+            {labels.map((label, i) => (
               <button key={i} onClick={() => setActiveSlot(i)} style={{ 
-                height: '150px', border: '4px solid #000', cursor: 'pointer',
-                backgroundColor: s?.color || '#EEE', color: getTextColor(s?.color),
-                fontWeight: 'bold', fontSize: '2rem'
+                height: '200px', 
+                border: '4px solid #000', 
+                backgroundColor: selections[i]?.color || '#EEE', 
+                cursor: 'pointer' 
               }}>
-                {s ? s.code : `SLOT_0${i+1}`}
+                <div style={{ fontFamily: 'monospace', fontSize: '12px', color: getTextColor(selections[i]?.color) }}>{label}</div>
+                <div style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: getTextColor(selections[i]?.color) }}>
+                  {selections[i] ? selections[i].code : "+"}
+                </div>
               </button>
             ))}
           </div>
-
           <button 
             disabled={selections.includes(null)} 
-            onClick={() => setIsGenerating(true)}
-            style={{ 
-              width: '100%', marginTop: '20px', padding: '20px', backgroundColor: '#000', color: '#FFF',
-              border: 'none', fontWeight: 'bold', fontSize: '1.5rem', cursor: 'pointer',
-              opacity: selections.includes(null) ? 0.2 : 1
-            }}
-          >COMPILE_MARK</button>
+            onClick={() => setShowResult(true)}
+            style={{ width: '100%', marginTop: '30px', padding: '25px', background: '#000', color: '#FFF', fontFamily: 'Bebas Neue', fontSize: '3rem', cursor: 'pointer', opacity: selections.includes(null) ? 0.3 : 1 }}
+          >COMPILE_GEN_MARK</button>
         </div>
       ) : (
-        <div style={{ backgroundColor: '#000', color: '#0F0', minHeight: '100vh', padding: '40px', fontFamily: 'monospace' }}>
-          <p>>>> PROTOCOL_READY</p>
-          <div style={{ border: '1px solid #0F0', padding: '20px', margin: '20px 0' }}>
-            <pre style={{ whiteSpace: 'pre-wrap' }}>{protocolText}</pre>
-          </div>
-          <button onClick={() => setIsGenerating(false)} style={{ background: '#0F0', border: 'none', padding: '10px 20px', cursor: 'pointer', fontWeight: 'bold' }}>BACK</button>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <RenderHeraldicCrest selections={selections} />
+          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '50px', padding: '15px 30px', background: '#000', color: '#FFF', fontFamily: 'Bebas Neue', fontSize: '1.5rem', cursor: 'pointer' }}>RESET_ARRAY</button>
         </div>
       )}
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: '#000', overflowY: 'auto', zIndex: 100 }}>
-          <div style={{ position: 'sticky', top: 0, backgroundColor: '#F00', padding: '15px', display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: '#FFF', fontWeight: 'bold' }}>SELECT_ASSET</span>
-            <button onClick={() => setActiveSlot(null)}>CLOSE</button>
+        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, overflowY: 'auto' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ color: '#FFF', fontFamily: 'monospace' }}>LOAD_COMPONENT_{activeSlot}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px' }}>BACK</button>
           </div>
           {countries.map(c => (
-            <button key={c.code} onClick={() => {
-              const newSels = [...selections];
-              newSels[activeSlot] = c;
-              setSelections(newSels);
-              setActiveSlot(null);
-            }} style={{ 
-              width: '100%', padding: '20px', textAlign: 'left', border: 'none', borderBottom: '1px solid #333',
-              backgroundColor: c.color, color: getTextColor(c.color), fontWeight: 'bold', fontSize: '1.2rem'
-            }}>
-              {c.name}
+            <button key={c.code} onClick={() => { const s = [...selections]; s[activeSlot] = c; setSelections(s); setActiveSlot(null); }} style={{ width: '100%', padding: '20px', background: c.color, border: 'none', textAlign: 'left', cursor: 'pointer' }}>
+              <span style={{ fontFamily: 'Bebas Neue', fontSize: '3rem', color: getTextColor(c.color) }}>{c.name}</span>
             </button>
           ))}
         </div>

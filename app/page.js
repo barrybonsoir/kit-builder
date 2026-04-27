@@ -2,54 +2,30 @@
 import { useState } from 'react';
 
 const countries = [
-  { name: "Argentina", code: "ARG", color: "#74ACDF" },
-  { name: "Brazil", code: "BRA", color: "#009739" },
-  { name: "Croatia", code: "CRO", color: "#FF0000" },
-  { name: "Germany", code: "GER", color: "#000000" },
-  { name: "USA", code: "USA", color: "#0A3161" },
-  { name: "Japan", code: "JPN", color: "#BC002D" },
-  { name: "England", code: "ENG", color: "#FFFFFF" },
-  { name: "Mexico", code: "MEX", color: "#006847" },
-  { name: "Netherlands", code: "NED", color: "#F36C21" },
-  { name: "Italy", code: "ITA", color: "#008C45" },
-  { name: "France", code: "FRA", color: "#002395" },
-  { name: "Spain", code: "ESP", color: "#C60B1E" },
-  { name: "Canada", code: "CAN", color: "#FF0000" },
-  { name: "Morocco", code: "MAR", color: "#C1272D" },
-  { name: "Portugal", code: "POR", color: "#FF0000" },
-  { name: "Belgium", code: "BEL", color: "#EF3340" },
-  { name: "Colombia", code: "COL", color: "#FCD116" },
-  { name: "Uruguay", code: "URU", color: "#0081C6" },
-  { name: "Switzerland", code: "SUI", color: "#FF0000" },
-  { name: "Senegal", code: "SEN", color: "#00853F" },
-  { name: "Korea Republic", code: "KOR", color: "#CD2E3A" },
-  { name: "Denmark", code: "DEN", color: "#C60C30" },
-  { name: "Poland", code: "POL", color: "#DC143C" },
-  { name: "Australia", code: "AUS", color: "#00008B" },
-  { name: "Sweden", code: "SWE", color: "#006AA7" },
-  { name: "Ukraine", code: "UKR", color: "#FFD700" },
-  { name: "Austria", code: "AUT", color: "#ED2939" },
-  { name: "Ecuador", code: "ECU", color: "#FFD931" },
-  { name: "Peru", code: "PER", color: "#D91023" },
-  { name: "Chile", code: "CHI", color: "#0039A6" },
-  { name: "Nigeria", code: "NGA", color: "#008751" },
-  { name: "Cameroon", code: "CMR", color: "#478A3E" },
-  { name: "Ghana", code: "GHA", color: "#EF3340" },
-  { name: "Egypt", code: "EGY", color: "#C1272D" },
-  { name: "Tunisia", code: "TUN", color: "#E70013" },
-  { name: "Algeria", code: "ALG", color: "#006233" },
-  { name: "Saudi Arabia", code: "KSA", color: "#006C35" },
-  { name: "Iran", code: "IRN", color: "#239f40" },
-  { name: "Iraq", code: "IRQ", color: "#007A3D" },
-  { name: "Qatar", code: "QAT", color: "#8D1B3D" },
-  { name: "Panama", code: "PAN", color: "#DA121A" },
-  { name: "Costa Rica", code: "CRC", color: "#EF3340" },
-  { name: "Jamaica", code: "JAM", color: "#FED100" },
-  { name: "Norway", code: "NOR", color: "#BA0C2F" },
-  { name: "Turkey", code: "TUR", color: "#E30A17" },
-  { name: "Scotland", code: "SCO", color: "#005EB8" },
-  { name: "Wales", code: "WAL", color: "#D30731" },
-  { name: "New Zealand", code: "NZL", color: "#000000" }
+  { name: "Argentina", code: "ARG", color: "#74ACDF" }, { name: "Brazil", code: "BRA", color: "#009739" },
+  { name: "Croatia", code: "CRO", color: "#FF0000" }, { name: "Germany", code: "GER", color: "#000000" },
+  { name: "USA", code: "USA", color: "#0A3161" }, { name: "Japan", code: "JPN", color: "#BC002D" },
+  { name: "England", code: "ENG", color: "#FFFFFF" }, { name: "Mexico", code: "MEX", color: "#006847" },
+  { name: "Netherlands", code: "NED", color: "#F36C21" }, { name: "Italy", code: "ITA", color: "#008C45" },
+  { name: "France", code: "FRA", color: "#002395" }, { name: "Spain", code: "ESP", color: "#C60B1E" },
+  { name: "Canada", code: "CAN", color: "#FF0000" }, { name: "Morocco", code: "MAR", color: "#C1272D" },
+  { name: "Portugal", code: "POR", color: "#FF0000" }, { name: "Belgium", code: "BEL", color: "#EF3340" },
+  { name: "Colombia", code: "COL", color: "#FCD116" }, { name: "Uruguay", code: "URU", color: "#0081C6" },
+  { name: "Switzerland", code: "SUI", color: "#FF0000" }, { name: "Senegal", code: "SEN", color: "#00853F" },
+  { name: "Korea Republic", code: "KOR", color: "#CD2E3A" }, { name: "Denmark", code: "DEN", color: "#C60C30" },
+  { name: "Poland", code: "POL", color: "#DC143C" }, { name: "Australia", code: "AUS", color: "#00008B" },
+  { name: "Sweden", code: "SWE", color: "#006AA7" }, { name: "Ukraine", code: "UKR", color: "#FFD700" },
+  { name: "Austria", code: "AUT", color: "#ED2939" }, { name: "Ecuador", code: "ECU", color: "#FFD931" },
+  { name: "Peru", code: "PER", color: "#D91023" }, { name: "Chile", code: "CHI", color: "#0039A6" },
+  { name: "Nigeria", code: "NGA", color: "#008751" }, { name: "Cameroon", code: "CMR", color: "#478A3E" },
+  { name: "Ghana", code: "GHA", color: "#EF3340" }, { name: "Egypt", code: "EGY", color: "#C1272D" },
+  { name: "Tunisia", code: "TUN", color: "#E70013" }, { name: "Algeria", code: "ALG", color: "#006233" },
+  { name: "Saudi Arabia", code: "KSA", color: "#006C35" }, { name: "Iran", code: "IRN", color: "#239f40" },
+  { name: "Iraq", code: "IRQ", color: "#007A3D" }, { name: "Qatar", code: "QAT", color: "#8D1B3D" },
+  { name: "Panama", code: "PAN", color: "#DA121A" }, { name: "Costa Rica", code: "CRC", color: "#EF3340" },
+  { name: "Jamaica", code: "JAM", color: "#FED100" }, { name: "Norway", code: "NOR", color: "#BA0C2F" },
+  { name: "Turkey", code: "TUR", color: "#E30A17" }, { name: "Scotland", code: "SCO", color: "#005EB8" },
+  { name: "Wales", code: "WAL", color: "#D30731" }, { name: "New Zealand", code: "NZL", color: "#000000" }
 ];
 
 const labels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
@@ -59,6 +35,13 @@ export default function Home() {
   const [selections, setSelections] = useState([null, null, null, null]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResult, setShowResult] = useState(false);
+
+  const selectCountry = (country) => {
+    const newSels = [...selections];
+    newSels[activeSlot] = country;
+    setSelections(newSels);
+    setActiveSlot(null);
+  };
 
   const getTextColor = (hex) => {
     if (!hex) return "#000000";
@@ -113,35 +96,14 @@ export default function Home() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
             {labels.map((label, i) => (
-              <button 
-                key={i} 
-                onClick={() => setActiveSlot(i)}
-                style={{ 
-                  height: '220px', border: '6px solid #000', borderRadius: 0,
-                  backgroundColor: selections[i]?.color || '#FFFFFF',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
-                  cursor: 'pointer', appearance: 'none'
-                }}
-              >
-                <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.85rem', color: getTextColor(selections[i]?.color), marginBottom: '10px', display: 'block' }}>{label}</span>
-                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '6rem', lineHeight: '1', color: getTextColor(selections[i]?.color), display: 'block' }}>
-                  {selections[i] ? selections[i].code : "+"}
-                </span>
+              <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '220px', border: '6px solid #000', borderRadius: 0, backgroundColor: selections[i]?.color || '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', position: 'relative' }}>
+                <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '0.85rem', color: getTextColor(selections[i]?.color), marginBottom: '10px', pointerEvents: 'none' }}>{label}</span>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '6rem', lineHeight: '1', color: getTextColor(selections[i]?.color), pointerEvents: 'none' }}>{selections[i] ? selections[i].code : "+"}</span>
               </button>
             ))}
           </div>
 
-          <button 
-            disabled={selections.includes(null)}
-            onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }}
-            style={{ 
-              width: '100%', marginTop: '40px', padding: '30px', background: '#000000', color: '#FFFFFF', 
-              fontSize: '3.5rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer',
-              opacity: selections.includes(null) ? 0.2 : 1, border: 'none', display: 'block'
-            }}
-          >
-            COMPILE EMBLEM
-          </button>
+          <button disabled={selections.includes(null)} onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }} style={{ width: '100%', marginTop: '40px', padding: '30px', background: '#000000', color: '#FFFFFF', fontSize: '3.5rem', fontFamily: "'Bebas Neue', sans-serif", cursor: 'pointer', opacity: selections.includes(null) ? 0.2 : 1, border: 'none' }}>COMPILE EMBLEM</button>
         </div>
       ) : (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
@@ -151,16 +113,18 @@ export default function Home() {
       )}
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000000', zIndex: 9999, overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ position: 'fixed', inset: 0, background: '#000000', zIndex: 9999, overflowY: 'scroll', WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10000 }}>
             <span style={{ color: '#FFFFFF', fontFamily: "'Space Mono', monospace", fontSize: '1.2rem' }}>SELECT_STREAM // {labels[activeSlot]}</span>
             <button onClick={() => setActiveSlot(null)} style={{ background: '#000000', color: '#FFFFFF', border: 'none', padding: '10px 20px', cursor: 'pointer', fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.5rem' }}>CLOSE</button>
           </div>
-          {countries.map(c => (
-            <button key={c.code} onClick={() => selectCountry(c)} style={{ width: '100%', padding: '25px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', fontFamily: "'Bebas Neue', sans-serif", fontSize: '3.5rem', color: getTextColor(c.color), cursor: 'pointer', display: 'block' }}>
-              {c.name}
-            </button>
-          ))}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {countries.map(c => (
+              <button key={c.code} onClick={() => selectCountry(c)} style={{ width: '100%', padding: '30px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', cursor: 'pointer', display: 'block', zIndex: 10001, position: 'relative' }}>
+                <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '4rem', color: getTextColor(c.color), pointerEvents: 'none' }}>{c.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 

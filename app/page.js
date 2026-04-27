@@ -67,6 +67,11 @@ export default function Home() {
     setActiveSlot(null);
   };
 
+  const getTextColor = (hex) => {
+    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA", "#FED100", "#FFD700", "#FFD931"];
+    return light.includes(hex?.toUpperCase()) ? "#000" : "#FFF";
+  };
+
   const RenderHeraldicCrest = () => {
     const s = selections;
     const paths = s.map(n => `/logos/${n.code}.png`);
@@ -74,96 +79,118 @@ export default function Home() {
     return (
       <svg width="500" height="600" viewBox="0 0 500 600" style={{ 
         backgroundColor: s[3]?.color || '#000', 
-        border: '15px solid #000',
-        boxShadow: '30px 30px 0px rgba(0,0,0,0.1)',
+        border: '20px solid #000',
+        boxShadow: '40px 40px 0px rgba(0,0,0,0.1)',
         display: 'block'
       }}>
         <defs>
           <pattern id="diagStripes" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="2" height="10" fill="#000" fillOpacity="0.1" />
+            <rect width="2" height="10" fill="#000" fillOpacity="0.15" />
           </pattern>
-          
-          <clipPath id="shield">
+          <clipPath id="shieldPath">
             <path d="M50,20 L450,20 L450,400 C450,550 250,580 250,580 C250,580 50,550 50,400 Z" />
           </clipPath>
-
-          <pattern id="kaleidoscope" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-             <image href={paths[1]} x="0" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.4" />
-             <image href={paths[1]} x="100" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.4" transform="scale(-1, 1) translate(-200, 0)" />
-             <image href={paths[1]} x="0" y="100" width="100" height="100" filter="grayscale(1)" opacity="0.4" transform="scale(1, -1) translate(0, -200)" />
+          <pattern id="kaleido" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+             <image href={paths[1]} x="0" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.5" />
+             <image href={paths[1]} x="100" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.5" transform="scale(-1, 1) translate(-200, 0)" />
+             <image href={paths[1]} x="0" y="100" width="100" height="100" filter="grayscale(1)" opacity="0.5" transform="scale(1, -1) translate(0, -200)" />
           </pattern>
         </defs>
 
         <rect width="500" height="600" fill="url(#diagStripes)" />
 
-        <g clipPath="url(#shield)">
+        <g clipPath="url(#shieldPath)">
           <rect width="500" height="600" fill={s[0]?.color} />
-          <rect width="500" height="600" fill="url(#kaleidoscope)" style={{ mixBlendMode: 'multiply' }} />
-          <image href={paths[0]} x="-50" y="-50" width="600" height="600" opacity="0.2" filter="contrast(200%) grayscale(1)" />
+          <rect width="500" height="600" fill="url(#kaleido)" style={{ mixBlendMode: 'multiply' }} />
+          <image href={paths[0]} x="-50" y="-50" width="600" height="600" opacity="0.3" filter="contrast(300%) grayscale(1)" />
           
           <g transform="translate(250, 300)">
-            <path d="M-150,0 L0,-180 L150,0 L0,180 Z" fill="#000" />
-            <image href={paths[2]} x="-100" y="-100" width="200" height="200" filter="invert(1) brightness(2)" />
+            <path d="M-160,0 L0,-190 L160,0 L0,190 Z" fill="#000" />
+            <image href={paths[2]} x="-110" y="-110" width="220" height="220" filter="invert(1) brightness(1.5)" />
           </g>
         </g>
 
-        <rect x="0" y="555" width="500" height="45" fill="#000" />
-        <text x="250" y="585" fontFamily="monospace" fontSize="12" fill="#FFF" textAnchor="middle" letterSpacing="3">
-          {s[0].code} // {s[1].code} // {s[2].code} // REV_4.0
+        <rect x="0" y="550" width="500" height="50" fill="#000" />
+        <text x="250" y="582" fontFamily="monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">
+          REF: {s[0].code}x{s[1].code}x{s[2].code} // COMPOSITE_V4
         </text>
       </svg>
     );
   };
 
   return (
-    <main style={{ backgroundColor: '#FFF', minHeight: '100vh', padding: '40px' }}>
+    <main style={{ backgroundColor: '#FFF', minHeight: '100vh', position: 'relative' }}>
       {!showResult ? (
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
+          <header style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h1 style={{ fontFamily: 'impact, sans-serif', fontSize: '5rem', margin: 0, textTransform: 'uppercase', borderBottom: '15px solid #FF0000', display: 'inline-block' }}>FAIR WEATHER</h1>
+            <p style={{ fontFamily: 'monospace', fontSize: '1rem', letterSpacing: '0.2em' }}>SYNTHESIZING HERALDRY // VER 4.0</p>
+          </header>
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
             {nationLabels.map((label, i) => (
               <button 
                 key={i}
                 onClick={() => setActiveSlot(i)}
                 style={{ 
-                  height: '180px', border: '5px solid #000', backgroundColor: selections[i]?.color || '#EEE',
-                  fontSize: '2rem', fontWeight: 'bold', cursor: 'pointer'
+                  height: '220px', border: '5px solid #000', backgroundColor: selections[i]?.color || '#FFF',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
                 }}
               >
-                {selections[i] ? selections[i].code : label}
+                <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: getTextColor(selections[i]?.color || '#FFF') }}>{label}</span>
+                <span style={{ fontFamily: 'impact, sans-serif', fontSize: '5rem', color: getTextColor(selections[i]?.color || '#FFF') }}>
+                  {selections[i] ? selections[i].code : "+"}
+                </span>
               </button>
             ))}
           </div>
+
           <button 
             disabled={selections.includes(null)}
-            onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2000); }}
-            style={{ width: '100%', marginTop: '40px', padding: '30px', background: '#000', color: '#FFF', fontSize: '2rem', cursor: 'pointer' }}
+            onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }}
+            style={{ 
+              width: '100%', marginTop: '40px', padding: '30px', background: '#000', color: '#FFF', 
+              fontSize: '2.5rem', fontFamily: 'impact, sans-serif', cursor: 'pointer',
+              opacity: selections.includes(null) ? 0.2 : 1
+            }}
           >
-            GENERATE COMPLEX ARTEFACT
+            COMPILE EMBLEM
           </button>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
           <RenderHeraldicCrest />
-          <button onClick={() => setShowResult(false)} style={{ marginTop: '40px', padding: '20px', border: '5px solid #000', background: 'none', cursor: 'pointer', fontWeight: 'bold' }}>RESET SYSTEM</button>
+          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '40px', padding: '20px 40px', background: '#000', color: '#FFF', fontFamily: 'impact, sans-serif', fontSize: '1.5rem', border: 'none', cursor: 'pointer' }}>NEW SESSION [X]</button>
         </div>
       )}
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, overflowY: 'auto', padding: '20px' }}>
-          <button onClick={() => setActiveSlot(null)} style={{ color: '#FFF', marginBottom: '20px' }}>[CLOSE]</button>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
-            {countries.map(c => (
-              <button key={c.code} onClick={() => selectCountry(c)} style={{ padding: '15px', background: c.color, border: 'none', fontWeight: 'bold' }}>
-                {c.name}
-              </button>
-            ))}
+        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 1000, overflowY: 'auto' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ color: '#FFF', fontFamily: 'monospace' }}>SELECT_STREAM // {nationLabels[activeSlot]}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '5px 15px', cursor: 'pointer' }}>CLOSE</button>
           </div>
+          {countries.map(c => (
+            <button 
+              key={c.code} 
+              onClick={() => selectCountry(c)} 
+              style={{ 
+                width: '100%', padding: '20px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)',
+                textAlign: 'left', fontFamily: 'impact, sans-serif', fontSize: '2.5rem', color: getTextColor(c.color), cursor: 'pointer'
+              }}
+            >
+              {c.name}
+            </button>
+          ))}
         </div>
       )}
 
       {isGenerating && (
-        <div style={{ position: 'fixed', inset: 0, background: '#FF0000', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <h1 style={{ color: '#FFF', fontSize: '5rem' }}>BUILDING_HERALDRY...</h1>
+        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 2000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h1 style={{ color: '#FFF', fontSize: '4rem', fontFamily: 'impact, sans-serif' }}>GENERATING_EMBLEM</h1>
+          <div style={{ width: '300px', height: '10px', background: '#333', marginTop: '20px' }}>
+            <div style={{ height: '100%', background: '#FF0000', width: '60%' }}></div>
+          </div>
         </div>
       )}
     </main>

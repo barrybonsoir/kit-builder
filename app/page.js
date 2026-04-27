@@ -2,18 +2,18 @@
 import { useState, useEffect } from 'react';
 
 const countries = [
-  { name: "Argentina", code: "ARG", color: "#74ACDF", emblem: "sun" },
-  { name: "Brazil", code: "BRA", color: "#009739", emblem: "diamond" },
-  { name: "Croatia", code: "CRO", color: "#FF0000", emblem: "checkers" },
-  { name: "Germany", code: "GER", color: "#000000", emblem: "eagle" },
-  { name: "USA", code: "USA", color: "#0A3161", emblem: "stars" },
-  { name: "Japan", code: "JPN", color: "#BC002D", emblem: "circle" },
-  { name: "England", code: "ENG", color: "#FFFFFF", emblem: "lion" },
-  { name: "Mexico", code: "MEX", color: "#006847", emblem: "eagle-snake" },
-  { name: "Netherlands", code: "NED", color: "#F36C21", emblem: "lion-rampant" },
-  { name: "Italy", code: "ITA", color: "#008C45", emblem: "star-shield" },
-  { name: "France", code: "FRA", color: "#002395", emblem: "rooster" },
-  { name: "Spain", code: "ESP", color: "#C60B1E", emblem: "castle" }
+  { name: "Argentina", code: "ARG", color: "#74ACDF" },
+  { name: "Brazil", code: "BRA", color: "#009739" },
+  { name: "Croatia", code: "CRO", color: "#FF0000" },
+  { name: "Germany", code: "GER", color: "#000000" },
+  { name: "USA", code: "USA", color: "#0A3161" },
+  { name: "Japan", code: "JPN", color: "#BC002D" },
+  { name: "England", code: "ENG", color: "#FFFFFF" },
+  { name: "Mexico", code: "MEX", color: "#006847" },
+  { name: "Netherlands", code: "NED", color: "#F36C21" },
+  { name: "Italy", code: "ITA", color: "#008C45" },
+  { name: "France", code: "FRA", color: "#002395" },
+  { name: "Spain", code: "ESP", color: "#C60B1E" }
 ];
 
 const nationLabels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
@@ -23,6 +23,15 @@ export default function Home() {
   const [selections, setSelections] = useState([null, null, null, null]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResult, setShowResult] = useState(false);
+
+  useEffect(() => {
+    // Handling body scroll locking for overlays
+    if (activeSlot !== null || isGenerating) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [activeSlot, isGenerating]);
 
   const selectCountry = (country) => {
     const newSels = [...selections];
@@ -45,31 +54,20 @@ export default function Home() {
             <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" />
           </clipPath>
         </defs>
-
-        {/* LAYER 0: HERALDIC SUPPORTERS (NATION 4) */}
         <path d="M80,100 L50,200 L80,350 M420,100 L450,200 L420,350" fill="none" stroke={s[3].color} strokeWidth="40" strokeOpacity="0.3" />
-
-        {/* LAYER 1: THE MAIN SHIELD (NATION 1) */}
         <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" fill={s[0].color} stroke="#000" strokeWidth="12" />
-
-        {/* LAYER 2: SHIELD DIVISIONS (NATION 2) */}
         <g clipPath="url(#shieldClip)" opacity="0.5">
           <rect x="250" y="50" width="150" height="550" fill={s[1].color} />
           <path d="M100,280 L400,280" stroke="#000" strokeWidth="8" />
         </g>
-
-        {/* LAYER 3: CENTRAL EMBLEM (NATION 3) */}
         <g transform="translate(250, 250)">
           <circle r="90" fill="#000" />
           <circle r="82" fill={s[2].color} />
           <path d="M-40,-40 L40,40 M40,-40 L-40,40" stroke="#000" strokeWidth="15" />
           <rect x="-20" y="-20" width="40" height="40" fill="#000" />
         </g>
-
-        {/* LAYER 4: TYPOGRAPHY */}
         <rect x="150" y="480" width="200" height="60" fill="#000" />
         <text x="250" y="525" style={{ fontFamily: 'Bebas Neue', fontSize: '48px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '2px' }}>{s[0].code}</text>
-        
         <path d="M100,50 L400,50" stroke="#000" strokeWidth="30" />
         <text x="250" y="38" style={{ fontFamily: 'Space Mono', fontSize: '11px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '5px' }}>
           PRO_GEN // {s[1].code} // {s[2].code}
@@ -82,13 +80,11 @@ export default function Home() {
     <main style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', position: 'relative' }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
-        
         .country-row {
           width: 100%; border: none; text-align: left; padding: 20px 40px;
           font-family: "Bebas Neue", sans-serif; font-size: 4.5rem; cursor: pointer;
           border-bottom: 1px solid rgba(0,0,0,0.1);
         }
-        
         .nation-btn {
           border: 4px solid #000; display: flex; flex-direction: column; 
           align-items: center; justify-content: center; min-height: 220px; cursor: pointer;
@@ -98,7 +94,6 @@ export default function Home() {
 
       {!showResult ? (
         <>
-          {/* LOCKED HEADER & BRANDING */}
           <header style={{ textAlign: 'center', padding: '60px 20px 40px 20px', borderBottom: '20px solid #FF0000', position: 'relative', zIndex: 10, backgroundColor: '#FFF' }}>
             <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '700px', marginBottom: '20px' }} />
             <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
@@ -117,8 +112,8 @@ export default function Home() {
                   onClick={() => setActiveSlot(i)}
                   style={{ backgroundColor: selections[i]?.color || "#FFF" }}
                 >
-                  <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', marginBottom: '10px', color: selections[i] ? getTextColor(selections[i].color) : '#000' }}>{label}</span>
-                  <h2 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: selections[i] ? '7rem' : '3rem', margin: 0, color: selections[i] ? getTextColor(selections[i].color) : '#000' }}>
+                  <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', marginBottom: '10px', color: (selections[i] && getTextColor(selections[i].color) === "#FFF") ? "#FFF" : "#000" }}>{label}</span>
+                  <h2 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: selections[i] ? '7rem' : '3rem', margin: 0, color: (selections[i] && getTextColor(selections[i].color) === "#FFF") ? "#FFF" : "#000" }}>
                     {selections[i] ? selections[i].code : "SELECT+"}
                   </h2>
                 </button>
@@ -130,4 +125,51 @@ export default function Home() {
                 onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 3000); }}
                 disabled={selections.includes(null)}
                 style={{ 
-                  backgroundColor: '#000',
+                  backgroundColor: '#000', color: '#FFF', padding: '30px 0', width: '100%', 
+                  maxWidth: '800px', fontSize: '2.5rem', fontFamily: '"Bebas Neue", sans-serif', 
+                  border: 'none', cursor: selections.includes(null) ? 'not-allowed' : 'pointer',
+                  opacity: selections.includes(null) ? 0.3 : 1, boxShadow: '15px 15px 0px #FF0000', letterSpacing: '0.1em'
+                }}
+              >
+                GENERATE CREST
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F9F7F2', padding: '40px' }}>
+          <RenderHeraldicCrest />
+          <div style={{ marginTop: '60px', display: 'flex', gap: '20px' }}>
+             <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ background: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: 'Bebas Neue', fontSize: '1.8rem', cursor: 'pointer' }}>NEW SESSION [X]</button>
+          </div>
+        </div>
+      )}
+
+      {activeSlot !== null && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 3000, overflowY: 'auto' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '25px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+             <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.2rem' }}>SELECT {nationLabels[activeSlot]}</span>
+             <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: 'Bebas Neue', fontSize: '1.2rem', cursor: 'pointer' }}>CLOSE</button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {countries.map(c => (
+              <button key={c.name} className="country-row" onClick={() => selectCountry(c)} style={{ backgroundColor: c.color, color: getTextColor(c.color) }}>
+                {c.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isGenerating && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 4000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: '#FFF' }}>SYNTHESIZING_HERALDRY</h2>
+          <div style={{ width: '300px', height: '6px', background: '#222', marginTop: '20px' }}>
+            <div style={{ height: '100%', background: '#FF0000', animation: 'load 3s forwards' }} />
+          </div>
+          <style>{`@keyframes load { from { width: 0% } to { width: 100% } }`}</style>
+        </div>
+      )}
+    </main>
+  );
+}

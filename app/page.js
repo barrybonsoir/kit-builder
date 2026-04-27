@@ -28,153 +28,121 @@ const countries = [
   { name: "Uruguay", code: "URU", color: "#0081C6" }, { name: "Uzbekistan", code: "UZB", color: "#0099B5" }
 ];
 
-const labels = ["QUAD_01", "QUAD_02", "CORE_GEOM", "BG_TINT"];
-
-const getImagePath = (country) => {
-  if (!country) return "";
-  const fileName = country.name.toLowerCase().replace(/\s+/g, '-');
-  return `/logos/${fileName}.png`;
-};
-
-const RenderHeraldicCrest = ({ selections }) => {
-  if (selections.includes(null)) return null;
-
-  const bgImage = getImagePath(selections[0]);
-  const coreImage = getImagePath(selections[2]);
-
-  return (
-    <div style={{ position: 'relative', width: '600px', height: '600px', backgroundColor: selections[3]?.color || '#000', overflow: 'hidden' }}>
-      
-      {/* LAYER 1: RORSCHACH BASE */}
-      <div style={{ position: 'absolute', inset: 0, opacity: 0.2, filter: 'grayscale(1) contrast(300%)' }}>
-        <img src={bgImage} style={{ position: 'absolute', top: 0, left: 0, width: '50%', height: '50%', objectFit: 'contain' }} alt="" />
-        <img src={bgImage} style={{ position: 'absolute', top: 0, right: 0, width: '50%', height: '50%', objectFit: 'contain', transform: 'scaleX(-1)' }} alt="" />
-        <img src={bgImage} style={{ position: 'absolute', bottom: 0, left: 0, width: '50%', height: '50%', objectFit: 'contain', transform: 'scaleY(-1)' }} alt="" />
-        <img src={bgImage} style={{ position: 'absolute', bottom: 0, right: 0, width: '50%', height: '50%', objectFit: 'contain', transform: 'scale(-1, -1)' }} alt="" />
-      </div>
-
-      {/* LAYER 2: KALEIDOSCOPE GRID */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: '40px', 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(4, 1fr)', 
-        gridTemplateRows: 'repeat(4, 1fr)',
-        mixBlendMode: 'screen',
-      }}>
-        {[...Array(16)].map((_, index) => {
-          const isFlippedX = index % 2 === 1;
-          const isFlippedY = Math.floor(index / 4) % 2 === 1;
-          return (
-            <div key={index} style={{ position: 'relative', width: '100%', height: '100%' }}>
-              <img 
-                src={coreImage} 
-                style={{
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'contain',
-                  transform: `scale(${isFlippedX ? -1 : 1}, ${isFlippedY ? -1 : 1})`,
-                  opacity: 0.8
-                }} 
-                alt=""
-              />
-            </div>
-          );
-        })}
-      </div>
-
-      {/* LAYER 3: FIXED TOP OVERLAY (GRID & + MARKS) */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 50, pointerEvents: 'none' }}>
-        <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '1px', background: '#000', opacity: 0.2 }}></div>
-        <div style={{ position: 'absolute', top: 0, left: '50%', width: '1px', height: '100%', background: '#000', opacity: 0.2 }}></div>
-        
-        {/* Registration Pluses */}
-        {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map(pos => (
-          <div key={pos} style={{ 
-            position: 'absolute', 
-            fontFamily: 'monospace', 
-            fontSize: '24px', 
-            color: '#000', 
-            fontWeight: 'bold',
-            top: pos.includes('top') ? '10px' : 'auto',
-            bottom: pos.includes('bottom') ? '10px' : 'auto',
-            left: pos.includes('left') ? '10px' : 'auto',
-            right: pos.includes('right') ? '10px' : 'auto'
-          }}>+</div>
-        ))}
-
-        <div style={{ 
-          position: 'absolute', 
-          bottom: '40px', 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          fontFamily: 'monospace', 
-          fontSize: '10px', 
-          color: '#FFF', 
-          backgroundColor: '#000', 
-          padding: '5px 12px',
-          letterSpacing: '2px'
-        }}>
-          ARTEFACT_{selections.map(s => s?.code).join('_')}
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export default function Home() {
   const [activeSlot, setActiveSlot] = useState(null);
   const [selections, setSelections] = useState([null, null, null, null]);
-  const [showResult, setShowResult] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [finalProtocol, setFinalProtocol] = useState("");
 
   const getTextColor = (hex) => {
-    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21"];
+    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA"];
     return hex && light.includes(hex.toUpperCase()) ? "#000" : "#FFF";
+  };
+
+  const getFileName = (country) => {
+    if (!country) return "";
+    return `${country.name.toLowerCase().replace(/\s+/g, '-')}.png`;
+  };
+
+  const constructProtocol = () => {
+    const filenames = selections.map(s => getFileName(s));
+    return `SYSTEM COMMAND:
+Execute a multi-source image-to-image synthesis, creating a complex, perfect kaleidoscopic pattern. Use image_6.png as a text reference to retrieve the visual data for the literal list of filenames provided.
+
+CONTENT COMMAND:
+Create a centered, perfectly symmetrical kaleidoscopic emblem with 16-fold radial symmetry. The final image must have a clean, high-resolution graphic style with a solid black background.
+The emblem is a complex mosaic built from heavily randomized and arbitrarily cropped fragments of the following four specific icons:
+${filenames[0]} (extracted visual data)
+${filenames[1]} (extracted visual data)
+${filenames[2]} (extracted visual data)
+${filenames[3]} (extracted visual data)
+
+DETAILED EXECUTION INSTRUCTIONS:
+Retrieve and process each specified icon file. Convert all text elements into abstract geometric textures; names and words must become unrecognizable, shattered glyphs.
+Deconstruct all original heraldic elements and national flags into small, distorted geometric slivers, shattered glass fragments, and abstract color panels.
+For circular icons, shatter their borders into repeated gear-like or radiating point patterns. For shields, fragment their unique shapes into interlocking polygonal mosaic tiles.
+Intermix all 16 colors and all textures from the four input images, ensuring each color is present in small, distributed clusters across the final kaleidoscopic form.
+Unified by an intricate network of fine geometric line work that partitions the entire structure into a high-complexity visual puzzle. Sharp vector-like clarity.`;
+  };
+
+  const handleExecute = () => {
+    const protocol = constructProtocol();
+    setFinalProtocol(protocol);
+    setIsGenerating(true);
+    // This string is now ready to be processed by an AI image generation model.
+    console.log("PROTOCOL GENERATED:", protocol);
   };
 
   return (
     <main style={{ backgroundColor: '#FFF', minHeight: '100vh' }}>
       <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap" rel="stylesheet" />
 
-      {!showResult ? (
+      {!isGenerating ? (
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-            {labels.map((label, i) => (
+          <header style={{ borderBottom: '10px solid #000', marginBottom: '40px', paddingBottom: '20px' }}>
+            <h1 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', margin: 0 }}>GEN_PROTOCOL_V7.0</h1>
+            <p style={{ fontFamily: 'Space Mono', fontSize: '12px' }}>STATUS: READY_FOR_SYNTHESIS</p>
+          </header>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            {[0, 1, 2, 3].map((i) => (
               <button key={i} onClick={() => setActiveSlot(i)} style={{ 
-                height: '200px', 
-                border: '4px solid #000', 
+                height: '220px', 
+                border: '6px solid #000', 
                 backgroundColor: selections[i]?.color || '#EEE', 
-                cursor: 'pointer' 
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}>
-                <div style={{ fontFamily: 'monospace', fontSize: '12px', color: getTextColor(selections[i]?.color) }}>{label}</div>
-                <div style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: getTextColor(selections[i]?.color) }}>
+                <span style={{ fontFamily: 'Space Mono', fontSize: '10px', color: getTextColor(selections[i]?.color) }}>SOURCE_0{i + 1}</span>
+                <span style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: getTextColor(selections[i]?.color) }}>
                   {selections[i] ? selections[i].code : "+"}
-                </div>
+                </span>
               </button>
             ))}
           </div>
+
           <button 
             disabled={selections.includes(null)} 
-            onClick={() => setShowResult(true)}
-            style={{ width: '100%', marginTop: '30px', padding: '25px', background: '#000', color: '#FFF', fontFamily: 'Bebas Neue', fontSize: '3rem', cursor: 'pointer', opacity: selections.includes(null) ? 0.3 : 1 }}
-          >COMPILE_GEN_MARK</button>
+            onClick={handleExecute}
+            style={{ 
+              width: '100%', marginTop: '30px', padding: '30px', 
+              background: '#000', color: '#FFF', 
+              fontFamily: 'Bebas Neue', fontSize: '3rem', 
+              cursor: 'pointer', opacity: selections.includes(null) ? 0.3 : 1,
+              border: 'none'
+            }}
+          >EXECUTE_SYNTHESIS</button>
         </div>
       ) : (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <RenderHeraldicCrest selections={selections} />
-          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '50px', padding: '15px 30px', background: '#000', color: '#FFF', fontFamily: 'Bebas Neue', fontSize: '1.5rem', cursor: 'pointer' }}>RESET_ARRAY</button>
+        <div style={{ minHeight: '100vh', background: '#000', color: '#0F0', padding: '40px', fontFamily: 'Space Mono', fontSize: '13px' }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <p>>>> INITIALIZING PROTOCOL V7.0...</p>
+            <p>>>> ASSET FILENAMES EXTRACTED...</p>
+            <div style={{ border: '1px solid #0F0', padding: '30px', margin: '20px 0', color: '#0F0', lineHeight: '1.6' }}>
+              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{finalProtocol}</pre>
+            </div>
+            <p>>>> SENDING TO GENERATIVE ENGINE...</p>
+            <p>>>> WAITING FOR MARK SYNTHESIS...</p>
+            <button 
+              onClick={() => setIsGenerating(false)} 
+              style={{ marginTop: '40px', background: '#0F0', color: '#000', border: 'none', padding: '15px 30px', fontFamily: 'Bebas Neue', fontSize: '1.5rem', cursor: 'pointer' }}
+            >RETURN_TO_SELECTOR</button>
+          </div>
         </div>
       )}
 
       {activeSlot !== null && (
         <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: '#FFF', fontFamily: 'monospace' }}>LOAD_COMPONENT_{activeSlot}</span>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px' }}>BACK</button>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#FFF', fontFamily: 'Space Mono' }}>LOADING_ASSET_FOR_SLOT_0{activeSlot + 1}</span>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: 'Bebas Neue', cursor: 'pointer' }}>BACK</button>
           </div>
           {countries.map(c => (
-            <button key={c.code} onClick={() => { const s = [...selections]; s[activeSlot] = c; setSelections(s); setActiveSlot(null); }} style={{ width: '100%', padding: '20px', background: c.color, border: 'none', textAlign: 'left', cursor: 'pointer' }}>
-              <span style={{ fontFamily: 'Bebas Neue', fontSize: '3rem', color: getTextColor(c.color) }}>{c.name}</span>
+            <button key={c.code} onClick={() => { const s = [...selections]; s[activeSlot] = c; setSelections(s); setActiveSlot(null); }} style={{ width: '100%', padding: '30px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', cursor: 'pointer' }}>
+              <span style={{ fontFamily: 'Bebas Neue', fontSize: '4rem', color: getTextColor(c.color) }}>{c.name}</span>
             </button>
           ))}
         </div>

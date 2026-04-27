@@ -53,23 +53,23 @@ export default function Home() {
             <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" />
           </clipPath>
         </defs>
-        <path d="M80,100 L50,200 L80,350 M420,100 L450,200 L420,350" fill="none" stroke={s[3].color} strokeWidth="40" strokeOpacity="0.3" />
-        <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" fill={s[0].color} stroke="#000" strokeWidth="12" />
+        <path d="M80,100 L50,200 L80,350 M420,100 L450,200 L420,350" fill="none" stroke={s[3]?.color} strokeWidth="40" strokeOpacity="0.3" />
+        <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" fill={s[0]?.color} stroke="#000" strokeWidth="12" />
         <g clipPath="url(#shieldClip)" opacity="0.5">
-          <rect x="250" y="50" width="150" height="550" fill={s[1].color} />
+          <rect x="250" y="50" width="150" height="550" fill={s[1]?.color} />
           <path d="M100,280 L400,280" stroke="#000" strokeWidth="8" />
         </g>
         <g transform="translate(250, 250)">
           <circle r="90" fill="#000" />
-          <circle r="82" fill={s[2].color} />
+          <circle r="82" fill={s[2]?.color} />
           <path d="M-40,-40 L40,40 M40,-40 L-40,40" stroke="#000" strokeWidth="15" />
           <rect x="-20" y="-20" width="40" height="40" fill="#000" />
         </g>
         <rect x="150" y="480" width="200" height="60" fill="#000" />
-        <text x="250" y="525" style={{ fontFamily: 'Bebas Neue', fontSize: '48px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '2px' }}>{s[0].code}</text>
+        <text x="250" y="525" style={{ fontFamily: 'Bebas Neue', fontSize: '48px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '2px' }}>{s[0]?.code}</text>
         <path d="M100,50 L400,50" stroke="#000" strokeWidth="30" />
         <text x="250" y="38" style={{ fontFamily: 'Space Mono', fontSize: '11px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '5px' }}>
-          PRO_GEN // {s[1].code} // {s[2].code}
+          PRO_GEN // {s[1]?.code} // {s[2]?.code}
         </text>
       </svg>
     );
@@ -95,6 +95,7 @@ export default function Home() {
       {!showResult ? (
         <>
           <header style={{ textAlign: 'center', padding: '60px 20px 40px 20px', borderBottom: '20px solid #FF0000', position: 'relative', zIndex: 10, backgroundColor: '#FFF' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '700px', marginBottom: '20px' }} />
             <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
               <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em' }}>
@@ -107,7 +108,7 @@ export default function Home() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
               {nationLabels.map((label, i) => (
                 <button 
-                  key={i} 
+                  key={label} 
                   className="nation-btn" 
                   onClick={() => setActiveSlot(i)}
                   style={{ backgroundColor: selections[i]?.color || "#FFF" }}
@@ -137,7 +138,7 @@ export default function Home() {
           </div>
         </>
       ) : (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center', backgroundColor: '#F9F7F2', padding: '40px' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F9F7F2', padding: '40px' }}>
           <RenderHeraldicCrest />
           <div style={{ marginTop: '60px', display: 'flex', gap: '20px' }}>
              <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ background: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: 'Bebas Neue', fontSize: '1.8rem', cursor: 'pointer' }}>NEW SESSION [X]</button>
@@ -153,4 +154,23 @@ export default function Home() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {countries.map(c => (
-              <button key={c.name} className="country-row
+              <button key={c.name} className="country-row" onClick={() => selectCountry(c)} style={{ backgroundColor: c.color, color: getTextColor(c.color) }}>
+                {c.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isGenerating && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 4000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: '#FFF' }}>SYNTHESIZING_HERALDRY</h2>
+          <div style={{ width: '300px', height: '6px', background: '#222', marginTop: '20px' }}>
+            <div style={{ height: '100%', background: '#FF0000', animation: 'load 3s forwards' }} />
+          </div>
+        </div>
+      )}
+      <style>{`@keyframes load { from { width: 0% } to { width: 100% } }`}</style>
+    </main>
+  );
+}

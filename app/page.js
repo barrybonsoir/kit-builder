@@ -2,20 +2,19 @@
 import { useState, useEffect } from 'react';
 
 const countries = [
-  { name: "Argentina", code: "ARG", color: "#74ACDF", pattern: "stripes" },
-  { name: "Brazil", code: "BRA", color: "#009739", pattern: "diamonds" },
-  { name: "Croatia", code: "CRO", color: "#FF0000", pattern: "checkers" },
-  { name: "Germany", code: "GER", color: "#000000", pattern: "solid" },
-  { name: "USA", code: "USA", color: "#0A3161", pattern: "stars" },
-  { name: "Japan", code: "JPN", color: "#BC002D", pattern: "circle" },
-  { name: "England", code: "ENG", color: "#FFFFFF", pattern: "cross" },
-  { name: "Mexico", code: "MEX", color: "#006847", pattern: "triangles" },
-  { name: "Netherlands", code: "NED", color: "#F36C21", pattern: "diagonal" },
-  { name: "Portugal", code: "POR", color: "#FF0000", pattern: "split" }
-  // ... (Add others as needed, but this is the core logic set)
+  { name: "Argentina", code: "ARG", color: "#74ACDF", emblem: "sun" },
+  { name: "Brazil", code: "BRA", color: "#009739", emblem: "diamond" },
+  { name: "Croatia", code: "CRO", color: "#FF0000", emblem: "checkers" },
+  { name: "Germany", code: "GER", color: "#000000", emblem: "eagle" },
+  { name: "USA", code: "USA", color: "#0A3161", emblem: "stars" },
+  { name: "Japan", code: "JPN", color: "#BC002D", emblem: "circle" },
+  { name: "England", code: "ENG", color: "#FFFFFF", emblem: "lion" },
+  { name: "Mexico", code: "MEX", color: "#006847", emblem: "eagle-snake" },
+  { name: "Netherlands", code: "NED", color: "#F36C21", emblem: "lion-rampant" },
+  { name: "Italy", code: "ITA", color: "#008C45", emblem: "star-shield" }
 ];
 
-const nationLabels = ["VESSEL", "TEXTURE", "SYMBOL", "BORDER"];
+const nationLabels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
 
 export default function Home() {
   const [activeSlot, setActiveSlot] = useState(null);
@@ -31,136 +30,126 @@ export default function Home() {
   };
 
   const getTextColor = (hex) => {
-    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF"];
+    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21"];
     return light.includes(hex?.toUpperCase()) ? "#000" : "#FFF";
   };
 
-  // GENERATIVE SVG COMPONENT
-  const RenderCrest = () => {
+  const RenderHeraldicCrest = () => {
     const s = selections;
-    const vesselColor = s[0].color;
-    const textureColor = s[1].color;
-    const symbolColor = s[2].color;
-    const borderColor = s[3].color;
-
     return (
-      <svg width="500" height="500" viewBox="0 0 500 500" style={{ filter: 'drop-shadow(25px 25px 0px #000)' }}>
+      <svg width="500" height="600" viewBox="0 0 500 600" style={{ filter: 'drop-shadow(30px 30px 0px rgba(0,0,0,0.15))' }}>
         <defs>
-          {/* Pattern Definitions based on Selections */}
-          <pattern id="selPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-            {s[1].pattern === 'checkers' && (
-              <>
-                <rect width="20" height="20" fill={textureColor} />
-                <rect x="20" y="20" width="20" height="20" fill={textureColor} />
-              </>
-            )}
-            {s[1].pattern === 'stripes' && <rect width="20" height="40" fill={textureColor} />}
-            {s[1].pattern === 'diamonds' && <path d="M20 0 L40 20 L20 40 L0 20 Z" fill={textureColor} />}
-            {s[1].pattern === 'diagonal' && <path d="M-10,10 l20,-20 M0,40 l40,-40 M30,50 l20,-20" stroke={textureColor} strokeWidth="15" />}
-          </pattern>
+          <clipPath id="shieldClip">
+            <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" />
+          </clipPath>
         </defs>
 
-        {/* LAYER 0: THE VESSEL (Random shape selection logic could go here) */}
-        <path d="M50,50 L450,50 L450,350 L250,480 L50,350 Z" fill={vesselColor} stroke={borderColor} strokeWidth="25" />
-        
-        {/* LAYER 1: THE TEXTURE */}
-        <path d="M70,70 L430,70 L430,340 L250,450 L70,340 Z" fill="url(#selPattern)" opacity="0.6" />
+        {/* LAYER 0: HERALDIC SUPPORTERS (NATION 4 Influence) */}
+        <path d="M80,100 L50,200 L80,350 M420,100 L450,200 L420,350" fill="none" stroke={s[3].color} strokeWidth="40" strokeOpacity="0.3" />
 
-        {/* LAYER 2: THE SYMBOL (Brutalist Interpretation) */}
-        <g transform="translate(250, 250)">
-          <rect x="-80" y="-80" width="160" height="160" fill="#000" transform="rotate(45)" />
-          <circle r="60" fill={symbolColor} stroke="#000" strokeWidth="10" />
-          {/* Abstract Soccer 'X' */}
-          <path d="M-30,-30 L30,30 M30,-30 L-30,30" stroke={getTextColor(symbolColor)} strokeWidth="12" strokeLinecap="square" />
+        {/* LAYER 1: THE MAIN SHIELD (NATION 1) */}
+        <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" fill={s[0].color} stroke="#000" strokeWidth="12" />
+
+        {/* LAYER 2: SHIELD DIVISIONS (NATION 2 Influence) */}
+        <g clipPath="url(#shieldClip)" opacity="0.5">
+          <rect x="250" y="50" width="150" height="550" fill={s[1].color} />
+          <path d="M100,280 L400,280" stroke="#000" strokeWidth="8" />
         </g>
 
-        {/* LAYER 3: TOPOGRAPHY (Codes) */}
-        <style>{`.code-style { font-family: 'Bebas Neue', sans-serif; font-size: 42px; fill: #000; letter-spacing: 2px; }`}</style>
-        <rect x="180" y="30" width="140" height="50" fill="#000" />
-        <text x="250" y="72" className="code-style" fill="#FFF" textAnchor="middle">{s[0].code}</text>
+        {/* LAYER 3: CENTRAL EMBLEM (NATION 3 Influence - Abstracted Geometry) */}
+        <g transform="translate(250, 250)">
+          <circle r="90" fill="#000" />
+          <circle r="82" fill={s[2].color} />
+          {/* Brutalist Soccer Ball / Target Motif */}
+          <path d="M-40,-40 L40,40 M40,-40 L-40,40" stroke="#000" strokeWidth="15" />
+          <rect x="-20" y="-20" width="40" height="40" fill="#000" />
+        </g>
+
+        {/* LAYER 4: REFINED TYPOGRAPHY */}
+        <rect x="150" y="480" width="200" height="60" fill="#000" />
+        <text x="250" y="525" style={{ fontFamily: 'Bebas Neue', fontSize: '48px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '2px' }}>{s[0].code}</text>
         
-        <text x="250" y="420" className="code-style" fill={getTextColor(vesselColor)} textAnchor="middle" transform="rotate(-90, 250, 420)" opacity="0.4">
-          {s[1].code}_{s[2].code}_{s[3].code}
+        {/* Banner with ARTE ET LABORE style vibe */}
+        <path d="M100,50 L400,50" stroke="#000" strokeWidth="30" />
+        <text x="250" y="38" style={{ fontFamily: 'Space Mono', fontSize: '11px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '5px' }}>
+          PRO_GEN // {s[1].code} // {s[2].code}
         </text>
       </svg>
     );
   };
 
   return (
-    <main style={{ backgroundColor: '#F4F1EA', minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
+    <main style={{ backgroundColor: '#F9F7F2', minHeight: '100vh', position: 'relative' }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
         
-        .grid-bg {
-          position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-          background-image: radial-gradient(#000 1px, transparent 1px);
-          background-size: 30px 30px; opacity: 0.1; z-index: 0;
+        .country-row {
+          width: 100%; border: none; text-align: left; padding: 18px 40px;
+          font-family: "Bebas Neue", sans-serif; font-size: 4.5rem; cursor: pointer;
+          border-bottom: 1px solid rgba(255,255,255,0.2);
         }
-
+        
         .nation-btn {
-          border: 4px solid #000; padding: 20px; cursor: pointer;
-          display: flex; flex-direction: column; align-items: center; justify-content: center;
-          min-height: 180px; transition: transform 0.1s;
+          border: 5px solid #000; display: flex; flex-direction: column; 
+          align-items: center; justify-content: center; min-height: 250px; cursor: pointer;
+          background-color: #FFF; transition: background 0.2s;
         }
-
-        .nation-btn:active { transform: scale(0.95); }
       `}</style>
 
-      <div className="grid-bg" />
-
       {!showResult ? (
-        <div style={{ position: 'relative', zPosition: 10, maxWidth: '1000px', margin: '0 auto', padding: '60px 20px' }}>
-          <header style={{ marginBottom: '60px', textAlign: 'center' }}>
-            <h1 style={{ fontFamily: 'Bebas Neue', fontSize: '6rem', lineHeight: '0.8', margin: 0 }}>FAIR_WEATHER</h1>
-            <h2 style={{ fontFamily: 'Space Mono', fontSize: '1rem', background: '#000', color: '#FFF', display: 'inline-block', padding: '5px 15px' }}>2026_GEN_CREST_ENGINE</h2>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '80px 20px', position: 'relative', zIndex: 10 }}>
+          <header style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <h1 style={{ fontFamily: 'Bebas Neue', fontSize: '7rem', margin: 0, lineHeight: 0.9 }}>FAIR_WEATHER</h1>
+            <p style={{ fontFamily: 'Space Mono', fontSize: '0.9rem', color: '#000', marginTop: '15px' }}>GEOMETRIC_HERALDRY_SYNTHESIZER_V2.6</p>
           </header>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '25px' }}>
             {nationLabels.map((label, i) => (
               <button key={i} className="nation-btn" onClick={() => setActiveSlot(i)} style={{ backgroundColor: selections[i]?.color || "#FFF" }}>
-                <span style={{ fontFamily: 'Space Mono', fontSize: '0.7rem', marginBottom: '10px' }}>{label}</span>
-                <span style={{ fontFamily: 'Bebas Neue', fontSize: '4rem' }}>{selections[i] ? selections[i].code : "???"}</span>
+                <span style={{ fontFamily: 'Space Mono', fontSize: '0.75rem', marginBottom: '15px', color: selections[i] ? getTextColor(selections[i].color) : '#000' }}>{label}</span>
+                <span style={{ fontFamily: 'Bebas Neue', fontSize: '6rem', color: selections[i] ? getTextColor(selections[i].color) : '#000' }}>{selections[i] ? selections[i].code : "---"}</span>
               </button>
             ))}
           </div>
 
           <button 
             disabled={selections.includes(null)}
-            onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }}
-            style={{ width: '100%', marginTop: '40px', padding: '30px', background: '#000', color: '#FFF', fontFamily: 'Bebas Neue', fontSize: '2.5rem', cursor: 'pointer', opacity: selections.includes(null) ? 0.2 : 1 }}
+            onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 3000); }}
+            style={{ width: '100%', marginTop: '50px', padding: '35px', background: '#000', color: '#FFF', fontFamily: 'Bebas Neue', fontSize: '3rem', cursor: 'pointer', opacity: selections.includes(null) ? 0.1 : 1, border: 'none' }}
           >
-            SYNTHESIZE_MARK
+            GENERATE_ASSET
           </button>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '40px' }}>
-          <RenderCrest />
-          <div style={{ marginTop: '60px', display: 'flex', gap: '20px' }}>
-            <button onClick={() => setShowResult(false)} style={{ background: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: 'Bebas Neue', fontSize: '1.5rem', cursor: 'pointer' }}>NEW_REMIX</button>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#F9F7F2' }}>
+          <RenderHeraldicCrest />
+          <button onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }} style={{ marginTop: '50px', background: 'transparent', color: '#000', padding: '15px 30px', fontFamily: 'Space Mono', fontSize: '0.8rem', border: '2px solid #000', cursor: 'pointer' }}>[ RELOAD_SEQUENCE ]</button>
+        </div>
+      )}
+
+      {/* FULL WIDTH ROW OVERLAY */}
+      {activeSlot !== null && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 3000, overflowY: 'auto' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '25px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+             <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.2rem' }}>SELECT_CORE_DATA: {nationLabels[activeSlot]}</span>
+             <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: 'Bebas Neue', fontSize: '1.2rem', cursor: 'pointer' }}>ESC_CLOSE</button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {countries.map(c => (
+              <button key={c.name} className="country-row" onClick={() => selectCountry(c)} style={{ backgroundColor: c.color, color: getTextColor(c.color) }}>
+                {c.name}
+              </button>
+            ))}
           </div>
         </div>
       )}
 
       {isGenerating && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 2000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#FFF' }}>
-          <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem' }}>CRUNCHING_DNA</h2>
-          <div style={{ width: '300px', height: '10px', background: '#333' }}>
-            <div style={{ height: '100%', background: '#FF0000', animation: 'load 2.5s forwards' }} />
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 4000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ border: '2px solid #FFF', padding: '40px', textAlign: 'center' }}>
+            <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '4rem', color: '#FFF', margin: 0 }}>SYNTHESIZING_HERALDRY</h2>
+            <p style={{ fontFamily: 'Space Mono', color: '#FF0000', fontSize: '0.8rem' }}>VECTOR_PATHS_MAPPING_IN_PROGRESS...</p>
           </div>
-          <style>{`@keyframes load { from { width: 0% } to { width: 100% } }`}</style>
-        </div>
-      )}
-
-      {activeSlot !== null && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.9)', zIndex: 3000, overflowY: 'auto', padding: '40px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
-            {countries.map(c => (
-              <button key={c.name} onClick={() => selectCountry(c)} style={{ background: c.color, color: getTextColor(c.color), border: 'none', padding: '20px', fontFamily: 'Bebas Neue', fontSize: '2rem', cursor: 'pointer', textAlign: 'left' }}>
-                {c.name}
-              </button>
-            ))}
-          </div>
-          <button onClick={() => setActiveSlot(null)} style={{ position: 'fixed', bottom: '20px', right: '20px', background: '#FF0000', color: '#FFF', border: 'none', padding: '15px 30px', fontFamily: 'Space Mono' }}>CANCEL</button>
         </div>
       )}
     </main>

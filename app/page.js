@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 const countries = [
   { name: "Algeria", code: "ALG", color: "#006233" }, { name: "Argentina", code: "ARG", color: "#74ACDF" },
@@ -32,117 +32,87 @@ export default function Home() {
   const [activeSlot, setActiveSlot] = useState(null);
   const [selections, setSelections] = useState([null, null, null, null]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [finalProtocol, setFinalProtocol] = useState("");
+
+  const protocolText = useMemo(() => {
+    if (selections.includes(null)) return "";
+    const f = selections.map(s => `${s.name.toLowerCase().replace(/\s+/g, '-')}.png`);
+    return `SYSTEM COMMAND:
+Execute multi-source i2i synthesis. Reference: image_6.png.
+
+CONTENT COMMAND:
+16-fold radial symmetry. Solid black background.
+Complex mosaic from:
+1. ${f[0]}
+2. ${f[1]}
+3. ${f[2]}
+4. ${f[3]}
+
+INSTRUCTIONS:
+Shatter all heraldic elements into geometric slivers. Names become unrecognizable glyphs. Intermix all colors/textures into a high-complexity visual puzzle. Sharp vector clarity.`;
+  }, [selections]);
 
   const getTextColor = (hex) => {
-    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21", "#F4F1EA"];
+    const light = ["#FFFFFF", "#FCD116", "#FFCD00", "#74ACDF", "#F36C21"];
     return hex && light.includes(hex.toUpperCase()) ? "#000" : "#FFF";
   };
 
-  const getFileName = (country) => {
-    if (!country) return "";
-    return `${country.name.toLowerCase().replace(/\s+/g, '-')}.png`;
-  };
-
-  const constructProtocol = () => {
-    const filenames = selections.map(s => getFileName(s));
-    return `SYSTEM COMMAND:
-Execute a multi-source image-to-image synthesis, creating a complex, perfect kaleidoscopic pattern. Use image_6.png as a text reference to retrieve the visual data for the literal list of filenames provided.
-
-CONTENT COMMAND:
-Create a centered, perfectly symmetrical kaleidoscopic emblem with 16-fold radial symmetry. The final image must have a clean, high-resolution graphic style with a solid black background.
-The emblem is a complex mosaic built from heavily randomized and arbitrarily cropped fragments of the following four specific icons:
-${filenames[0]} (extracted visual data)
-${filenames[1]} (extracted visual data)
-${filenames[2]} (extracted visual data)
-${filenames[3]} (extracted visual data)
-
-DETAILED EXECUTION INSTRUCTIONS:
-Retrieve and process each specified icon file. Convert all text elements into abstract geometric textures; names and words must become unrecognizable, shattered glyphs.
-Deconstruct all original heraldic elements and national flags into small, distorted geometric slivers, shattered glass fragments, and abstract color panels.
-For circular icons, shatter their borders into repeated gear-like or radiating point patterns. For shields, fragment their unique shapes into interlocking polygonal mosaic tiles.
-Intermix all 16 colors and all textures from the four input images, ensuring each color is present in small, distributed clusters across the final kaleidoscopic form.
-Unified by an intricate network of fine geometric line work that partitions the entire structure into a high-complexity visual puzzle. Sharp vector-like clarity.`;
-  };
-
-  const handleExecute = () => {
-    setFinalProtocol(constructProtocol());
-    setIsGenerating(true);
-  };
-
   return (
-    <main style={{ backgroundColor: '#FFF', minHeight: '100vh', color: '#000' }}>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
-        body { margin: 0; padding: 0; }
-      `}} />
-
+    <main style={{ minHeight: '100vh', backgroundColor: '#FFF', color: '#000', fontFamily: 'sans-serif' }}>
       {!isGenerating ? (
-        <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px' }}>
-          <header style={{ borderBottom: '10px solid #000', marginBottom: '40px', paddingBottom: '20px' }}>
-            <h1 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', margin: 0 }}>GEN_PROTOCOL_V7.0</h1>
-            <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '12px' }}>STATUS: READY_FOR_SYNTHESIS</p>
-          </header>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px' }}>
+          <div style={{ borderBottom: '5px solid #000', marginBottom: '30px' }}>
+            <h1 style={{ fontSize: '3rem', margin: 0, fontWeight: '900' }}>GEN_PROTOCOL_V7</h1>
+          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-            {[0, 1, 2, 3].map((i) => (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+            {selections.map((s, i) => (
               <button key={i} onClick={() => setActiveSlot(i)} style={{ 
-                height: '220px', 
-                border: '6px solid #000', 
-                backgroundColor: selections[i]?.color || '#EEE', 
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
+                height: '150px', border: '4px solid #000', cursor: 'pointer',
+                backgroundColor: s?.color || '#EEE', color: getTextColor(s?.color),
+                fontWeight: 'bold', fontSize: '2rem'
               }}>
-                <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '10px', color: getTextColor(selections[i]?.color) }}>SOURCE_0{i + 1}</span>
-                <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', color: getTextColor(selections[i]?.color) }}>
-                  {selections[i] ? selections[i].code : "+"}
-                </span>
+                {s ? s.code : `SLOT_0${i+1}`}
               </button>
             ))}
           </div>
 
           <button 
             disabled={selections.includes(null)} 
-            onClick={handleExecute}
+            onClick={() => setIsGenerating(true)}
             style={{ 
-              width: '100%', marginTop: '30px', padding: '30px', 
-              background: '#000', color: '#FFF', 
-              fontFamily: '"Bebas Neue", sans-serif', fontSize: '3rem', 
-              cursor: 'pointer', opacity: selections.includes(null) ? 0.3 : 1,
-              border: 'none'
+              width: '100%', marginTop: '20px', padding: '20px', backgroundColor: '#000', color: '#FFF',
+              border: 'none', fontWeight: 'bold', fontSize: '1.5rem', cursor: 'pointer',
+              opacity: selections.includes(null) ? 0.2 : 1
             }}
-          >EXECUTE_SYNTHESIS</button>
+          >COMPILE_MARK</button>
         </div>
       ) : (
-        <div style={{ minHeight: '100vh', background: '#000', color: '#0F0', padding: '40px', fontFamily: '"Space Mono", monospace', fontSize: '13px' }}>
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <p>>>> INITIALIZING PROTOCOL V7.0...</p>
-            <p>>>> ASSET FILENAMES EXTRACTED...</p>
-            <div style={{ border: '1px solid #0F0', padding: '30px', margin: '20px 0', color: '#0F0', lineHeight: '1.6' }}>
-              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontFamily: 'inherit' }}>{finalProtocol}</pre>
-            </div>
-            <p>>>> SENDING TO GENERATIVE ENGINE...</p>
-            <p>>>> WAITING FOR MARK SYNTHESIS...</p>
-            <button 
-              onClick={() => setIsGenerating(false)} 
-              style={{ marginTop: '40px', background: '#0F0', color: '#000', border: 'none', padding: '15px 30px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.5rem', cursor: 'pointer' }}
-            >RETURN_TO_SELECTOR</button>
+        <div style={{ backgroundColor: '#000', color: '#0F0', minHeight: '100vh', padding: '40px', fontFamily: 'monospace' }}>
+          <p>>>> PROTOCOL_READY</p>
+          <div style={{ border: '1px solid #0F0', padding: '20px', margin: '20px 0' }}>
+            <pre style={{ whiteSpace: 'pre-wrap' }}>{protocolText}</pre>
           </div>
+          <button onClick={() => setIsGenerating(false)} style={{ background: '#0F0', border: 'none', padding: '10px 20px', cursor: 'pointer', fontWeight: 'bold' }}>BACK</button>
         </div>
       )}
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, overflowY: 'auto' }}>
-          <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: '#FFF', fontFamily: '"Space Mono", monospace' }}>LOADING_ASSET_FOR_SLOT_0{activeSlot + 1}</span>
-            <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Bebas Neue", sans-serif', cursor: 'pointer' }}>BACK</button>
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: '#000', overflowY: 'auto', zIndex: 100 }}>
+          <div style={{ position: 'sticky', top: 0, backgroundColor: '#F00', padding: '15px', display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ color: '#FFF', fontWeight: 'bold' }}>SELECT_ASSET</span>
+            <button onClick={() => setActiveSlot(null)}>CLOSE</button>
           </div>
           {countries.map(c => (
-            <button key={c.code} onClick={() => { const s = [...selections]; s[activeSlot] = c; setSelections(s); setActiveSlot(null); }} style={{ width: '100%', padding: '30px 40px', background: c.color, border: 'none', borderBottom: '1px solid rgba(0,0,0,0.1)', textAlign: 'left', cursor: 'pointer' }}>
-              <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '4rem', color: getTextColor(c.color) }}>{c.name}</span>
+            <button key={c.code} onClick={() => {
+              const newSels = [...selections];
+              newSels[activeSlot] = c;
+              setSelections(newSels);
+              setActiveSlot(null);
+            }} style={{ 
+              width: '100%', padding: '20px', textAlign: 'left', border: 'none', borderBottom: '1px solid #333',
+              backgroundColor: c.color, color: getTextColor(c.color), fontWeight: 'bold', fontSize: '1.2rem'
+            }}>
+              {c.name}
             </button>
           ))}
         </div>

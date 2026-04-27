@@ -1,14 +1,12 @@
-
-
 export const metadata = {
-  title: 'Team Fair Weather',
-  description: 'Neutral Pride for 2026',
-}
+  title: "Fair Weather Fandom",
+  description: "The definitive loyalty mapping tool for the undecided fan.",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0, backgroundColor: 'white' }}>{children}</body>
+      <body>{children}</body>
     </html>
-  )
+  );
 }

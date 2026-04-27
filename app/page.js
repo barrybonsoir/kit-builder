@@ -2,30 +2,30 @@
 import { useState } from 'react';
 
 const countries = [
-  { name: "Argentina", code: "ARG", color: "#74ACDF" }, { name: "Brazil", code: "BRA", color: "#009739" },
-  { name: "Croatia", code: "CRO", color: "#FF0000" }, { name: "Germany", code: "GER", color: "#000000" },
-  { name: "USA", code: "USA", color: "#0A3161" }, { name: "Japan", code: "JPN", color: "#BC002D" },
-  { name: "England", code: "ENG", color: "#FFFFFF" }, { name: "Mexico", code: "MEX", color: "#006847" },
-  { name: "Netherlands", code: "NED", color: "#F36C21" }, { name: "Italy", code: "ITA", color: "#008C45" },
-  { name: "France", code: "FRA", color: "#002395" }, { name: "Spain", code: "ESP", color: "#C60B1E" },
-  { name: "Canada", code: "CAN", color: "#FF0000" }, { name: "Morocco", code: "MAR", color: "#C1272D" },
-  { name: "Portugal", code: "POR", color: "#FF0000" }, { name: "Belgium", code: "BEL", color: "#EF3340" },
-  { name: "Colombia", code: "COL", color: "#FCD116" }, { name: "Uruguay", code: "URU", color: "#0081C6" },
-  { name: "Switzerland", code: "SUI", color: "#FF0000" }, { name: "Senegal", code: "SEN", color: "#00853F" },
-  { name: "Korea Republic", code: "KOR", color: "#CD2E3A" }, { name: "Denmark", code: "DEN", color: "#C60C30" },
-  { name: "Poland", code: "POL", color: "#DC143C" }, { name: "Australia", code: "AUS", color: "#00008B" },
-  { name: "Sweden", code: "SWE", color: "#006AA7" }, { name: "Ukraine", code: "UKR", color: "#FFD700" },
-  { name: "Austria", code: "AUT", color: "#ED2939" }, { name: "Ecuador", code: "ECU", color: "#FFD931" },
-  { name: "Peru", code: "PER", color: "#D91023" }, { name: "Chile", code: "CHI", color: "#0039A6" },
-  { name: "Nigeria", code: "NGA", color: "#008751" }, { name: "Cameroon", code: "CMR", color: "#478A3E" },
-  { name: "Ghana", code: "GHA", color: "#EF3340" }, { name: "Egypt", code: "EGY", color: "#C1272D" },
-  { name: "Tunisia", code: "TUN", color: "#E70013" }, { name: "Algeria", code: "ALG", color: "#006233" },
-  { name: "Saudi Arabia", code: "KSA", color: "#006C35" }, { name: "Iran", code: "IRN", color: "#239f40" },
-  { name: "Iraq", code: "IRQ", color: "#007A3D" }, { name: "Qatar", code: "QAT", color: "#8D1B3D" },
-  { name: "Panama", code: "PAN", color: "#DA121A" }, { name: "Costa Rica", code: "CRC", color: "#EF3340" },
-  { name: "Jamaica", code: "JAM", color: "#FED100" }, { name: "Norway", code: "NOR", color: "#BA0C2F" },
-  { name: "Turkey", code: "TUR", color: "#E30A17" }, { name: "Scotland", code: "SCO", color: "#005EB8" },
-  { name: "Wales", code: "WAL", color: "#D30731" }, { name: "New Zealand", code: "NZL", color: "#000000" }
+  { name: "Algeria", code: "ALG", color: "#006233" }, { name: "Argentina", code: "ARG", color: "#74ACDF" },
+  { name: "Australia", code: "AUS", color: "#00008B" }, { name: "Austria", code: "AUT", color: "#ED2939" },
+  { name: "Belgium", code: "BEL", color: "#EF3340" }, { name: "Bosnia Herzegovina", code: "BIH", color: "#002395" },
+  { name: "Brazil", code: "BRA", color: "#009739" }, { name: "Canada", code: "CAN", color: "#FF0000" },
+  { name: "Cape Verde", code: "CPV", color: "#003893" }, { name: "Colombia", code: "COL", color: "#FCD116" },
+  { name: "Croatia", code: "CRO", color: "#FF0000" }, { name: "Curacao", code: "CUR", color: "#002B7F" },
+  { name: "Czechia", code: "CZE", color: "#11457E" }, { name: "DR Congo", code: "COD", color: "#007FFF" },
+  { name: "Ecuador", code: "ECU", color: "#FFD931" }, { name: "Egypt", code: "EGY", color: "#C1272D" },
+  { name: "England", code: "ENG", color: "#FFFFFF" }, { name: "France", code: "FRA", color: "#002395" },
+  { name: "Germany", code: "GER", color: "#000000" }, { name: "Ghana", code: "GHA", color: "#EF3340" },
+  { name: "Haiti", code: "HAI", color: "#00209F" }, { name: "Iran", code: "IRN", color: "#239f40" },
+  { name: "Iraq", code: "IRQ", color: "#007A3D" }, { name: "Ivory Coast", code: "CIV", color: "#FF8800" },
+  { name: "Japan", code: "JPN", color: "#BC002D" }, { name: "Jordan", code: "JOR", color: "#CE1126" },
+  { name: "Mexico", code: "MEX", color: "#006847" }, { name: "Morocco", code: "MAR", color: "#C1272D" },
+  { name: "Netherlands", code: "NED", color: "#F36C21" }, { name: "New Zealand", code: "NZL", color: "#000000" },
+  { name: "Norway", code: "NOR", color: "#BA0C2F" }, { name: "Panama", code: "PAN", color: "#DA121A" },
+  { name: "Paraguay", code: "PAR", color: "#D52B1E" }, { name: "Portugal", code: "POR", color: "#FF0000" },
+  { name: "Qatar", code: "QAT", color: "#8D1B3D" }, { name: "Saudi Arabia", code: "KSA", color: "#006C35" },
+  { name: "Scotland", code: "SCO", color: "#005EB8" }, { name: "Senegal", code: "SEN", color: "#00853F" },
+  { name: "South Africa", code: "RSA", color: "#007749" }, { name: "South Korea", code: "KOR", color: "#CD2E3A" },
+  { name: "Spain", code: "ESP", color: "#C60B1E" }, { name: "Sweden", code: "SWE", color: "#006AA7" },
+  { name: "Switzerland", code: "SUI", color: "#FF0000" }, { name: "Tunisia", code: "TUN", color: "#E70013" },
+  { name: "Turkiye", code: "TUR", color: "#E30A17" }, { name: "United States", code: "USA", color: "#0A3161" },
+  { name: "Uruguay", code: "URU", color: "#0081C6" }, { name: "Uzbekistan", code: "UZB", color: "#0099B5" }
 ];
 
 const labels = ["NATION ONE", "NATION TWO", "NATION THREE", "NATION FOUR"];
@@ -49,30 +49,46 @@ export default function Home() {
     return light.includes(hex.toUpperCase()) ? "#000000" : "#FFFFFF";
   };
 
+  const getImagePath = (country) => {
+    if (!country) return "";
+    // Converts "Saudi Arabia" to "saudi-arabia.png" to match your file structure
+    const fileName = country.name.toLowerCase().replace(/\s+/g, '-');
+    return `/logos/${fileName}.png`;
+  };
+
   const RenderHeraldicCrest = () => {
     const s = selections;
-    const paths = s.map(n => `/logos/${n.code}.png`);
+    const p0 = getImagePath(s[0]);
+    const p1 = getImagePath(s[1]);
+    const p2 = getImagePath(s[2]);
+
     return (
       <svg width="500" height="600" viewBox="0 0 500 600" style={{ backgroundColor: s[3]?.color || '#000', border: '20px solid #000', boxShadow: '40px 40px 0px rgba(0,0,0,0.1)', display: 'block' }}>
         <defs>
           <pattern id="diagStripes" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="10" fill="#000" fillOpacity="0.15" /></pattern>
           <clipPath id="shieldPath"><path d="M50,20 L450,20 L450,400 C450,550 250,580 250,580 C250,580 50,550 50,400 Z" /></clipPath>
+          
           <pattern id="kaleido" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-             <image href={paths[1]} x="0" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.5" />
-             <image href={paths[1]} x="100" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.5" transform="scale(-1, 1) translate(-200, 0)" />
-             <image href={paths[1]} x="0" y="100" width="100" height="100" filter="grayscale(1)" opacity="0.5" transform="scale(1, -1) translate(0, -200)" />
+             <image href={p1} xlinkHref={p1} x="0" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.4" />
+             <image href={p1} xlinkHref={p1} x="100" y="0" width="100" height="100" filter="grayscale(1)" opacity="0.4" transform="scale(-1, 1) translate(-200, 0)" />
+             <image href={p1} xlinkHref={p1} x="0" y="100" width="100" height="100" filter="grayscale(1)" opacity="0.4" transform="scale(1, -1) translate(0, -200)" />
+             <image href={p1} xlinkHref={p1} x="100" y="100" width="100" height="100" filter="grayscale(1)" opacity="0.4" transform="scale(-1, -1) translate(-200, -200)" />
           </pattern>
         </defs>
+
         <rect width="500" height="600" fill="url(#diagStripes)" />
+
         <g clipPath="url(#shieldPath)">
           <rect width="500" height="600" fill={s[0]?.color} />
           <rect width="500" height="600" fill="url(#kaleido)" style={{ mixBlendMode: 'multiply' }} />
-          <image href={paths[0]} x="-50" y="-50" width="600" height="600" opacity="0.3" filter="contrast(300%) grayscale(1)" />
+          <image href={p0} xlinkHref={p0} x="0" y="0" width="500" height="500" opacity="0.25" filter="contrast(150%) grayscale(1)" />
+          
           <g transform="translate(250, 300)">
             <path d="M-160,0 L0,-190 L160,0 L0,190 Z" fill="#000" />
-            <image href={paths[2]} x="-110" y="-110" width="220" height="220" filter="invert(1) brightness(1.5)" />
+            <image href={p2} xlinkHref={p2} x="-110" y="-110" width="220" height="220" filter="invert(1) brightness(1.2)" />
           </g>
         </g>
+
         <rect x="0" y="550" width="500" height="50" fill="#000" />
         <text x="250" y="582" fontFamily="monospace" fontSize="11" fill="#FFF" textAnchor="middle" letterSpacing="4">REF: {s[0]?.code}x{s[1]?.code}x{s[2]?.code} // COMPOSITE_V4</text>
       </svg>

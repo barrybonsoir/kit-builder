@@ -26,44 +26,42 @@ export default function Home() {
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
           pointer-events: none;
-          opacity: 0.15;
+          opacity: 0.18;
           z-index: 1;
           background-image: 
-            linear-gradient(#FF0000 1.5px, transparent 1.5px),
-            linear-gradient(90deg, #FF0000 1.5px, transparent 1.5px),
-            /* X and O Tactical Markings */
-            url('data:image/svg+xml;utf8,<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg"><path d="M10 10 L30 30 M30 10 L10 30" stroke="black" stroke-width="1.5"/><circle cx="100" cy="40" r="15" fill="none" stroke="black" stroke-width="1.5"/><path d="M60 100 Q 90 70 130 110" stroke="rgba(255,0,0,0.5)" stroke-width="2" fill="none" stroke-dasharray="4"/></svg>');
-          background-size: 60px 60px, 60px 60px, 250px 250px;
+            linear-gradient(#FF0000 1px, transparent 1px),
+            linear-gradient(90deg, #FF0000 1px, transparent 1px),
+            /* X and O Tactical Markings based on Göztepe diagrams */
+            url('data:image/svg+xml;utf8,<svg width="180" height="180" xmlns="http://www.w3.org/2000/svg"><path d="M20 20 L50 50 M50 20 L20 50" stroke="black" stroke-width="2"/><circle cx="120" cy="40" r="18" fill="none" stroke="black" stroke-width="2"/><path d="M40 120 Q 80 80 150 140" stroke="red" stroke-width="2.5" fill="none" stroke-dasharray="5,5"/><text x="10" y="170" font-family="monospace" font-size="8" fill="red">ZONE_14</text></svg>');
+          background-size: 80px 80px, 80px 80px, 350px 350px;
         }
 
         .grid-container {
           display: grid;
-          grid-template-columns: repeat(2, 1fr); /* FORCED SYMMETRY */
+          grid-template-columns: repeat(2, 1fr);
           gap: 60px 100px;
         }
 
         @media (max-width: 768px) {
-          .grid-container {
-            grid-template-columns: 1fr;
-          }
+          .grid-container { grid-template-columns: 1fr; }
         }
 
         input:focus {
-          border-bottom: 6px solid #FF0000 !important;
-          transition: 0.2s;
+          border-bottom: 8px solid #FF0000 !important;
+          outline: none;
         }
       `}</style>
 
       {/* Top Status Bar */}
-      <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', padding: '15px 20px', borderBottom: '2px solid #000', backgroundColor: '#FFF' }}>
-        <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem' }}>// ANALYSIS_MODE: ALPHA // NEUTRALITY_BUILD_v2.1</span>
-        <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.65rem', color: '#FF0000', fontWeight: 'bold' }}>● STATUS: ACTIVE</span>
+      <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', padding: '15px 20px', borderBottom: '3px solid #000', backgroundColor: '#FFF' }}>
+        <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem', fontWeight: 'bold' }}>// SYSTEM: FAIR_WEATHER_FANDOM // UNIT_01</span>
+        <span style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.7rem', color: '#FF0000', fontWeight: 'bold' }}>● STATUS: ACTIVE_SYNTHESIS</span>
       </div>
 
       <header style={{ 
         textAlign: 'center', 
         padding: '80px 20px 60px 20px', 
-        borderBottom: '20px solid #FF0000',
+        borderBottom: '25px solid #FF0000',
         position: 'relative',
         zIndex: 10,
         backgroundColor: '#FFFFFF',
@@ -75,13 +73,51 @@ export default function Home() {
         <img 
           src="/logo-red.png" 
           alt="Fair Weather Fandom" 
-          style={{ 
-            width: '100%', 
-            maxWidth: '750px', 
-            height: 'auto',
-            marginBottom: '40px'
-          }} 
+          style={{ width: '100%', maxWidth: '800px', height: 'auto', marginBottom: '40px' }} 
         />
         
-        {/* INSTRUCTIONAL COPY RESTORED */}
-        <div
+        <div style={{ borderTop: '5px solid #000', borderBottom: '5px solid #000', padding: '20px 0', width: '100%', maxWidth: '750px' }}>
+          <p style={{ fontSize: '1.5rem', fontWeight: '900', textTransform: 'uppercase', margin: 0, letterSpacing: '0.03em' }}>
+            Pick up to four countries that you happen to love.
+          </p>
+          <p style={{ fontSize: '1rem', fontWeight: '600', marginTop: '10px', textTransform: 'uppercase', color: '#FF0000' }}>
+            A piece of custom art will be generated to cover all your bases.
+          </p>
+        </div>
+      </header>
+
+      <div style={{ maxWidth: '1000px', margin: '80px auto', padding: '0 30px', position: 'relative', zIndex: 10 }}>
+        
+        <div className="grid-container">
+          {[1,2,3,4].map(i => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '20px', height: '20px', background: '#000' }}></div>
+                <label style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '5rem', lineHeight: '1' }}>NATION</label>
+              </div>
+              <input 
+                list="country-list"
+                placeholder="TYPE_ID"
+                style={{ border: 'none', borderBottom: '10px solid #000', background: 'transparent', padding: '15px 0', fontSize: '2rem', fontWeight: '900', textTransform: 'uppercase', borderRadius: '0' }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <datalist id="country-list">
+          {countries.map(c => <option key={c} value={c} />)}
+        </datalist>
+
+        <div style={{ marginTop: '120px', display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => setShowArt(true)} style={{ backgroundColor: '#000', color: '#FFF', padding: '35px 0', fontSize: '2.8rem', fontFamily: '"Bebas Neue", sans-serif', letterSpacing: '0.2em', border: 'none', cursor: 'pointer', width: '100%', maxWidth: '850px', boxShadow: '15px 15px 0px #FF0000' }}>
+            GENERATE LOYALTY ART
+          </button>
+        </div>
+      </div>
+
+      <footer style={{ marginTop: '150px', padding: '80px 20px', borderTop: '5px solid #000', textAlign: 'center', fontFamily: '"Space Mono", monospace', fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
+        FAIR WEATHER FANDOM // CHICAGO_CORE // ASSET_ID: 2026_FWF // NO_REFUNDS
+      </footer>
+    </main>
+  );
+}

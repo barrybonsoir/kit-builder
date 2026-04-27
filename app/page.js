@@ -82,32 +82,84 @@ export default function Home() {
 
   const RenderHeraldicCrest = () => {
     const s = selections;
+    const logoPaths = s.map(n => `/logos/${n.code}.png`);
+
     return (
-      <svg width="500" height="600" viewBox="0 0 500 600" style={{ filter: 'drop-shadow(30px 30px 0px rgba(0,0,0,0.15))' }}>
-        <defs>
-          <clipPath id="shieldClip">
-            <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" />
-          </clipPath>
-        </defs>
-        <path d="M80,100 L50,200 L80,350 M420,100 L450,200 L420,350" fill="none" stroke={s[3]?.color} strokeWidth="40" strokeOpacity="0.3" />
-        <path d="M100,50 L400,50 L400,400 Q400,550 250,580 Q100,550 100,400 Z" fill={s[0]?.color} stroke="#000" strokeWidth="12" />
-        <g clipPath="url(#shieldClip)" opacity="0.5">
-          <rect x="250" y="50" width="150" height="550" fill={s[1]?.color} />
-          <path d="M100,280 L400,280" stroke="#000" strokeWidth="8" />
-        </g>
-        <g transform="translate(250, 250)">
-          <circle r="90" fill="#000" />
-          <circle r="82" fill={s[2]?.color} />
-          <path d="M-40,-40 L40,40 M40,-40 L-40,40" stroke="#000" strokeWidth="15" />
-          <rect x="-20" y="-20" width="40" height="40" fill="#000" />
-        </g>
-        <rect x="150" y="480" width="200" height="60" fill="#000" />
-        <text x="250" y="525" style={{ fontFamily: 'Bebas Neue', fontSize: '48px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '2px' }}>{s[0]?.code}</text>
-        <path d="M100,50 L400,50" stroke="#000" strokeWidth="30" />
-        <text x="250" y="38" style={{ fontFamily: 'Space Mono', fontSize: '11px', fill: '#FFF', textAnchor: 'middle', letterSpacing: '5px' }}>
-          PRO_GEN // {s[1]?.code} // {s[2]?.code}
-        </text>
-      </svg>
+      <div style={{ 
+        width: '500px', 
+        height: '600px', 
+        backgroundColor: s[3]?.color || '#000', 
+        position: 'relative',
+        overflow: 'hidden',
+        border: '20px solid #000',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '40px 40px 0px rgba(0,0,0,0.1)'
+      }}>
+        {/* L1: BACKGROUND TEXTURE */}
+        <img 
+          src={logoPaths[0]} 
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '200%',
+            opacity: 0.2,
+            filter: 'grayscale(1) contrast(400%) invert(1)',
+            transform: 'rotate(-15deg)',
+            zIndex: 1
+          }} 
+        />
+
+        {/* L2: SYMMETRICAL BLEND */}
+        <div style={{
+          position: 'absolute',
+          inset: '0',
+          display: 'flex',
+          mixBlendMode: 'difference',
+          zIndex: 2,
+          opacity: 0.9
+        }}>
+          <img src={logoPaths[1]} alt="" style={{ width: '50%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)', filter: 'contrast(200%)' }} />
+          <img src={logoPaths[1]} alt="" style={{ width: '50%', height: '100%', objectFit: 'cover', filter: 'contrast(200%)' }} />
+        </div>
+
+        {/* L3: GEOMETRIC CORE */}
+        <div style={{
+          position: 'relative',
+          width: '340px',
+          height: '340px',
+          backgroundColor: '#000',
+          clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 3,
+          mixBlendMode: 'normal'
+        }}>
+          <img src={logoPaths[2]} alt="" style={{ width: '65%', filter: 'invert(1) brightness(2)' }} />
+        </div>
+
+        {/* L4: OVERLAY SYSTEM DATA */}
+        <div style={{
+          position: 'absolute',
+          bottom: '0',
+          left: '0',
+          width: '100%',
+          backgroundColor: '#000',
+          color: '#FFF',
+          fontFamily: '"Space Mono", monospace',
+          fontSize: '10px',
+          padding: '12px 20px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          zIndex: 10,
+          letterSpacing: '2px'
+        }}>
+          <span>REF: {s[0]?.code}x{s[1]?.code}x{s[2]?.code}</span>
+          <span>COMPOSITE_BUILD_26</span>
+        </div>
+      </div>
     );
   };
 
@@ -135,7 +187,7 @@ export default function Home() {
             <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '700px', marginBottom: '20px' }} />
             <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
               <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em' }}>
-                FOR THE UNDECIDED. SELECT FOUR NATIONS TO SYNTHESIZE A DYNAMIC CREST.
+                SYNTHESIZING HERALDRY FOR THE UNDECIDED. 48 NATIONS // INFINITE COMBINATIONS.
               </p>
             </div>
           </header>
@@ -159,7 +211,7 @@ export default function Home() {
 
             <div style={{ marginTop: '60px', textAlign: 'center' }}>
               <button 
-                onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 3000); }}
+                onClick={() => { setIsGenerating(true); setTimeout(() => { setIsGenerating(false); setShowResult(true); }, 2500); }}
                 disabled={selections.includes(null)}
                 style={{ 
                   backgroundColor: '#000', color: '#FFF', padding: '30px 0', width: '100%', 
@@ -168,7 +220,7 @@ export default function Home() {
                   opacity: selections.includes(null) ? 0.3 : 1, boxShadow: '15px 15px 0px #FF0000', letterSpacing: '0.1em'
                 }}
               >
-                GENERATE CREST
+                COMPILE EMBLEM
               </button>
             </div>
           </div>
@@ -185,7 +237,7 @@ export default function Home() {
       {activeSlot !== null && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 3000, overflowY: 'auto' }}>
           <div style={{ position: 'sticky', top: 0, background: '#FF0000', padding: '15px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 3001 }}>
-             <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.1rem' }}>SELECT DATA // {nationLabels[activeSlot]}</span>
+             <span style={{ color: '#FFF', fontFamily: 'Space Mono', fontSize: '1.1rem' }}>INPUT_STREAM // {nationLabels[activeSlot]}</span>
              <button onClick={() => setActiveSlot(null)} style={{ background: '#000', color: '#FFF', border: 'none', padding: '8px 15px', fontFamily: 'Bebas Neue', fontSize: '1rem', cursor: 'pointer' }}>CLOSE</button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -200,9 +252,9 @@ export default function Home() {
 
       {isGenerating && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#000', zIndex: 4000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: '#FFF' }}>SYNTHESIZING_HERALDRY</h2>
+          <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '5rem', color: '#FFF' }}>GENERATING_EMBLEM</h2>
           <div style={{ width: '300px', height: '6px', background: '#222', marginTop: '20px' }}>
-            <div style={{ height: '100%', background: '#FF0000', animation: 'load 3s forwards' }} />
+            <div style={{ height: '100%', background: '#FF0000', animation: 'load 2.5s forwards' }} />
           </div>
         </div>
       )}

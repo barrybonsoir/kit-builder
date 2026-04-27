@@ -171,4 +171,84 @@ export default function Home() {
            <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexDirection: 'column' }}>
               
               {/* THE DYNAMIC SVG CREST */}
-              <svg width="500" height="550" viewBox="0 0 500 550" style={{ filter: 'drop-shadow(3
+              <svg width="500" height="550" viewBox="0 0 500 550" style={{ filter: 'drop-shadow(30px 30px 0px #000)' }}>
+                {/* Shield Path */}
+                <path d="M50 50 L450 50 L450 380 L250 500 L50 380 Z" fill={selections[0].color} />
+                <path d="M250 50 L450 50 L450 380 L250 250 Z" fill={selections[1].color} />
+                <path d="M250 250 L450 380 L250 500 Z" fill={selections[2].color} />
+                <path d="M50 380 L250 500 L250 250 Z" fill={selections[3].color} />
+
+                {/* Tactical Divider */}
+                <path d="M247 50 L253 50 L253 500 L247 500 Z" fill="#000" />
+                <path d="M50 247 L450 247 L450 253 L50 253 Z" fill="#000" />
+
+                {/* Core Icon */}
+                <circle cx="250" cy="250" r="90" fill="#000" />
+                <circle cx="250" cy="250" r="80" fill={selections[0].color} />
+                <path d="M210 250 L290 250 M250 210 L250 290" stroke="#000" strokeWidth="12" />
+                <circle cx="250" cy="250" r="30" fill="#000" />
+                <circle cx="250" cy="250" r="10" fill="#FFF" />
+
+                {/* Country Codes */}
+                <style>{`.c-text { font-family: 'Bebas Neue', sans-serif; font-size: 50px; text-anchor: middle; }`}</style>
+                <text x="110" y="120" className="c-text" fill={getTextColor(selections[0].color)}>{selections[0].code}</text>
+                <text x="390" y="120" className="c-text" fill={getTextColor(selections[1].color)}>{selections[1].code}</text>
+                <text x="390" y="380" className="c-text" fill={getTextColor(selections[2].color)}>{selections[2].code}</text>
+                <text x="110" y="380" className="c-text" fill={getTextColor(selections[3].color)}>{selections[3].code}</text>
+                
+                {/* Frame */}
+                <path d="M50 50 L450 50 L450 380 L250 500 L50 380 Z" fill="none" stroke="#000" strokeWidth="20" />
+              </svg>
+
+              {!uiHidden && (
+                <div style={{ textAlign: 'center', fontFamily: '"Space Mono", monospace' }}>
+                    <div style={{ background: '#000', color: '#FFF', padding: '10px 20px', fontSize: '0.8rem' }}>
+                        ID: FWF-2026-X-{selections.map(s => s.code).join('-')}
+                    </div>
+                </div>
+              )}
+           </div>
+
+           {!uiHidden && (
+             <div style={{ display: 'flex', gap: '15px', marginTop: '60px' }}>
+                <button 
+                  onClick={() => { setUiHidden(true); setTimeout(() => setUiHidden(false), 5000); }}
+                  style={{ background: '#FF0000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.8rem', cursor: 'pointer', boxShadow: '10px 10px 0px #000' }}
+                >
+                  CLEAN VIEW [CAPTURE]
+                </button>
+                <button 
+                  onClick={() => { setShowResult(false); setSelections([null, null, null, null]); }}
+                  style={{ background: '#000', color: '#FFF', padding: '20px 40px', border: 'none', fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.8rem', cursor: 'pointer' }}
+                >
+                  NEW SESSION [X]
+                </button>
+             </div>
+           )}
+        </div>
+      )}
+
+      {isGenerating && (
+        <div className="overlay">
+          <h2 style={{ color: '#FFF', fontFamily: '"Bebas Neue", sans-serif', fontSize: '6rem', margin: 0 }}>SYNTHESIZING</h2>
+          <p style={{ color: '#FF0000', fontFamily: '"Space Mono", monospace', marginTop: '10px' }}>CROSS-REFERENCING LOGO_DATA...</p>
+          <div className="bar-container"><div className="bar-fill"></div></div>
+        </div>
+      )}
+
+      {activeSlot !== null && (
+        <div className="overlay" style={{ display: 'block', overflowY: 'auto' }}>
+          <div style={{ position: 'sticky', top: 0, background: '#000', padding: '20px', display: 'flex', justifyContent: 'space-between', borderBottom: '5px solid #FFF', zIndex: 1100 }}>
+            <h3 style={{ color: '#FFF', fontFamily: '"Space Mono", monospace', margin: 0 }}>SELECT {nationLabels[activeSlot]}</h3>
+            <button onClick={() => setActiveSlot(null)} style={{ background: '#FF0000', color: '#FFF', border: 'none', padding: '10px 20px', fontFamily: '"Space Mono", monospace', cursor: 'pointer' }}>BACK</button>
+          </div>
+          {countries.map((c) => (
+            <button key={c.name} className="country-row" style={{ backgroundColor: c.color, color: getTextColor(c.color) }} onClick={() => selectCountry(c)}>
+              {c.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </main>
+  );
+}

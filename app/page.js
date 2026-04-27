@@ -106,7 +106,7 @@ export default function Home() {
         <img src="/logo-red.png" alt="Fair Weather Fandom" style={{ width: '100%', maxWidth: '750px', marginBottom: '30px' }} />
         <div style={{ borderTop: '4px solid #000', borderBottom: '4px solid #000', padding: '15px 0', width: '100%', maxWidth: '700px', margin: '0 auto' }}>
           <p style={{ fontFamily: '"Space Mono", monospace', fontSize: '1rem', margin: 0 }}>
-            Pick up to four countries to generate your custom loyalty art.
+            For when you just can't decide who to root for. Pick up to four countries participating in this year's tournanent. The tool will then generate your custom loyalty art.
           </p>
         </div>
       </header>

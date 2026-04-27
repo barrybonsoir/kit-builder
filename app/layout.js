@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Fair Weather Fandom",
-  description: "What to choose when you don't know who to choose.",
+  description: "Why cheer for just one?",
 };
 
 export default function RootLayout({ children }) {

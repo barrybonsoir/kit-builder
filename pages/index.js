@@ -70,46 +70,52 @@ export default function Home() {
       ));
 
       ctx.clearRect(0, 0, size, size);
+      const shapes = ['shield', 'tightRing', 'arcRing', 'wedge'];
 
-      // 16-LAYER CONCENTRIC BLOOM
-      for (let l = 0; l < 16; l++) {
+      for (let l = 0; l < 12; l++) {
         let folds, layerScale, layerShape, wandSeed, offsetRadius;
-        const layerImg = l < 4 ? imgs[l] : imgs[Math.floor(Math.random() * 4)];
 
-        // ZONE 1: THE NUCLEUS (Bottom 4)
+        // ZONE 1: THE CORE (Bottom 4 - Branded Center Rings)
         if (l < 4) {
-          folds = [6, 8, 12][Math.floor(Math.random() * 3)];
-          layerScale = 0.35;
-          layerShape = 'tightRing';
-          wandSeed = Math.random() * 360;
+          folds = [6, 8][Math.floor(Math.random() * 2)];
+          layerScale = 0.25 + (l * 0.05); 
+          layerShape = 'tightRing'; 
+          wandSeed = Math.random() * 360; 
           offsetRadius = 0; 
+          
+          for (let i = 0; i < folds; i++) {
+             drawMandalaShard(ctx, imgs[l], center, center, size * layerScale, i * (360/folds), layerShape, wandSeed, 1.0, 0, 0);
+          }
+          continue; 
         }
-        // ZONE 2: HERO BLOOM (Middle 4)
+        
+        // ZONE 2: HERO SHIELDS (Middle 4 - High Legibility)
         else if (l < 8) {
           folds = [4, 6][Math.floor(Math.random() * 2)];
           layerScale = 0.6;
           layerShape = 'shield';
-          wandSeed = 0; // Locked for legibility
-          offsetRadius = size * 0.12; 
-        }
-        // ZONE 3: BRUTALIST SURFACE (Top 8)
-        else {
-          folds = [16, 24, 32][Math.floor(Math.random() * 3)];
-          layerScale = 0.2 + (Math.random() * 0.8);
-          layerShape = ['arcRing', 'wedge', 'shield'][Math.floor(Math.random() * 3)];
-          wandSeed = Math.random() * 360;
-          offsetRadius = size * 0.22;
+          wandSeed = 0; 
+          offsetRadius = size * 0.15; 
         }
 
-        const cropX = (Math.random() - 0.5) * (size * 0.25);
-        const cropY = (Math.random() - 0.5) * (size * 0.25);
+        // ZONE 3: PERIPHERAL AIR (Top 4 - Minimalist Detail/Grit)
+        else {
+          folds = [8, 12, 16][Math.floor(Math.random() * 3)];
+          layerScale = 0.2 + (Math.random() * 0.7);
+          layerShape = shapes[Math.floor(Math.random() * shapes.length)];
+          wandSeed = Math.random() * 360;
+          offsetRadius = size * 0.35; 
+        }
+
+        const layerImg = imgs[Math.floor(Math.random() * 4)];
+        const cropX = (Math.random() - 0.5) * (size * 0.3);
+        const cropY = (Math.random() - 0.5) * (size * 0.3);
         const ringRotation = Math.random() * 360;
 
         for (let i = 0; i < folds; i++) {
           const angle = (i * (360 / folds) + ringRotation) * Math.PI / 180;
           const bloomX = center + offsetRadius * Math.cos(angle);
           const bloomY = center + offsetRadius * Math.sin(angle);
-
           drawMandalaShard(ctx, layerImg, bloomX, bloomY, size * layerScale, i * (360/folds), layerShape, wandSeed, 1.0, cropX, cropY);
         }
       }
@@ -124,12 +130,12 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>BLOOM_SYNTH_V2.2.3</title></Head>
+      <Head><title>BLUEPRINT_SYNTH_V2.2.4</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>CONCENTRIC_REVEAL_ENGINE</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SEQUENTIAL_BLUEPRINT_v2.2</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -138,7 +144,7 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'CALCULATING_BLOOM...' : 'INITIATE_SYNTHESIS'}
+              {isBuilding ? 'LOCKING_SYMMETRY...' : 'INITIATE_BLUEPRINT'}
             </button>
           </>
         ) : (

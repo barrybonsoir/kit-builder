@@ -27,7 +27,6 @@ export default function Home() {
     ctx.beginPath();
     const shardBase = size / 2.8; 
     
-    // Geometric masks favoring the "Ruler" aesthetic
     if (shapeType === 'shield') {
       ctx.moveTo(shardBase * 0.5, -shardBase / 3.5);
       ctx.lineTo(shardBase * 1.3, -shardBase / 3.5);
@@ -35,11 +34,15 @@ export default function Home() {
       ctx.lineTo(shardBase * 0.5, shardBase / 3.5);
       ctx.quadraticCurveTo(shardBase * 0.35, 0, shardBase * 0.5, -shardBase / 3.5);
     } else if (shapeType === 'arcRing') {
-      ctx.arc(0, 0, shardBase * 1.25, -7 * Math.PI / 180, 7 * Math.PI / 180);
-      ctx.arc(0, 0, shardBase * 1.0, 7 * Math.PI / 180, -7 * Math.PI / 180, true);
+      ctx.arc(0, 0, shardBase * 1.25, -15 * Math.PI / 180, 15 * Math.PI / 180);
+      ctx.arc(0, 0, shardBase * 0.8, 15 * Math.PI / 180, -15 * Math.PI / 180, true);
+    } else if (shapeType === 'fullRing') {
+      // Wide reveal for the foundation layers
+      ctx.arc(0, 0, size * 0.45, 0, Math.PI * 2);
+      ctx.arc(0, 0, size * 0.2, 0, Math.PI * 2, true);
     } else {
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, size / 1.8, -6 * Math.PI / 180, 6 * Math.PI / 180);
+      ctx.arc(0, 0, size / 1.8, -8 * Math.PI / 180, 8 * Math.PI / 180);
     }
     ctx.closePath();
     ctx.clip();
@@ -70,26 +73,40 @@ export default function Home() {
       ));
 
       ctx.clearRect(0, 0, size, size);
-      const shapes = ['shield', 'arcRing', 'wedge'];
 
-      // 12-Layer Stack: Guaranteed all 4 PNGs represented
-      for (let l = 0; l < 12; l++) {
-        // Force layers 0-3 to use each of your 4 selections
-        const layerImg = l < 4 ? imgs[l] : imgs[Math.floor(Math.random() * 4)];
-        
-        // Low fold counts (6, 8, 12) make the logos recognizable
-        const folds = l < 8 ? [6, 8, 12][Math.floor(Math.random() * 3)] : [16, 24][Math.floor(Math.random() * 2)];
-        
-        const layerScale = 0.25 + (l * 0.06); 
-        const layerShape = shapes[Math.floor(Math.random() * shapes.length)];
-        const layerWand = Math.random() * 360;
-        
-        // Symmetrical Crop Lock for consistency
-        const cropX = (Math.random() - 0.5) * (size * 0.35);
-        const cropY = (Math.random() - 0.5) * (size * 0.35);
+      // LAYER STACK 1: THE FOUNDATION (Bottom 4)
+      // Large concentric rings to establish color and logo-base
+      for (let l = 0; l < 4; l++) {
+        drawEmblemShard(ctx, imgs[l], center, center, size, l * 90, 'fullRing', 0, 1.2, 0, 0);
+      }
+
+      // LAYER STACK 2: THE OUTRIGGERS (Middle 4)
+      // Recognizable badges floating at the edges for the "Rule" factor
+      for (let l = 0; l < 4; l++) {
+        const folds = [4, 6, 8][Math.floor(Math.random() * 3)];
+        const wand = Math.random() * 360;
+        const scale = 0.5 + (Math.random() * 0.3);
+        // Minimal crop to keep logo legible
+        const cX = (Math.random() - 0.5) * 100;
+        const cY = (Math.random() - 0.5) * 100;
 
         for (let i = 0; i < folds; i++) {
-          drawEmblemShard(ctx, layerImg, center, center, size * layerScale, i * (360/folds), layerShape, layerWand, 0.9, cropX, cropY);
+          drawEmblemShard(ctx, imgs[l], center, center, size * 0.9, i * (360/folds), 'shield', wand, scale, cX, cY);
+        }
+      }
+
+      // LAYER STACK 3: THE SURFACE (Top 4)
+      // High-frequency Technical Brutalist shards for the grit
+      for (let l = 0; l < 4; l++) {
+        const folds = [16, 24, 32][Math.floor(Math.random() * 3)];
+        const shape = ['arcRing', 'wedge'][Math.floor(Math.random() * 2)];
+        const wand = Math.random() * 360;
+        const scale = 0.2 + (Math.random() * 0.8);
+        const cX = (Math.random() - 0.5) * size;
+        const cY = (Math.random() - 0.5) * size;
+
+        for (let i = 0; i < folds; i++) {
+          drawEmblemShard(ctx, imgs[Math.floor(Math.random() * 4)], center, center, size, i * (360/folds), shape, wand, scale, cX, cY);
         }
       }
 
@@ -103,13 +120,13 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>BRAND_PLAYBOOK_V2.1.3</title></Head>
+      <Head><title>BRAND_PLAYBOOK_V2.2.0</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>EMBLEM_SYNTHESIS_V2</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>REVEAL_SYNTHESIS_ENGINE</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -118,12 +135,12 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'SYNTHESIZING...' : 'INITIATE_BUILD'}
+              {isBuilding ? 'LOCKING_FOUNDATION...' : 'INITIATE_REVEAL'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Generated Brand Asset" />
+            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Generated Asset" />
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
               <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RESET</button>
               <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>REMIX</button>

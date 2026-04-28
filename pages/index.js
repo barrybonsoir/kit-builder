@@ -24,24 +24,28 @@ export default function Home() {
     ctx.translate(x, y);
     ctx.rotate(rotation * Math.PI / 180);
     ctx.beginPath();
-    const shardBase = size / 2.5; 
     
-    if (shapeType === 'shield') {
-      ctx.moveTo(shardBase * 0.4, -shardBase / 4);
-      ctx.lineTo(shardBase * 1.2, -shardBase / 4);
-      ctx.quadraticCurveTo(shardBase * 1.4, 0, shardBase * 1.2, shardBase / 4);
-      ctx.lineTo(shardBase * 0.4, shardBase / 4);
-      ctx.quadraticCurveTo(shardBase * 0.3, 0, shardBase * 0.4, -shardBase / 4);
-    } else if (shapeType === 'tightRing') {
-      ctx.arc(0, 0, size * 0.12, 0, Math.PI * 2);
-      ctx.arc(0, 0, size * 0.04, 0, Math.PI * 2, true);
-    } else if (shapeType === 'arcRing') {
-      ctx.arc(0, 0, shardBase * 1.1, -12 * Math.PI / 180, 12 * Math.PI / 180);
-      ctx.arc(0, 0, shardBase * 0.7, 12 * Math.PI / 180, -12 * Math.PI / 180, true);
-    } else {
+    const s = size / 2;
+    // ROUNDED SHAPES: Pivoting from sharp wedges to flower-like petals
+    if (shapeType === 'petal') {
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, size / 2, -10 * Math.PI / 180, 10 * Math.PI / 180);
+      ctx.bezierCurveTo(s * 0.5, -s * 0.5, s * 1.5, -s * 0.2, s, 0);
+      ctx.bezierCurveTo(s * 1.5, s * 0.2, s * 0.5, s * 0.5, 0, 0);
+    } else if (shapeType === 'hex') {
+      for (let i = 0; i < 6; i++) {
+        const angle = (i * 60) * Math.PI / 180;
+        ctx.lineTo(s * 0.8 * Math.cos(angle), s * 0.8 * Math.sin(angle));
+      }
+    } else if (shapeType === 'shield') {
+      ctx.moveTo(s * 0.2, -s * 0.3);
+      ctx.lineTo(s, -s * 0.3);
+      ctx.quadraticCurveTo(s * 1.2, 0, s, s * 0.3);
+      ctx.lineTo(s * 0.2, s * 0.3);
+      ctx.closePath();
+    } else {
+      ctx.arc(0, 0, s * 0.8, 0, Math.PI * 2);
     }
+    
     ctx.closePath();
     ctx.clip();
     ctx.rotate(wandSeed * Math.PI / 180);
@@ -70,59 +74,54 @@ export default function Home() {
       ));
 
       ctx.clearRect(0, 0, size, size);
-      const shapes = ['shield', 'tightRing', 'arcRing', 'wedge'];
 
+      // 12-LAYER SOCCER-FLOWER HIERARCHY
       for (let l = 0; l < 12; l++) {
         let folds, layerScale, layerShape, wandSeed, offsetRadius;
+        const layerImg = imgs[l % 4];
 
-        // ZONE 1: THE CORE (Bottom 4 - Branded Center Rings)
+        // ZONE 1: THE CORE (Hexagonal Pentagons)
         if (l < 4) {
-          folds = [6, 8][Math.floor(Math.random() * 2)];
-          layerScale = 0.25 + (l * 0.05); 
-          layerShape = 'tightRing'; 
-          wandSeed = Math.random() * 360; 
-          offsetRadius = 0; 
-          
-          for (let i = 0; i < folds; i++) {
-             drawMandalaShard(ctx, imgs[l], center, center, size * layerScale, i * (360/folds), layerShape, wandSeed, 1.0, 0, 0);
-          }
-          continue; 
-        }
-        
-        // ZONE 2: HERO SHIELDS (Middle 4 - High Legibility)
-        else if (l < 8) {
-          folds = [4, 6][Math.floor(Math.random() * 2)];
-          layerScale = 0.6;
-          layerShape = 'shield';
-          wandSeed = 0; 
-          offsetRadius = size * 0.15; 
-        }
-
-        // ZONE 3: PERIPHERAL AIR (Top 4 - Minimalist Detail/Grit)
-        else {
-          folds = [8, 12, 16][Math.floor(Math.random() * 3)];
-          layerScale = 0.2 + (Math.random() * 0.7);
-          layerShape = shapes[Math.floor(Math.random() * shapes.length)];
+          folds = [5, 6][l % 2]; // Evoking soccer ball panels
+          layerScale = 0.3 + (l * 0.05);
+          layerShape = 'hex';
           wandSeed = Math.random() * 360;
-          offsetRadius = size * 0.35; 
+          offsetRadius = 0; // Locked center
+        }
+        // ZONE 2: HERO PETALS (Bloom Mid-ground)
+        else if (l < 8) {
+          folds = [6, 8][Math.floor(Math.random() * 2)];
+          layerScale = 0.55;
+          layerShape = 'shield';
+          wandSeed = 0; // Upright for branding legibility
+          offsetRadius = size * 0.14; 
+        }
+        // ZONE 3: OUTER REVEAL (Aired-out finish)
+        else {
+          folds = [12, 16, 20][Math.floor(Math.random() * 3)];
+          layerScale = 0.2 + (Math.random() * 0.5);
+          layerShape = 'petal';
+          wandSeed = Math.random() * 360;
+          // Capped offset to ensure it stays in the box
+          offsetRadius = size * 0.32; 
         }
 
-        const layerImg = imgs[Math.floor(Math.random() * 4)];
-        const cropX = (Math.random() - 0.5) * (size * 0.3);
-        const cropY = (Math.random() - 0.5) * (size * 0.3);
-        const ringRotation = Math.random() * 360;
+        const cropX = (Math.random() - 0.5) * (size * 0.2);
+        const cropY = (Math.random() - 0.5) * (size * 0.2);
+        const ringRotation = (l * 15); // Progressive rotation for depth
 
         for (let i = 0; i < folds; i++) {
           const angle = (i * (360 / folds) + ringRotation) * Math.PI / 180;
           const bloomX = center + offsetRadius * Math.cos(angle);
           const bloomY = center + offsetRadius * Math.sin(angle);
+
           drawMandalaShard(ctx, layerImg, bloomX, bloomY, size * layerScale, i * (360/folds), layerShape, wandSeed, 1.0, cropX, cropY);
         }
       }
 
       setGeneratedImg(canvas.toDataURL('image/png'));
     } catch (e) {
-      console.error("BUILD_FAILURE:", e);
+      console.error("BUILD_ERR:", e);
     } finally {
       setIsBuilding(false);
     }
@@ -130,12 +129,12 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>BLUEPRINT_SYNTH_V2.2.4</title></Head>
+      <Head><title>SOCCER_BLOOM_v2.2.5</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SEQUENTIAL_BLUEPRINT_v2.2</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SOCCER_BLOOM_SYNTHESIS</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -144,15 +143,15 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'LOCKING_SYMMETRY...' : 'INITIATE_BLUEPRINT'}
+              {isBuilding ? 'LOCKING_SYMMETRY...' : 'INITIATE_BLOOM'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Asset" />
+            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Synthesized Asset" />
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RESET</button>
-              <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>REMIX</button>
+              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RE-MAP</button>
+              <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>RE-BLOOM</button>
             </div>
           </div>
         )}

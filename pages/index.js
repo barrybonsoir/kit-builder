@@ -18,99 +18,118 @@ export default function Home() {
   const [generatedImg, setGeneratedImg] = useState(null);
   const canvasRef = useRef(null);
 
+  const drawShard = (ctx, img, x, y, size, angle, shardAngle, wandSeed, mirror = false) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle * Math.PI / 180);
+    
+    // Wedge Clip
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, size / 2, -shardAngle/2 * Math.PI / 180, shardAngle/2 * Math.PI / 180);
+    ctx.closePath();
+    ctx.clip();
+
+    if (mirror) ctx.scale(1, -1);
+
+    // Wand Seed: Rotate the SOURCE image inside the clip
+    ctx.rotate(wandSeed * Math.PI / 180);
+    ctx.drawImage(img, -size / 2, -size / 2, size, size);
+    ctx.restore();
+  };
+
   const generateMark = async () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const size = 1024;
     const center = size / 2;
 
-    const loadImg = (src) => new Promise((res, rej) => {
+    const loadImg = (src) => new Promise((res) => {
       const img = new Image();
       img.onload = () => res(img);
-      img.onerror = () => rej(new Error(`Failed to load: ${src}`));
       img.src = src;
     });
 
-    try {
-      const imgs = await Promise.all(selections.map(s => 
-        loadImg(`/logos/${s.name.toLowerCase().replace(/\s+/g, '-')}.png`)
-      ));
+    const shuffledLogos = [...selections].sort(() => Math.random() - 0.5);
+    const imgs = await Promise.all(shuffledLogos.map(s => 
+      loadImg(`/logos/${s.name.toLowerCase().replace(/\s+/g, '-')}.png`)
+    ));
 
-      ctx.clearRect(0, 0, size, size);
-      for (let i = 0; i < 8; i++) {
-        const img = imgs[i % 4];
-        ctx.save();
-        ctx.translate(center, center);
-        ctx.rotate((i * 45) * Math.PI / 180);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.arc(0, 0, center, -22.5 * Math.PI / 180, 22.5 * Math.PI / 180);
-        ctx.closePath();
-        ctx.clip();
-        if (i % 2 === 1) ctx.scale(1, -1);
-        ctx.drawImage(img, -center, -center, size, size);
-        ctx.restore();
-      }
-      setGeneratedImg(canvas.toDataURL('image/png'));
-    } catch (err) {
-      alert("IMAGE LOAD ERROR: Check filenames in public/logos/");
+    ctx.clearRect(0, 0, size, size);
+
+    // LAYER 1: 8-Fold Symmetrical Ring
+    const wand1 = Math.random() * 360;
+    const scale1 = 0.8 + Math.random() * 0.3;
+    for (let i = 0; i < 8; i++) {
+      drawShard(ctx, imgs[0], center, center, size * scale1, i * 45, 45, wand1, i % 2 === 0);
     }
+
+    // LAYER 2: 4 or 6-Fold "Sticker" Chaos
+    const stickers = Math.random() > 0.5 ? 4 : 6;
+    const stickerScale = 0.4 + Math.random() * 0.3;
+    const wand2 = Math.random() * 360;
+    for (let i = 0; i < stickers; i++) {
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate((i * (360 / stickers)) * Math.PI / 180);
+      
+      // Offset placement
+      ctx.translate(size * 0.2, 0);
+      // Tier 4: Offset Rotation (±15° for sticker look)
+      ctx.rotate((Math.random() * 30 - 15) * Math.PI / 180);
+      
+      const s = size * stickerScale;
+      ctx.rotate(wand2 * Math.PI / 180);
+      ctx.drawImage(imgs[1], -s/2, -s/2, s, s);
+      ctx.restore();
+    }
+
+    // LAYER 3: Central Cluster
+    const clusterFolds = 12;
+    const wand3 = Math.random() * 360;
+    for (let i = 0; i < clusterFolds; i++) {
+      drawShard(ctx, imgs[2], center, center, size * 0.4, i * (360/clusterFolds), 30, wand3 + (i*10), false);
+    }
+
+    setGeneratedImg(canvas.toDataURL('image/png'));
   };
 
   return (
-    <div style={{ backgroundColor: '#FFF', minHeight: '100vh', padding: '40px', color: '#000', fontFamily: 'Helvetica, Arial, sans-serif' }}>
-      <Head>
-        <title>FAIR WEATHER // BRAND_SYNTH</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      
+    <div style={{ backgroundColor: '#F0F0F0', minHeight: '100vh', padding: '20px', color: '#000', fontFamily: 'monospace' }}>
+      <Head><title>BRAND_SYNTH_PROTOCOL</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', background: '#FFF', border: '10px solid #000', padding: '40px' }}>
         {!generatedImg ? (
           <>
-            <header style={{ borderBottom: '12px solid #000', marginBottom: '30px' }}>
-              <h1 style={{ fontSize: '4rem', fontWeight: '900', margin: '0', letterSpacing: '-3px' }}>SYNTH_V.11</h1>
-              <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>Loyalty Mapping Protocol // 2026</p>
-            </header>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
+            <h1 style={{ fontSize: '3rem', margin: '0 0 20px 0', background: '#000', color: '#FFF', padding: '10px' }}>NON-GEN_PROTOCOL_V12</h1>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               {selections.map((s, i) => (
-                <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '180px', background: s?.color || '#EEE', border: '6px solid #000', fontSize: '1.8rem', fontWeight: '900', cursor: 'pointer', transition: 'all 0.1s' }}>
-                  {s ? s.code : `SLOT_0${i+1}`}
-                </button>
+                <div key={i} onClick={() => setActiveSlot(i)} style={{ height: '120px', border: '4px dashed #000', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: s?.color || 'transparent' }}>
+                  {s ? s.code : `SELECT_ASSET_0${i+1}`}
+                </div>
               ))}
             </div>
-
-            <button 
-              disabled={selections.includes(null)} 
-              onClick={generateMark} 
-              style={{ width: '100%', marginTop: '20px', padding: '25px', background: '#000', color: '#FFF', fontSize: '1.5rem', fontWeight: 'bold', cursor: 'pointer', opacity: selections.includes(null) ? 0.2 : 1 }}
-            >
-              EXECUTE_GENERATION
+            <button onClick={generateMark} disabled={selections.includes(null)} style={{ width: '100%', marginTop: '30px', padding: '30px', background: '#000', color: '#FFF', border: 'none', cursor: 'pointer', fontSize: '1.5rem', fontWeight: 'bold' }}>
+              EXECUTE_RADIAL_SYNTH
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <img src={generatedImg} style={{ width: '100%', maxWidth: '600px', border: '12px solid #000' }} alt="Generated Mark" />
-            <div style={{ marginTop: '30px' }}>
-              <button onClick={() => setGeneratedImg(null)} style={{ padding: '15px 40px', background: '#000', color: '#FFF', border: 'none', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.2rem' }}>NEW_SEQUENCE</button>
-            </div>
+            <img src={generatedImg} style={{ width: '100%', border: '4px solid #000' }} />
+            <button onClick={() => setGeneratedImg(null)} style={{ marginTop: '20px', padding: '20px 40px', background: '#000', color: '#FFF', border: 'none', cursor: 'pointer' }}>NEW_REITERATION</button>
           </div>
         )}
       </div>
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: '#FFF', zIndex: 100, overflowY: 'auto', padding: '40px', border: '20px solid #000' }}>
-          <button onClick={() => setActiveSlot(null)} style={{ position: 'absolute', top: '20px', right: '20px', background: '#000', color: '#FFF', padding: '10px 20px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>CLOSE</button>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: '900', borderBottom: '5px solid #000', paddingBottom: '10px' }}>SELECT_ORIGIN</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px', marginTop: '20px' }}>
-            {countries.map(c => (
-              <div key={c.code} onClick={() => { const n = [...selections]; n[activeSlot] = c; setSelections(n); setActiveSlot(null); }} style={{ background: c.color, padding: '20px', cursor: 'pointer', fontWeight: '900', border: '4px solid #000', textAlign: 'center' }}>
-                {c.name.toUpperCase()}
-              </div>
-            ))}
-          </div>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', zIndex: 100, padding: '40px', overflowY: 'auto' }}>
+           <h2 style={{ color: '#FFF' }}>INPUT_MASTER_ASSET</h2>
+           {countries.map(c => (
+             <div key={c.code} onClick={() => { const n = [...selections]; n[activeSlot] = c; setSelections(n); setActiveSlot(null); }} style={{ background: c.color, color: '#FFF', padding: '15px', margin: '5px 0', cursor: 'pointer', border: '2px solid #FFF' }}>
+               {c.name}
+             </div>
+           ))}
         </div>
       )}
     </div>

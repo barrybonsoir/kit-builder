@@ -18,33 +18,34 @@ export default function Home() {
   const [generatedImg, setGeneratedImg] = useState(null);
   const canvasRef = useRef(null);
 
-  // Advanced Masking Logic: Supports Wedge, Circle, and Slant (Parallelogram)
-  const drawComplexMask = (ctx, img, x, y, size, rotation, maskType, wandSeed) => {
+  const drawGeometricShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation * Math.PI / 180);
 
     ctx.beginPath();
-    if (maskType === 'circle') {
-      ctx.arc(size / 4, 0, size / 4, 0, Math.PI * 2);
-    } else if (maskType === 'slant') {
+    if (shapeType === 'circle') {
+      ctx.arc(size / 3.5, 0, size / 4, 0, Math.PI * 2);
+    } else if (shapeType === 'slant') {
       ctx.moveTo(0, -size / 4);
-      ctx.lineTo(size / 2, -size / 2);
-      ctx.lineTo(size / 2, size / 2);
+      ctx.lineTo(size / 1.8, -size / 2);
+      ctx.lineTo(size / 1.8, size / 2);
       ctx.lineTo(0, size / 4);
+    } else if (shapeType === 'pill') {
+      ctx.roundRect(size / 6, -size / 8, size / 2.5, size / 4, 50);
     } else {
+      // Classic Wedge
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, size / 2, -22.5 * Math.PI / 180, 22.5 * Math.PI / 180);
+      ctx.arc(0, 0, size / 2, -15 * Math.PI / 180, 15 * Math.PI / 180);
     }
     ctx.closePath();
     ctx.clip();
 
-    // Internal Wand Seed + Random XY Slide (The "Shattered Mirror" effect)
-    const offsetX = (Math.random() - 0.5) * (size / 2);
-    const offsetY = (Math.random() - 0.5) * (size / 2);
+    // The "Slide" logic: Random crop location within the source
+    const offsetX = (Math.random() - 0.5) * (size / 1.5);
+    const offsetY = (Math.random() - 0.5) * (size / 1.5);
     ctx.rotate(wandSeed * Math.PI / 180);
     ctx.drawImage(img, -size / 2 + offsetX, -size / 2 + offsetY, size, size);
-    
     ctx.restore();
   };
 
@@ -64,73 +65,98 @@ export default function Home() {
       loadImg(`/logos/${s.name.toLowerCase().replace(/\s+/g, '-')}.png`)
     ));
 
-    const getRandomLogo = () => imgs[Math.floor(Math.random() * imgs.length)];
+    const getRandomLogo = () => imgs[Math.floor(Math.random() * 4)];
+    const shapes = ['circle', 'slant', 'pill', 'wedge'];
 
     ctx.clearRect(0, 0, size, size);
 
-    // LAYER 1: The Outer Turbine (8-fold Slants)
-    const wand1 = Math.random() * 360;
-    for (let i = 0; i < 8; i++) {
-      drawComplexMask(ctx, getRandomLogo(), center, center, size * 0.95, i * 45, 'slant', wand1);
-    }
+    // DEPTH RANDOMIZATION: We define 4 "Task Blocks" and shuffle their execution order
+    const tasks = [
+      // Task A: Large Perimeter Symmetry (8-12 fold)
+      () => {
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const wand = Math.random() * 360;
+        const folds = 8 + Math.floor(Math.random() * 4);
+        for (let i = 0; i < folds; i++) {
+          drawGeometricShard(ctx, getRandomLogo(), center, center, size * 0.9, i * (360/folds), shape, wand);
+        }
+      },
+      // Task B: Fractal Ring (High frequency 16-24 fold)
+      () => {
+        const wand = Math.random() * 360;
+        const folds = 16 + Math.floor(Math.random() * 8);
+        for (let i = 0; i < folds; i++) {
+          drawGeometricShard(ctx, getRandomLogo(), center, center, size * 0.5, i * (360/folds), 'circle', wand + (i * 5));
+        }
+      },
+      // Task C: Sticker Bomb (Accented Chaos)
+      () => {
+        for (let i = 0; i < 5; i++) {
+          ctx.save();
+          ctx.translate(center, center);
+          ctx.rotate(Math.random() * 360 * Math.PI / 180);
+          ctx.translate(size * (0.1 + Math.random() * 0.2), 0);
+          const s = size * (0.3 + Math.random() * 0.3);
+          ctx.rotate(Math.random() * 360 * Math.PI / 180);
+          ctx.drawImage(getRandomLogo(), -s/2, -s/2, s, s);
+          ctx.restore();
+        }
+      },
+      // Task D: The "Turbine" Core (Slants)
+      () => {
+        const wand = Math.random() * 360;
+        for (let i = 0; i < 6; i++) {
+          drawGeometricShard(ctx, getRandomLogo(), center, center, size * 0.4, i * 60, 'slant', wand);
+        }
+      }
+    ];
 
-    // LAYER 2: Randomized Sticker Chaos
-    for (let i = 0; i < 6; i++) {
-      ctx.save();
-      ctx.translate(center, center);
-      ctx.rotate((i * 60 + (Math.random() * 30)) * Math.PI / 180);
-      ctx.translate(size * 0.22, 0);
-      const s = size * (0.35 + Math.random() * 0.25);
-      ctx.rotate(Math.random() * 360 * Math.PI / 180);
-      ctx.drawImage(getRandomLogo(), -s / 2, -s / 2, s, s);
-      ctx.restore();
-    }
-
-    // LAYER 3: The Intricate Core (16-fold Circles)
-    const wand3 = Math.random() * 360;
-    for (let i = 0; i < 16; i++) {
-      drawComplexMask(ctx, getRandomLogo(), center, center, size * 0.45, i * 22.5, 'circle', wand3 + (i * 15));
-    }
+    // Shuffle the tasks to change Z-index every time
+    tasks.sort(() => Math.random() - 0.5).forEach(task => task());
 
     setGeneratedImg(canvas.toDataURL('image/png'));
   };
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>BRAND_SYNTH_2026</title></Head>
+      <Head><title>BRAND_SYNTH_V1.4</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       
-      <div style={{ maxWidth: '800px', margin: '0 auto', border: '2px solid #FFF', padding: '30px' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', border: '1px solid #FFF', padding: '20px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '2rem', letterSpacing: '-1px', marginBottom: '30px' }}>GEOMETRIC_SYNTH_V13</h1>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '20px' }}>Non-Generative_Multi-Radial_Art_Logic</h1>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               {selections.map((s, i) => (
-                <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '100px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontSize: '1.1rem' }}>
-                  {s ? s.code : `[ SOURCE_0${i+1} ]`}
+                <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '80px', background: s?.color || '#111', border: '1px solid #444', color: '#FFF', cursor: 'pointer' }}>
+                  {s ? s.code : `ASSET_0${i+1}`}
                 </button>
               ))}
             </div>
-            <button onClick={generateMark} disabled={selections.includes(null)} style={{ width: '100%', marginTop: '30px', padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.3rem' }}>
-              GENERATE_MANDALA
+            <button 
+              onClick={generateMark} 
+              disabled={selections.includes(null)} 
+              style={{ width: '100%', marginTop: '20px', padding: '25px', background: '#FFF', color: '#000', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
+            >
+              EXECUTE_REITERATION
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <img src={generatedImg} style={{ width: '100%', maxWidth: '600px', border: '2px solid #FFF' }} />
-            <br />
-            <button onClick={() => setGeneratedImg(null)} style={{ marginTop: '20px', padding: '15px 30px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>NEW_REITERATION</button>
+            <img src={generatedImg} style={{ width: '100%', maxWidth: '600px', border: '1px solid #FFF' }} />
+            <div style={{ marginTop: '20px' }}>
+              <button onClick={() => setGeneratedImg(null)} style={{ background: '#FFF', padding: '10px 20px', color: '#000', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>RE-RUN_PROTOCOL</button>
+            </div>
           </div>
         )}
       </div>
 
       {activeSlot !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, padding: '40px', overflowY: 'auto', border: '10px solid #FFF' }}>
-          <button onClick={() => setActiveSlot(null)} style={{ float: 'right', color: '#000', background: '#FFF', border: 'none', padding: '10px 20px', fontWeight: 'bold' }}>X</button>
-          <h2 style={{ fontSize: '2rem', marginBottom: '20px' }}>LOAD_COUNTRY_DATA</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
+        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, padding: '20px', overflowY: 'auto' }}>
+          <h2 style={{ borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SELECT_SOURCE</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '8px' }}>
             {countries.map(c => (
-              <div key={c.code} onClick={() => { const n = [...selections]; n[activeSlot] = c; setSelections(n); setActiveSlot(null); }} style={{ background: c.color, padding: '15px', cursor: 'pointer', border: '1px solid #FFF', textAlign: 'center', fontWeight: 'bold' }}>
+              <div key={c.code} onClick={() => { const n = [...selections]; n[activeSlot] = c; setSelections(n); setActiveSlot(null); }} style={{ background: c.color, padding: '15px', cursor: 'pointer', border: '1px solid #FFF', fontSize: '0.8rem', textAlign: 'center' }}>
                 {c.name}
               </div>
             ))}

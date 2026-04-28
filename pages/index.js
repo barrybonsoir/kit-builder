@@ -1,37 +1,92 @@
-const generateMark = async () => {
+import React, { useState, useRef } from 'react';
+import Head from 'next/head';
+
+const countries = [
+  { name: "Algeria", code: "ALG", color: "#006233" }, { name: "Argentina", code: "ARG", color: "#74ACDF" },
+  { name: "Australia", code: "AUS", color: "#00008B" }, { name: "Austria", code: "AUT", color: "#ED2939" },
+  { name: "Belgium", code: "BEL", color: "#EF3340" }, { name: "Brazil", code: "BRA", color: "#009739" },
+  { name: "Canada", code: "CAN", color: "#FF0000" }, { name: "Colombia", code: "COL", color: "#FCD116" },
+  { name: "England", code: "ENG", color: "#FFFFFF" }, { name: "France", code: "FRA", color: "#002395" },
+  { name: "Germany", code: "GER", color: "#000000" }, { name: "Japan", code: "JPN", color: "#BC002D" },
+  { name: "Mexico", code: "MEX", color: "#006847" }, { name: "Netherlands", code: "NED", color: "#F36C21" },
+  { name: "Spain", code: "ESP", color: "#C60B1E" }, { name: "United States", code: "USA", color: "#0A3161" }
+];
+
+export default function Home() {
+  const [selections, setSelections] = useState([null, null, null, null]);
+  const [activeSlot, setActiveSlot] = useState(null);
+  const [generatedImg, setGeneratedImg] = useState(null);
+  const [isBuilding, setIsBuilding] = useState(false);
+  const canvasRef = useRef(null);
+
+  const drawEmblemShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, scale, cX, cY) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation * Math.PI / 180);
+
+    ctx.beginPath();
+    const shardBase = size / 2.8; 
+    
+    // Geometric masks favoring the "Ruler" aesthetic
+    if (shapeType === 'shield') {
+      ctx.moveTo(shardBase * 0.5, -shardBase / 3.5);
+      ctx.lineTo(shardBase * 1.3, -shardBase / 3.5);
+      ctx.quadraticCurveTo(shardBase * 1.45, 0, shardBase * 1.3, shardBase / 3.5);
+      ctx.lineTo(shardBase * 0.5, shardBase / 3.5);
+      ctx.quadraticCurveTo(shardBase * 0.35, 0, shardBase * 0.5, -shardBase / 3.5);
+    } else if (shapeType === 'arcRing') {
+      ctx.arc(0, 0, shardBase * 1.25, -7 * Math.PI / 180, 7 * Math.PI / 180);
+      ctx.arc(0, 0, shardBase * 1.0, 7 * Math.PI / 180, -7 * Math.PI / 180, true);
+    } else {
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, size / 1.8, -6 * Math.PI / 180, 6 * Math.PI / 180);
+    }
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.rotate(wandSeed * Math.PI / 180);
+    const finalDrawSize = size * scale; 
+    ctx.drawImage(img, (-finalDrawSize / 2) + cX, (-finalDrawSize / 2) + cY, finalDrawSize, finalDrawSize);
+    ctx.restore();
+  };
+
+  const generateMark = async () => {
+    setIsBuilding(true);
     const canvas = canvasRef.current;
-    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const size = 1024;
     const center = size / 2;
 
-    // ... (keep loadImg logic)
+    const loadImg = (src) => new Promise((res) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => res(img);
+      img.src = src;
+    });
 
     try {
       const imgs = await Promise.all(selections.map(s => 
         loadImg(`/logos/${s.name.toLowerCase().replace(/\s+/g, '-')}.png`)
       ));
 
-      const shapePalette = ['shield', 'arcRing', 'teardrop', 'wedge'];
       ctx.clearRect(0, 0, size, size);
+      const shapes = ['shield', 'arcRing', 'wedge'];
 
-      // MANDATORY REPRESENTATION: 12 Layers total
+      // 12-Layer Stack: Guaranteed all 4 PNGs represented
       for (let l = 0; l < 12; l++) {
-        // Step 1: Force first 4 layers to use each selection 1:1
+        // Force layers 0-3 to use each of your 4 selections
         const layerImg = l < 4 ? imgs[l] : imgs[Math.floor(Math.random() * 4)];
         
-        // Step 2: "Ruler" Symmetry - keep fold counts low for legibility
-        // The version that "rules" (image_ee2178.jpg) uses 6-8 folds.
-        const folds = l < 8 ? [6, 8, 12][Math.floor(Math.random() * 3)] : [16, 24, 32][Math.floor(Math.random() * 3)];
+        // Low fold counts (6, 8, 12) make the logos recognizable
+        const folds = l < 8 ? [6, 8, 12][Math.floor(Math.random() * 3)] : [16, 24][Math.floor(Math.random() * 2)];
         
-        // Step 3: Structured Nesting - ensure logos don't overlap perfectly
-        const layerScale = 0.25 + (l * 0.055); 
-        const layerShape = shapePalette[Math.floor(Math.random() * shapePalette.length)];
+        const layerScale = 0.25 + (l * 0.06); 
+        const layerShape = shapes[Math.floor(Math.random() * shapes.length)];
         const layerWand = Math.random() * 360;
         
-        // Step 4: Symmetrical Detail Lock
-        const cropX = (Math.random() - 0.5) * (size * 0.3);
-        const cropY = (Math.random() - 0.5) * (size * 0.3);
+        // Symmetrical Crop Lock for consistency
+        const cropX = (Math.random() - 0.5) * (size * 0.35);
+        const cropY = (Math.random() - 0.5) * (size * 0.35);
 
         for (let i = 0; i < folds; i++) {
           drawEmblemShard(ctx, layerImg, center, center, size * layerScale, i * (360/folds), layerShape, layerWand, 0.9, cropX, cropY);
@@ -40,6 +95,54 @@ const generateMark = async () => {
 
       setGeneratedImg(canvas.toDataURL('image/png'));
     } catch (e) {
-      console.error("Synthesis failed:", e);
+      console.error("BUILD_FAILURE:", e);
+    } finally {
+      setIsBuilding(false);
     }
   };
+
+  return (
+    <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
+      <Head><title>BRAND_PLAYBOOK_V2.1.3</title></Head>
+      <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
+      
+      <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
+        {!generatedImg ? (
+          <>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>EMBLEM_SYNTHESIS_V2</h1>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
+              {selections.map((s, i) => (
+                <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
+                  {s ? s.code : `SLOT_0${i+1}`}
+                </button>
+              ))}
+            </div>
+            <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
+              {isBuilding ? 'SYNTHESIZING...' : 'INITIATE_BUILD'}
+            </button>
+          </>
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Generated Brand Asset" />
+            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RESET</button>
+              <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>REMIX</button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {activeSlot !== null && (
+        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, padding: '30px', overflowY: 'auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px' }}>
+            {countries.map(c => (
+              <div key={c.code} onClick={() => { const n = [...selections]; n[activeSlot] = c; setSelections(n); setActiveSlot(null); }} style={{ background: c.color, padding: '20px', cursor: 'pointer', border: '1px solid #FFF', textAlign: 'center' }}>
+                {c.name}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

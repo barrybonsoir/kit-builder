@@ -18,7 +18,8 @@ export default function Home() {
   const [generatedImg, setGeneratedImg] = useState(null);
   const canvasRef = useRef(null);
 
-  const drawMultiShapeShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, internalScale) => {
+  // FIX: Locked resolution logic - no shifting or blowing up assets
+  const drawNativeShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, internalScale) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation * Math.PI / 180);
@@ -26,7 +27,7 @@ export default function Home() {
     ctx.beginPath();
     const shardBase = size / 2.8; 
     
-    // Geometry Library
+    // Sharp geometric shapes only
     if (shapeType === 'triangle') {
       ctx.moveTo(0, 0);
       ctx.lineTo(shardBase, -shardBase / 4); 
@@ -44,7 +45,7 @@ export default function Home() {
 
     ctx.rotate(wandSeed * Math.PI / 180);
     
-    // Native Resolution Rule: Scale capped to prevent blur
+    // Native Rule: 0.4 to 1.1 scale keeps the pixels crisp
     const finalDrawSize = size * internalScale; 
     ctx.drawImage(img, -finalDrawSize / 2, -finalDrawSize / 2, finalDrawSize, finalDrawSize);
     ctx.restore();
@@ -69,19 +70,19 @@ export default function Home() {
     const shapePalette = ['triangle', 'slant', 'circle', 'wedge'];
     ctx.clearRect(0, 0, size, size);
 
-    // 16 Layer Depth Stack
+    // 16 Layers for high-definition "Blender" texture
     for (let l = 0; l < 16; l++) {
       const folds = [8, 12, 16, 24, 32][Math.floor(Math.random() * 5)];
       const layerShape = shapePalette[Math.floor(Math.random() * shapePalette.length)];
       const layerScale = 0.2 + (Math.random() * 0.8);
       const layerWand = Math.random() * 360;
       
-      // Random scale down (0.4 to 1.1) for crisp micro-detail
+      // Keep it sharp by scaling DOWN, not UP
       const internalScale = 0.4 + (Math.random() * 0.7);
       const layerImg = imgs[Math.floor(Math.random() * 4)];
 
       for (let i = 0; i < folds; i++) {
-        drawMultiShapeShard(ctx, layerImg, center, center, size * layerScale, i * (360/folds), layerShape, layerWand, internalScale);
+        drawNativeShard(ctx, layerImg, center, center, size * layerScale, i * (360/folds), layerShape, layerWand, internalScale);
       }
     }
 
@@ -90,13 +91,13 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>MULTI_SHAPE_V1.9.2</title></Head>
+      <Head><title>GEOMETRIC_SYNTH_V1.9.2</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>GEOMETRIC_SYNTH_PROTOCOL</h1>
+            <h1 style={{ fontSize: '1.2rem', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>PRECISION_MANDALA_SYNTH</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -105,13 +106,13 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null)} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              RE-SYNTHESIZE
+              INITIATE_SYNTHESIS
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
             <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} />
-            <button onClick={() => setGeneratedImg(null)} style={{ marginTop: '20px', padding: '15px 40px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>NEW_REITERATION</button>
+            <button onClick={() => setGeneratedImg(null)} style={{ marginTop: '20px', padding: '15px 40px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>REITERATE</button>
           </div>
         )}
       </div>

@@ -56,3 +56,4 @@
     }
     // ... (Set image output)
   };
+  

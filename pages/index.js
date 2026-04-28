@@ -23,11 +23,9 @@ export default function Home() {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation * Math.PI / 180);
-
     ctx.beginPath();
     const shardBase = size / 2.5; 
     
-    // Strict geometric masks for the kaleidoscope effect
     if (shapeType === 'shield') {
       ctx.moveTo(shardBase * 0.4, -shardBase / 4);
       ctx.lineTo(shardBase * 1.2, -shardBase / 4);
@@ -37,7 +35,7 @@ export default function Home() {
     } else if (shapeType === 'tightRing') {
       ctx.arc(0, 0, size * 0.12, 0, Math.PI * 2);
       ctx.arc(0, 0, size * 0.04, 0, Math.PI * 2, true);
-    } else if (shapeType === 'arc') {
+    } else if (shapeType === 'arcRing') {
       ctx.arc(0, 0, shardBase * 1.1, -12 * Math.PI / 180, 12 * Math.PI / 180);
       ctx.arc(0, 0, shardBase * 0.7, 12 * Math.PI / 180, -12 * Math.PI / 180, true);
     } else {
@@ -46,7 +44,6 @@ export default function Home() {
     }
     ctx.closePath();
     ctx.clip();
-
     ctx.rotate(wandSeed * Math.PI / 180);
     const finalSize = size * scale;
     ctx.drawImage(img, (-finalSize / 2) + cX, (-finalSize / 2) + cY, finalSize, finalSize);
@@ -74,40 +71,52 @@ export default function Home() {
 
       ctx.clearRect(0, 0, size, size);
 
-      // MANDALA HIERARCHY: 14 strict symmetrical layers
+      // 16-LAYER CONCENTRIC BLOOM
+      for (let l = 0; l < 16; l++) {
+        let folds, layerScale, layerShape, wandSeed, offsetRadius;
+        const layerImg = l < 4 ? imgs[l] : imgs[Math.floor(Math.random() * 4)];
 
-      // 1. DENSE CORE (Inner Nucleus)
-      for (let l = 0; l < 4; l++) {
-        drawMandalaShard(ctx, imgs[l], center, center, size, l * 90, 'tightRing', Math.random() * 360, 0.35, 0, 0);
-      }
-
-      // 2. HERO REVEAL (The Actual Logos)
-      for (let l = 0; l < 4; l++) {
-        const folds = [6, 8][Math.floor(Math.random() * 2)];
-        const scale = 0.5 + (Math.random() * 0.2);
-        for (let i = 0; i < folds; i++) {
-          // Locked Wand at 0 for maximum legibility of the "badge"
-          drawMandalaShard(ctx, imgs[l], center, center, size * 0.85, i * (360/folds), 'shield', 0, scale, 0, 0);
+        // ZONE 1: THE NUCLEUS (Bottom 4)
+        if (l < 4) {
+          folds = [6, 8, 12][Math.floor(Math.random() * 3)];
+          layerScale = 0.35;
+          layerShape = 'tightRing';
+          wandSeed = Math.random() * 360;
+          offsetRadius = 0; 
         }
-      }
+        // ZONE 2: HERO BLOOM (Middle 4)
+        else if (l < 8) {
+          folds = [4, 6][Math.floor(Math.random() * 2)];
+          layerScale = 0.6;
+          layerShape = 'shield';
+          wandSeed = 0; // Locked for legibility
+          offsetRadius = size * 0.12; 
+        }
+        // ZONE 3: BRUTALIST SURFACE (Top 8)
+        else {
+          folds = [16, 24, 32][Math.floor(Math.random() * 3)];
+          layerScale = 0.2 + (Math.random() * 0.8);
+          layerShape = ['arcRing', 'wedge', 'shield'][Math.floor(Math.random() * 3)];
+          wandSeed = Math.random() * 360;
+          offsetRadius = size * 0.22;
+        }
 
-      // 3. KALEIDOSCOPE DETAIL (Surface Shards)
-      for (let l = 0; l < 6; l++) {
-        const folds = [16, 24, 32][Math.floor(Math.random() * 3)];
-        const shape = ['arc', 'wedge'][Math.floor(Math.random() * 2)];
-        const scale = 0.2 + (Math.random() * 0.7);
-        const wand = Math.random() * 360;
-        const cX = (Math.random() - 0.5) * (size * 0.8);
-        const cY = (Math.random() - 0.5) * (size * 0.8);
+        const cropX = (Math.random() - 0.5) * (size * 0.25);
+        const cropY = (Math.random() - 0.5) * (size * 0.25);
+        const ringRotation = Math.random() * 360;
 
         for (let i = 0; i < folds; i++) {
-          drawMandalaShard(ctx, imgs[Math.floor(Math.random() * 4)], center, center, size, i * (360/folds), shape, wand, scale, cX, cY);
+          const angle = (i * (360 / folds) + ringRotation) * Math.PI / 180;
+          const bloomX = center + offsetRadius * Math.cos(angle);
+          const bloomY = center + offsetRadius * Math.sin(angle);
+
+          drawMandalaShard(ctx, layerImg, bloomX, bloomY, size * layerScale, i * (360/folds), layerShape, wandSeed, 1.0, cropX, cropY);
         }
       }
 
       setGeneratedImg(canvas.toDataURL('image/png'));
     } catch (e) {
-      console.error("SYNTHESIS_ERROR:", e);
+      console.error("BUILD_FAILURE:", e);
     } finally {
       setIsBuilding(false);
     }
@@ -115,13 +124,12 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>KALEIDO_SYNTH_V2.2.2</title></Head>
+      <Head><title>BLOOM_SYNTH_V2.2.3</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
-      
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SYMMETRY_MANDALA_PROTOCOL</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>CONCENTRIC_REVEAL_ENGINE</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -130,20 +138,19 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'LOCKING_SYMMETRY...' : 'INITIATE_KALEIDOSCOPE'}
+              {isBuilding ? 'CALCULATING_BLOOM...' : 'INITIATE_SYNTHESIS'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Generated Asset" />
+            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Asset" />
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>REITERATE</button>
+              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RESET</button>
               <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>REMIX</button>
             </div>
           </div>
         )}
       </div>
-
       {activeSlot !== null && (
         <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 100, padding: '30px', overflowY: 'auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px' }}>

@@ -19,37 +19,37 @@ export default function Home() {
   const [isBuilding, setIsBuilding] = useState(false);
   const canvasRef = useRef(null);
 
-  const drawEmblemShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, scale, cX, cY) => {
+  const drawMandalaShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, scale, cX, cY) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation * Math.PI / 180);
 
     ctx.beginPath();
-    const shardBase = size / 2.8; 
+    const shardBase = size / 2.5; 
     
+    // Strict geometric masks for the kaleidoscope effect
     if (shapeType === 'shield') {
-      ctx.moveTo(shardBase * 0.5, -shardBase / 3.5);
-      ctx.lineTo(shardBase * 1.3, -shardBase / 3.5);
-      ctx.quadraticCurveTo(shardBase * 1.45, 0, shardBase * 1.3, shardBase / 3.5);
-      ctx.lineTo(shardBase * 0.5, shardBase / 3.5);
-      ctx.quadraticCurveTo(shardBase * 0.35, 0, shardBase * 0.5, -shardBase / 3.5);
+      ctx.moveTo(shardBase * 0.4, -shardBase / 4);
+      ctx.lineTo(shardBase * 1.2, -shardBase / 4);
+      ctx.quadraticCurveTo(shardBase * 1.4, 0, shardBase * 1.2, shardBase / 4);
+      ctx.lineTo(shardBase * 0.4, shardBase / 4);
+      ctx.quadraticCurveTo(shardBase * 0.3, 0, shardBase * 0.4, -shardBase / 4);
     } else if (shapeType === 'tightRing') {
-      // Pinning the foundation to the inside
-      ctx.arc(0, 0, size * 0.15, 0, Math.PI * 2);
-      ctx.arc(0, 0, size * 0.05, 0, Math.PI * 2, true);
-    } else if (shapeType === 'arcRing') {
-      ctx.arc(0, 0, shardBase * 1.25, -15 * Math.PI / 180, 15 * Math.PI / 180);
-      ctx.arc(0, 0, shardBase * 0.8, 15 * Math.PI / 180, -15 * Math.PI / 180, true);
+      ctx.arc(0, 0, size * 0.12, 0, Math.PI * 2);
+      ctx.arc(0, 0, size * 0.04, 0, Math.PI * 2, true);
+    } else if (shapeType === 'arc') {
+      ctx.arc(0, 0, shardBase * 1.1, -12 * Math.PI / 180, 12 * Math.PI / 180);
+      ctx.arc(0, 0, shardBase * 0.7, 12 * Math.PI / 180, -12 * Math.PI / 180, true);
     } else {
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, size / 1.8, -8 * Math.PI / 180, 8 * Math.PI / 180);
+      ctx.arc(0, 0, size / 2, -10 * Math.PI / 180, 10 * Math.PI / 180);
     }
     ctx.closePath();
     ctx.clip();
 
     ctx.rotate(wandSeed * Math.PI / 180);
-    const finalDrawSize = size * scale; 
-    ctx.drawImage(img, (-finalDrawSize / 2) + cX, (-finalDrawSize / 2) + cY, finalDrawSize, finalDrawSize);
+    const finalSize = size * scale;
+    ctx.drawImage(img, (-finalSize / 2) + cX, (-finalSize / 2) + cY, finalSize, finalSize);
     ctx.restore();
   };
 
@@ -74,37 +74,40 @@ export default function Home() {
 
       ctx.clearRect(0, 0, size, size);
 
-      // 1. TIGHT INNER NUCLEUS (Bottom 4)
+      // MANDALA HIERARCHY: 14 strict symmetrical layers
+
+      // 1. DENSE CORE (Inner Nucleus)
       for (let l = 0; l < 4; l++) {
-        drawEmblemShard(ctx, imgs[l], center, center, size, l * 90, 'tightRing', Math.random() * 360, 0.4, 0, 0);
+        drawMandalaShard(ctx, imgs[l], center, center, size, l * 90, 'tightRing', Math.random() * 360, 0.35, 0, 0);
       }
 
-      // 2. ACTUAL LOGO LAYERS (Middle 4 - High Legibility)
+      // 2. HERO REVEAL (The Actual Logos)
       for (let l = 0; l < 4; l++) {
-        const folds = [4, 6][Math.floor(Math.random() * 2)];
-        const scale = 0.6 + (Math.random() * 0.2);
+        const folds = [6, 8][Math.floor(Math.random() * 2)];
+        const scale = 0.5 + (Math.random() * 0.2);
         for (let i = 0; i < folds; i++) {
-          // Low rotation/crop to keep these "Rules"
-          drawEmblemShard(ctx, imgs[l], center, center, size * 0.8, i * (360/folds), 'shield', 0, scale, 0, 0);
+          // Locked Wand at 0 for maximum legibility of the "badge"
+          drawMandalaShard(ctx, imgs[l], center, center, size * 0.85, i * (360/folds), 'shield', 0, scale, 0, 0);
         }
       }
 
-      // 3. SHARD & SHAPE LAYERS (Top 6 - The Grit)
+      // 3. KALEIDOSCOPE DETAIL (Surface Shards)
       for (let l = 0; l < 6; l++) {
-        const folds = [12, 16, 24, 32][Math.floor(Math.random() * 4)];
-        const shape = ['arcRing', 'wedge', 'shield'][Math.floor(Math.random() * 3)];
-        const scale = 0.15 + (Math.random() * 0.9);
-        const cX = (Math.random() - 0.5) * size;
-        const cY = (Math.random() - 0.5) * size;
+        const folds = [16, 24, 32][Math.floor(Math.random() * 3)];
+        const shape = ['arc', 'wedge'][Math.floor(Math.random() * 2)];
+        const scale = 0.2 + (Math.random() * 0.7);
+        const wand = Math.random() * 360;
+        const cX = (Math.random() - 0.5) * (size * 0.8);
+        const cY = (Math.random() - 0.5) * (size * 0.8);
 
         for (let i = 0; i < folds; i++) {
-          drawEmblemShard(ctx, imgs[Math.floor(Math.random() * 4)], center, center, size, i * (360/folds), shape, Math.random() * 360, scale, cX, cY);
+          drawMandalaShard(ctx, imgs[Math.floor(Math.random() * 4)], center, center, size, i * (360/folds), shape, wand, scale, cX, cY);
         }
       }
 
       setGeneratedImg(canvas.toDataURL('image/png'));
     } catch (e) {
-      console.error("BUILD_FAILURE:", e);
+      console.error("SYNTHESIS_ERROR:", e);
     } finally {
       setIsBuilding(false);
     }
@@ -112,13 +115,13 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>BRAND_PLAYBOOK_V2.2.1</title></Head>
+      <Head><title>KALEIDO_SYNTH_V2.2.2</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>NUCLEUS_SYNTH_PRO</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SYMMETRY_MANDALA_PROTOCOL</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -127,14 +130,14 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'LOCKING_NUCLEUS...' : 'INITIATE_BLOOM'}
+              {isBuilding ? 'LOCKING_SYMMETRY...' : 'INITIATE_KALEIDOSCOPE'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
             <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Generated Asset" />
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RESET</button>
+              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>REITERATE</button>
               <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>REMIX</button>
             </div>
           </div>

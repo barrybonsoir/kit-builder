@@ -26,24 +26,18 @@ export default function Home() {
     ctx.beginPath();
     
     const s = size / 2;
-    // ROUNDED SHAPES: Pivoting from sharp wedges to flower-like petals
-    if (shapeType === 'petal') {
-      ctx.moveTo(0, 0);
-      ctx.bezierCurveTo(s * 0.5, -s * 0.5, s * 1.5, -s * 0.2, s, 0);
-      ctx.bezierCurveTo(s * 1.5, s * 0.2, s * 0.5, s * 0.5, 0, 0);
-    } else if (shapeType === 'hex') {
-      for (let i = 0; i < 6; i++) {
-        const angle = (i * 60) * Math.PI / 180;
-        ctx.lineTo(s * 0.8 * Math.cos(angle), s * 0.8 * Math.sin(angle));
-      }
-    } else if (shapeType === 'shield') {
-      ctx.moveTo(s * 0.2, -s * 0.3);
-      ctx.lineTo(s, -s * 0.3);
-      ctx.quadraticCurveTo(s * 1.2, 0, s, s * 0.3);
-      ctx.lineTo(s * 0.2, s * 0.3);
-      ctx.closePath();
+    // REFINED SHAPES: Larger apertures for better logo visibility
+    if (shapeType === 'shield') {
+      ctx.moveTo(s * 0.1, -s * 0.4);
+      ctx.lineTo(s * 1.1, -s * 0.4);
+      ctx.quadraticCurveTo(s * 1.3, 0, s * 1.1, s * 0.4);
+      ctx.lineTo(s * 0.1, s * 0.4);
+    } else if (shapeType === 'circle') {
+      ctx.arc(s * 0.6, 0, s * 0.45, 0, Math.PI * 2);
     } else {
-      ctx.arc(0, 0, s * 0.8, 0, Math.PI * 2);
+      // Geometric "Wedge" for the core
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, s * 0.9, -15 * Math.PI / 180, 15 * Math.PI / 180);
     }
     
     ctx.closePath();
@@ -75,49 +69,30 @@ export default function Home() {
 
       ctx.clearRect(0, 0, size, size);
 
-      // 12-LAYER SOCCER-FLOWER HIERARCHY
-      for (let l = 0; l < 12; l++) {
-        let folds, layerScale, layerShape, wandSeed, offsetRadius;
-        const layerImg = imgs[l % 4];
+      // REDUCED TO 6 LAYERS FOR MAX NEGATIVE SPACE
+      const layers = [
+        { folds: 12, scale: 0.35, shape: 'wedge', offset: 0, wand: 45 },      // CORE
+        { folds: 6,  scale: 0.75, shape: 'shield', offset: 0.18, wand: 0 },   // HERO 1 (Upright)
+        { folds: 6,  scale: 0.75, shape: 'shield', offset: 0.18, wand: 180 }, // HERO 2 (Inverted)
+        { folds: 18, scale: 0.45, shape: 'circle', offset: 0.38, wand: 90 },   // PERIPHERAL 1
+        { folds: 24, scale: 0.25, shape: 'wedge', offset: 0.42, wand: 0 }      // OUTER GRIT
+      ];
 
-        // ZONE 1: THE CORE (Hexagonal Pentagons)
-        if (l < 4) {
-          folds = [5, 6][l % 2]; // Evoking soccer ball panels
-          layerScale = 0.3 + (l * 0.05);
-          layerShape = 'hex';
-          wandSeed = Math.random() * 360;
-          offsetRadius = 0; // Locked center
-        }
-        // ZONE 2: HERO PETALS (Bloom Mid-ground)
-        else if (l < 8) {
-          folds = [6, 8][Math.floor(Math.random() * 2)];
-          layerScale = 0.55;
-          layerShape = 'shield';
-          wandSeed = 0; // Upright for branding legibility
-          offsetRadius = size * 0.14; 
-        }
-        // ZONE 3: OUTER REVEAL (Aired-out finish)
-        else {
-          folds = [12, 16, 20][Math.floor(Math.random() * 3)];
-          layerScale = 0.2 + (Math.random() * 0.5);
-          layerShape = 'petal';
-          wandSeed = Math.random() * 360;
-          // Capped offset to ensure it stays in the box
-          offsetRadius = size * 0.32; 
-        }
+      layers.forEach((layer, index) => {
+        const layerImg = imgs[index % 4];
+        // Mandatory Symmetrical Crop for legibility
+        const cropX = 0; 
+        const cropY = 0;
+        const ringRotation = (index * 30);
 
-        const cropX = (Math.random() - 0.5) * (size * 0.2);
-        const cropY = (Math.random() - 0.5) * (size * 0.2);
-        const ringRotation = (l * 15); // Progressive rotation for depth
+        for (let i = 0; i < layer.folds; i++) {
+          const angle = (i * (360 / layer.folds) + ringRotation) * Math.PI / 180;
+          const bloomX = center + (size * layer.offset) * Math.cos(angle);
+          const bloomY = center + (size * layer.offset) * Math.sin(angle);
 
-        for (let i = 0; i < folds; i++) {
-          const angle = (i * (360 / folds) + ringRotation) * Math.PI / 180;
-          const bloomX = center + offsetRadius * Math.cos(angle);
-          const bloomY = center + offsetRadius * Math.sin(angle);
-
-          drawMandalaShard(ctx, layerImg, bloomX, bloomY, size * layerScale, i * (360/folds), layerShape, wandSeed, 1.0, cropX, cropY);
+          drawMandalaShard(ctx, layerImg, bloomX, bloomY, size * layer.scale, i * (360/layer.folds), layer.shape, layer.wand, 0.9, cropX, cropY);
         }
-      }
+      });
 
       setGeneratedImg(canvas.toDataURL('image/png'));
     } catch (e) {
@@ -129,12 +104,12 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>SOCCER_BLOOM_v2.2.5</title></Head>
+      <Head><title>AIRED_BLUEPRINT_v2.2.6</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SOCCER_BLOOM_SYNTHESIS</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>AIRED_BLUEPRINT_SYNTHESIS</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -143,15 +118,15 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'LOCKING_SYMMETRY...' : 'INITIATE_BLOOM'}
+              {isBuilding ? 'CLEARING_SPACE...' : 'INITIATE_AIRED_MARK'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
             <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Synthesized Asset" />
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RE-MAP</button>
-              <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>RE-BLOOM</button>
+              <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>RESET</button>
+              <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold', cursor: 'pointer' }}>RE-SYNTH</button>
             </div>
           </div>
         )}

@@ -18,39 +18,35 @@ export default function Home() {
   const [generatedImg, setGeneratedImg] = useState(null);
   const canvasRef = useRef(null);
 
-  const drawShatteredShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, internalScale) => {
+  const drawEmblemShard = (ctx, img, x, y, size, rotation, shapeType, wandSeed, scale, cX, cY) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation * Math.PI / 180);
 
     ctx.beginPath();
-    // Thinner bases to force more negative space
-    const shardBase = size / 3.2; 
+    const shardBase = size / 3; 
     
+    // Geometric Library
     if (shapeType === 'triangle') {
       ctx.moveTo(0, 0);
-      ctx.lineTo(shardBase, -shardBase / 5); 
-      ctx.lineTo(shardBase, shardBase / 5);
+      ctx.lineTo(shardBase, -shardBase / 4); 
+      ctx.lineTo(shardBase, shardBase / 4);
     } else if (shapeType === 'slant') {
-      ctx.rect(shardBase / 2, -shardBase / 15, shardBase * 0.6, shardBase / 12);
+      ctx.rect(shardBase / 2, -shardBase / 15, shardBase * 0.7, shardBase / 10);
     } else if (shapeType === 'circle') {
-      ctx.arc(shardBase * 0.7, 0, shardBase / 8, 0, Math.PI * 2);
+      ctx.arc(shardBase * 0.8, 0, shardBase / 7, 0, Math.PI * 2);
     } else {
-      // 5-degree wedge for mechanical precision and black gaps
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, size / 2, -2.5 * Math.PI / 180, 2.5 * Math.PI / 180);
+      ctx.arc(0, 0, size / 2, -4 * Math.PI / 180, 4 * Math.PI / 180);
     }
     ctx.closePath();
     ctx.clip();
 
-    // Small random crop shifts (within 15% range) to catch different logo edges
-    const cropShiftX = (Math.random() - 0.5) * (size * 0.15);
-    const cropShiftY = (Math.random() - 0.5) * (size * 0.15);
-    
     ctx.rotate(wandSeed * Math.PI / 180);
-    const finalDrawSize = size * internalScale; 
+    const finalDrawSize = size * scale; 
     
-    ctx.drawImage(img, (-finalDrawSize / 2) + cropShiftX, (-finalDrawSize / 2) + cropShiftY, finalDrawSize, finalDrawSize);
+    // Applying the consistent crop for this specific ring
+    ctx.drawImage(img, (-finalDrawSize / 2) + cX, (-finalDrawSize / 2) + cY, finalDrawSize, finalDrawSize);
     ctx.restore();
   };
 
@@ -73,28 +69,34 @@ export default function Home() {
     const shapePalette = ['triangle', 'slant', 'circle', 'wedge'];
     ctx.clearRect(0, 0, size, size);
 
-    // 14 Layers for a dense but sharp build
+    // 12-16 Structured Layers
     for (let l = 0; l < 14; l++) {
-      const folds = [12, 16, 24, 32, 48][Math.floor(Math.random() * 5)];
-      const layerScale = 0.15 + (Math.random() * 0.85);
+      const folds = [8, 12, 16, 24, 32][Math.floor(Math.random() * 5)];
+      const layerScale = 0.2 + (Math.random() * 0.85);
+      
+      // CRITICAL: Randomize the "Cut" once per LAYER, not per SHARD
+      const layerImg = imgs[Math.floor(Math.random() * imgs.length)];
+      const layerShape = shapePalette[Math.floor(Math.random() * shapePalette.length)];
+      const layerWand = Math.random() * 360;
       const internalScale = 0.4 + (Math.random() * 0.6);
+      
+      // The consistent "Random Crop" for this ring
+      const cropX = (Math.random() - 0.5) * (size * 0.25);
+      const cropY = (Math.random() - 0.5) * (size * 0.25);
 
       for (let i = 0; i < folds; i++) {
-        // Randomize image and shape for every single shard in the ring
-        const randomImg = imgs[Math.floor(Math.random() * imgs.length)];
-        const randomShape = shapePalette[Math.floor(Math.random() * shapePalette.length)];
-        const individualWand = Math.random() * 360;
-
-        drawShatteredShard(
+        drawEmblemShard(
           ctx, 
-          randomImg, 
+          layerImg, 
           center, 
           center, 
           size * layerScale, 
           i * (360/folds), 
-          randomShape, 
-          individualWand, 
-          internalScale
+          layerShape, 
+          layerWand, 
+          internalScale,
+          cropX,
+          cropY
         );
       }
     }
@@ -104,13 +106,13 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>SHATTER_SYNTH_V1.9.3</title></Head>
+      <Head><title>EMBLEM_SYNTH_V1.9.4</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.1rem', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>SHATTERED_COLLAGE_PROTOCOL</h1>
+            <h1 style={{ fontSize: '1.1rem', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>STRUCTURED_EMBLEM_PROTOCOL</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -119,13 +121,13 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null)} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              GENERATE_SHATTER
+              INITIATE_SYNTHESIS
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
             <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} />
-            <button onClick={() => setGeneratedImg(null)} style={{ marginTop: '20px', padding: '15px 40px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>NEW_VERSION</button>
+            <button onClick={() => setGeneratedImg(null)} style={{ marginTop: '20px', padding: '15px 40px', background: '#FFF', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}>NEW_REITERATION</button>
           </div>
         )}
       </div>

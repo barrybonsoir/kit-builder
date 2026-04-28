@@ -26,7 +26,6 @@ export default function Home() {
     ctx.beginPath();
     const s = size / 2;
     
-    // SOFTER LOGIC: Curves over rigid lines
     if (shape === 'petal') {
       ctx.moveTo(0, 0);
       ctx.bezierCurveTo(s * 0.4, -s * 0.7, s * 1.6, -s * 0.4, s, 0);
@@ -40,7 +39,6 @@ export default function Home() {
     } else if (shape === 'orb') {
       ctx.arc(s * 0.5, 0, s * 0.4, 0, Math.PI * 2);
     } else {
-      // Soft-edged wedge for core symmetry
       ctx.moveTo(0, 0);
       ctx.arc(0, 0, s * 0.85, -18 * Math.PI / 180, 18 * Math.PI / 180);
     }
@@ -73,23 +71,32 @@ export default function Home() {
 
       ctx.clearRect(0, 0, size, size);
 
-      // DYNAMIC CURVE LAYERS: Shuffle logic within legible bounds
+      // BOUNDED LAYERS: Strictly controlled to avoid canvas bleed
       const layers = [
-        { f: 12, sc: 0.35, sh: 'softWedge', off: 0, w: 45 },      // NUCLEUS
-        { f: 6,  sc: 0.75, sh: 'capsule', off: 0.16 + Math.random() * 0.04, w: 0 }, // HERO PANEL
-        { f: 6,  sc: 0.75, sh: 'capsule', off: 0.16 + Math.random() * 0.04, w: 180 }, 
-        { f: [5, 6, 8][Math.floor(Math.random()*3)], sc: 0.6, sh: 'petal', off: 0.28, w: 90 }, // FLOWER BLOOM
-        { f: 16, sc: 0.35, sh: 'orb', off: 0.38 + Math.random() * 0.03, w: 0 } // PERIPHERAL BEADS
+        { f: 12, sc: 0.3, sh: 'softWedge', off: 0, w: 45 },      // NUCLEUS
+        { f: 6,  sc: 0.65, sh: 'capsule', off: 0.14, w: 0 },    // HERO PENTAGON
+        { f: 6,  sc: 0.65, sh: 'capsule', off: 0.14, w: 180 },  // HERO HEXAGON
+        { f: [6, 8][Math.floor(Math.random()*2)], sc: 0.55, sh: 'petal', off: 0.25, w: 90 }, // FLOWER
+        { f: 16, sc: 0.3, sh: 'orb', off: 0.35, w: 0 }          // OUTER RING
       ];
 
       layers.forEach((l, idx) => {
         const img = imgs[Math.floor(Math.random() * 4)];
         const ringRot = Math.random() * 360; 
 
+        // CALCULATE BOUNDARY: (center + offset + shard radius) must be < 512
+        const safeOffset = (size * l.off);
+        const shardRadius = (size * l.sc) / 2;
+        
+        // Final pixel check to force contain within canvas
+        if (safeOffset + shardRadius > 510) {
+            l.sc = (510 - safeOffset) * 2 / size;
+        }
+
         for (let i = 0; i < l.f; i++) {
           const angle = (i * (360 / l.f) + ringRot) * Math.PI / 180;
-          const x = center + (size * l.off) * Math.cos(angle);
-          const y = center + (size * l.off) * Math.sin(angle);
+          const x = center + safeOffset * Math.cos(angle);
+          const y = center + safeOffset * Math.sin(angle);
           drawShard(ctx, img, x, y, size * l.sc, i * (360/l.f), l.sh, l.w, 0.95);
         }
       });
@@ -100,12 +107,12 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>CURVILINEAR_BLOOM_v2.2.8</title></Head>
+      <Head><title>BOUND_BLOOM_v2.2.9</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>CURVILINEAR_MARK_SYNTH</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>BOUNDED_BLOOM_SYNTH</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -114,7 +121,7 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'SOFTENING_LINES...' : 'INITIATE_CURVED_BLOOM'}
+              {isBuilding ? 'CONSTRAINING...' : 'INITIATE_BOUND_BLOOM'}
             </button>
           </>
         ) : (

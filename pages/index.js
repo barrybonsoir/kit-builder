@@ -26,14 +26,23 @@ export default function Home() {
     ctx.beginPath();
     const s = size / 2;
     
-    if (shape === 'shield') {
-      ctx.moveTo(s * 0.1, -s * 0.4); ctx.lineTo(s * 1.1, -s * 0.4);
-      ctx.quadraticCurveTo(s * 1.3, 0, s * 1.1, s * 0.4); ctx.lineTo(s * 0.1, s * 0.4);
-    } else if (shape === 'petal') {
-      ctx.moveTo(0, 0); ctx.bezierCurveTo(s * 0.5, -s * 0.6, s * 1.5, -s * 0.3, s, 0);
-      ctx.bezierCurveTo(s * 1.5, s * 0.3, s * 0.5, s * 0.6, 0, 0);
+    // SOFTER LOGIC: Curves over rigid lines
+    if (shape === 'petal') {
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(s * 0.4, -s * 0.7, s * 1.6, -s * 0.4, s, 0);
+      ctx.bezierCurveTo(s * 1.6, s * 0.4, s * 0.4, s * 0.7, 0, 0);
+    } else if (shape === 'capsule') {
+      ctx.moveTo(s * 0.2, -s * 0.35);
+      ctx.lineTo(s * 0.8, -s * 0.35);
+      ctx.arc(s * 0.8, 0, s * 0.35, -Math.PI/2, Math.PI/2);
+      ctx.lineTo(s * 0.2, s * 0.35);
+      ctx.arc(s * 0.2, 0, s * 0.35, Math.PI/2, -Math.PI/2);
+    } else if (shape === 'orb') {
+      ctx.arc(s * 0.5, 0, s * 0.4, 0, Math.PI * 2);
     } else {
-      ctx.moveTo(0, 0); ctx.arc(0, 0, s * 0.9, -12 * Math.PI / 180, 12 * Math.PI / 180);
+      // Soft-edged wedge for core symmetry
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, s * 0.85, -18 * Math.PI / 180, 18 * Math.PI / 180);
     }
     
     ctx.closePath();
@@ -64,19 +73,18 @@ export default function Home() {
 
       ctx.clearRect(0, 0, size, size);
 
-      // REMIX LOGIC: Each click shuffles these 6 dynamic layers
+      // DYNAMIC CURVE LAYERS: Shuffle logic within legible bounds
       const layers = [
-        { f: 12, sc: 0.3 + Math.random() * 0.1, sh: 'wedge', off: 0, w: 45 },      // CORE
-        { f: 6,  sc: 0.7, sh: 'shield', off: 0.15 + Math.random() * 0.05, w: 0 },  // HERO A
-        { f: 6,  sc: 0.7, sh: 'shield', off: 0.15 + Math.random() * 0.05, w: 180 },// HERO B
-        { f: [8, 10, 12][Math.floor(Math.random()*3)], sc: 0.5, sh: 'petal', off: 0.3, w: 90 }, // MID
-        { f: 24, sc: 0.2 + Math.random() * 0.1, sh: 'wedge', off: 0.4, w: 0 },    // OUTER
-        { f: 18, sc: 0.3, sh: 'petal', off: 0.35 + Math.random() * 0.05, w: 270 }  // PERIPHERAL
+        { f: 12, sc: 0.35, sh: 'softWedge', off: 0, w: 45 },      // NUCLEUS
+        { f: 6,  sc: 0.75, sh: 'capsule', off: 0.16 + Math.random() * 0.04, w: 0 }, // HERO PANEL
+        { f: 6,  sc: 0.75, sh: 'capsule', off: 0.16 + Math.random() * 0.04, w: 180 }, 
+        { f: [5, 6, 8][Math.floor(Math.random()*3)], sc: 0.6, sh: 'petal', off: 0.28, w: 90 }, // FLOWER BLOOM
+        { f: 16, sc: 0.35, sh: 'orb', off: 0.38 + Math.random() * 0.03, w: 0 } // PERIPHERAL BEADS
       ];
 
       layers.forEach((l, idx) => {
         const img = imgs[Math.floor(Math.random() * 4)];
-        const ringRot = Math.random() * 360; // Every "Remix" rotates the rings differently
+        const ringRot = Math.random() * 360; 
 
         for (let i = 0; i < l.f; i++) {
           const angle = (i * (360 / l.f) + ringRot) * Math.PI / 180;
@@ -92,12 +100,12 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', color: '#FFF', fontFamily: 'monospace' }}>
-      <Head><title>DYNAMIC_AIRED_MARK_v2.2.7</title></Head>
+      <Head><title>CURVILINEAR_BLOOM_v2.2.8</title></Head>
       <canvas ref={canvasRef} width="1024" height="1024" style={{ display: 'none' }} />
       <div style={{ maxWidth: '850px', margin: '0 auto', border: '1px solid #FFF', padding: '25px' }}>
         {!generatedImg ? (
           <>
-            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>DYNAMIC_BLUEPRINT_SYNTH</h1>
+            <h1 style={{ fontSize: '1.2rem', letterSpacing: '2px', borderBottom: '1px solid #FFF', paddingBottom: '10px' }}>CURVILINEAR_MARK_SYNTH</h1>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '20px' }}>
               {selections.map((s, i) => (
                 <button key={i} onClick={() => setActiveSlot(i)} style={{ height: '90px', background: s?.color || '#111', border: '1px solid #FFF', color: '#FFF', cursor: 'pointer', fontWeight: 'bold' }}>
@@ -106,12 +114,12 @@ export default function Home() {
               ))}
             </div>
             <button onClick={generateMark} disabled={selections.includes(null) || isBuilding} style={{ width: '100%', marginTop: '20px', padding: '30px', background: '#FFF', color: '#000', fontWeight: '900', cursor: 'pointer', fontSize: '1.1rem' }}>
-              {isBuilding ? 'BUILDING...' : 'INITIATE_DYNAMIC_MARK'}
+              {isBuilding ? 'SOFTENING_LINES...' : 'INITIATE_CURVED_BLOOM'}
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Asset" />
+            <img src={generatedImg} style={{ width: '100%', border: '1px solid #FFF' }} alt="Synthesized Mark" />
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
               <button onClick={() => setGeneratedImg(null)} style={{ flex: 1, padding: '20px', background: '#FFF', color: '#000', fontWeight: 'bold' }}>RESET</button>
               <button onClick={generateMark} style={{ flex: 1, padding: '20px', border: '1px solid #FFF', background: '#000', color: '#FFF', fontWeight: 'bold' }}>RE-BLOOM (REMIX)</button>

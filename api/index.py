@@ -4,8 +4,9 @@ from lxml import etree
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-# Absolute path resolution
-CURRENT_DIR = Path(__file__).parent
+# FORCE BUNDLING: This tells the builder the folder is a dependency
+# We use __file__ to ensure the path is pinned to the Lambda's task root
+CURRENT_DIR = Path(__file__).parent.resolve()
 ASSETS_DIR = CURRENT_DIR / "assets" / "svg-logos"
 
 class handler(BaseHTTPRequestHandler):
@@ -22,24 +23,29 @@ class handler(BaseHTTPRequestHandler):
         file_a = ASSETS_DIR / f"{team_a_slug}-national-team.football-logos.cc.svg"
         file_b = ASSETS_DIR / f"{team_b_slug}-national-team.football-logos.cc.svg"
 
-        # Diagnostic Check
         if not file_a.exists() or not file_b.exists():
-            # Let's see what the container actually contains
-            existing_files = [f.name for f in ASSETS_DIR.glob('*')] if ASSETS_DIR.exists() else "Folder missing"
-            self.send_error(404, f"Asset Not Found. Looking for: {file_a.name}. Available assets: {existing_files}")
-            return
+            # If the folder is still missing, we'll try to find it in the parent
+            # This is a fallback for different Vercel environment configurations
+            alt_path = CURRENT_DIR.parent / "api" / "assets" / "svg-logos"
+            if alt_path.exists():
+                file_a = alt_path / f"{team_a_slug}-national-team.football-logos.cc.svg"
+                file_b = alt_path / f"{team_b_slug}-national-team.football-logos.cc.svg"
+            
+            if not file_a.exists():
+                self.send_error(404, f"Asset missing. Path checked: {ASSETS_DIR}")
+                return
 
         try:
             parser = etree.XMLParser(remove_blank_text=True)
             tree_a = etree.parse(str(file_a), parser)
             tree_b = etree.parse(str(file_b), parser)
 
-            # Surgical Purge
+            # Surgical Purge (removes OREA/CBF/Stars)
             for tree in [tree_a, tree_b]:
                 for noise in tree.xpath(".//*[@id='typography_labels']"):
                     noise.getparent().remove(noise)
 
-            # Extract Elements
+            # Extract elements based on your semantic_audit.py findings
             mascot_a = tree_a.xpath(".//*[@id='hero_graphic']")[0]
             shield_b = tree_b.xpath(".//*[@id='primary_silhouette']")[0]
 

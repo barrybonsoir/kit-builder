@@ -13,21 +13,23 @@ class handler(BaseHTTPRequestHandler):
         sel_b = params.get('b', ['brazil'])[0].lower()
 
         try:
-            # VERCEL PATH FIX: Look for the root directory
-            # 'var/task' is where the script lives, we need the project root
-            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            # 1. FIND THE ROOT DIRECTORY
+            # This navigates from /var/task/api/generate-jersey.py up to /var/task/
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            root_dir = os.path.dirname(current_dir)
             
-            manifest_path = os.path.join(base_path, 'public', 'semantic_audit_manifest.json')
+            # 2. DEFINE PATHS
+            manifest_path = os.path.join(root_dir, 'public', 'semantic_audit_manifest.json')
+            logo_dir = os.path.join(root_dir, 'public', 'svg-logos')
             
+            # Debug check: If the path doesn't exist, try a direct relative path
             if not os.path.exists(manifest_path):
-                # Fallback: check if Vercel put public inside the task folder
-                manifest_path = os.path.join(os.getcwd(), 'public', 'semantic_audit_manifest.json')
+                manifest_path = os.path.abspath(os.path.join(current_dir, '..', 'public', 'semantic_audit_manifest.json'))
+                logo_dir = os.path.abspath(os.path.join(current_dir, '..', 'public', 'svg-logos'))
 
+            # 3. READ DATA
             with open(manifest_path, 'r') as f:
                 manifest = json.load(f)
-            
-            # Use the same base_path for the logos
-            logo_dir = os.path.join(base_path, 'public', 'svg-logos')
             
             file_a_path = os.path.join(logo_dir, manifest[sel_a]['filename_map'])
             file_b_path = os.path.join(logo_dir, manifest[sel_b]['filename_map'])
@@ -37,16 +39,19 @@ class handler(BaseHTTPRequestHandler):
             with open(file_b_path, 'rb') as f:
                 svg_b_raw = f.read()
             
+            # 4. PARSE AND ASSEMBLE
             root_a = etree.fromstring(svg_a_raw)
             root_b = etree.fromstring(svg_b_raw)
             
+            inner_a = "".join([etree.tostring(child, encoding='unicode') for child in root_a])
             inner_b = "".join([etree.tostring(child, encoding='unicode') for child in root_b])
 
-            final_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{manifest[sel_a]['viewBox']}">
+            final_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="white"/>
     <g id="base-layer" opacity="0.3">
-        {etree.tostring(root_a, encoding='unicode')}
+        {inner_a}
     </g>
-    <g id="overlay-layer" transform="scale(0.5) translate(25, 25)">
+    <g id="overlay-layer" transform="scale(0.5) translate(50, 50)">
         {inner_b}
     </g>
 </svg>"""
@@ -61,6 +66,5 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            # This will help us debug the path if it fails again
-            debug_info = f"Error: {str(e)}\nCWD: {os.getcwd()}\nFile: {__file__}"
-            self.wfile.write(debug_info.encode())
+            # Detailed debug output to help identify the missing folder
+            self.wfile.write(f"Error: {str(e)}\nAttempted Manifest Path: {manifest_path}\nFiles in Root: {os.listdir(root_dir)}".encode())

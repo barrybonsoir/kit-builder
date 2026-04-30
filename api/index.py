@@ -5,20 +5,23 @@ from lxml import etree
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-# Add the current directory to the path so index.py can see data_assets.py
-sys.path.append(os.path.dirname(__file__))
+# Ensure the /api directory is in the path
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+if CURRENT_DIR not in sys.path:
+    sys.path.append(CURRENT_DIR)
 
+# Safe Import
 try:
     import data_assets
-except ImportError:
-    # Diagnostic fallback
+except ImportError as e:
     data_assets = None
+    import_error = str(e)
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # 1. Check if the data file even loaded
+        # Diagnostic: Catch the import error before the logic runs
         if data_assets is None:
-            self.send_error(500, "Internal Error: data_assets.py not found in /api")
+            self.send_error(500, f"Import Error: {import_error}. Check if data_assets.py exists in /api")
             return
 
         query = parse_qs(urlparse(self.path).query)
@@ -29,8 +32,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_error(400, "Missing parameters 'a' or 'b'")
             return
 
-        # 2. Extract SVG data from the dictionary
-        # Using getattr to avoid crashes if the dict is missing
+        # Access the dictionary
         svg_dict = getattr(data_assets, 'TEAM_SVG_DATA', {})
         svg_a_enc = svg_dict.get(team_a_slug)
         svg_b_enc = svg_dict.get(team_b_slug)
@@ -40,19 +42,16 @@ class handler(BaseHTTPRequestHandler):
             return
 
         try:
-            # 3. Decode and Parse
             parser = etree.XMLParser(remove_blank_text=True)
             tree_a = etree.fromstring(base64.b64decode(svg_a_enc), parser)
             tree_b = etree.fromstring(base64.b64decode(svg_b_enc), parser)
 
-            # 4. The Surgical Purge (Removing 'OREA', 'CBF', etc.)
-            # This relies on the IDs you injected with your script
+            # Surgical Purge (The IDs from your semantic audit)
             for tree in [tree_a, tree_b]:
                 for noise in tree.xpath(".//*[@id='typography_labels']"):
                     noise.getparent().remove(noise)
 
-            # 5. Extract and Combine
-            # mascot_a: The graphic | shield_b: The container
+            # Composition
             mascot_a = tree_a.xpath(".//*[@id='hero_graphic']")[0]
             shield_b = tree_b.xpath(".//*[@id='primary_silhouette']")[0]
 
@@ -63,7 +62,6 @@ class handler(BaseHTTPRequestHandler):
             combined_svg.append(shield_b)
             combined_svg.append(mascot_a)
 
-            # 6. Send Result
             self.send_response(200)
             self.send_header('Content-type', 'image/svg+xml')
             self.send_header('Access-Control-Allow-Origin', '*')
@@ -71,4 +69,4 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(etree.tostring(combined_svg, pretty_print=True))
 
         except Exception as e:
-            self.send_error(500, f"Logic Error: {str(e)}")
+            self.send_error(500, f"Execution Error: {str(e)}")

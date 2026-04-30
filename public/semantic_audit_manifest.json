@@ -22,5 +22,11 @@
     "viewBox": "0 0 120 120",
     "colors": ["#CD2E3A", "#0047A0", "#FFFFFF", "#000000"],
     "main_icon_id": "south-korea-taegeuk-group"
+  },
+  "usa": {
+    "filename_map": "usa.svg",
+    "viewBox": "0 0 100 120",
+    "colors": ["#002868", "#BF0A30", "#FFFFFF"],
+    "main_icon_id": "usa-crest-star-field-group"
   }
 }

@@ -1,17 +1,490 @@
 {
-  "algeria": {"filename_map": "algeria-national-team.football-logos.cc.svg", "viewBox": "0 0 120 120"},
-  "argentina": {"filename_map": "argentina-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "australia": {"filename_map": "australia-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "austria": {"filename_map": "austria-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "belgium": {"filename_map": "belgium-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "bosnia-herzegovina": {"filename_map": "bosnia-and-herzegovina-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "brazil": {"filename_map": "brazil-national-team.football-logos.cc.svg", "viewBox": "0 0 56.25 80"},
-  "canada": {"filename_map": "canada-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "england": {"filename_map": "england-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "france": {"filename_map": "france-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "germany": {"filename_map": "germany-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "japan": {"filename_map": "japan-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "mexico": {"filename_map": "mexico-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
-  "south-korea": {"filename_map": "south-korea-national-team.football-logos.cc.svg", "viewBox": "0 0 120 120"},
-  "usa": {"filename_map": "usa-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"}
+  "metadata": {
+    "project": "Kit-Builder 2026",
+    "auditor": "Gemini AI",
+    "schema_version": "2.0",
+    "total_teams": 48
+  },
+  "teams": {
+    "usa": {
+      "file_path": "assets/svg-logos/usa-logo.svg",
+      "elements": {
+        "primary_silhouette": "shield_boundary",
+        "hero_graphic": "central_star_icon",
+        "hero_texture": "vertical_red_stripes",
+        "secondary_accents": ["lettering_usa", "ribbon_26_shard"],
+        "hero_palette": ["#002868", "#BF0D3E", "#FFFFFF"]
+      }
+    },
+    "mexico": {
+      "file_path": "assets/svg-logos/mexico-logo.svg",
+      "elements": {
+        "primary_silhouette": "circular_aztec_border",
+        "hero_graphic": "stylized_eagle_serpent",
+        "hero_texture": "linear_sun_stone_pattern",
+        "secondary_accents": ["wordmark_mex", "green_outer_ring"],
+        "hero_palette": ["#006847", "#CE1126", "#FFFFFF"]
+      }
+    },
+    "canada": {
+      "file_path": "assets/svg-logos/canada-logo.svg",
+      "elements": {
+        "primary_silhouette": "leaf_frame",
+        "hero_graphic": "geometric_maple_leaf",
+        "hero_texture": "fractal_leaf_shards",
+        "secondary_accents": ["wordmark_canada", "red_accent_bar"],
+        "hero_palette": ["#FF0000", "#FFFFFF", "#D3D3D3"]
+      }
+    },
+    "argentina": {
+      "file_path": "assets/svg-logos/argentina-logo.svg",
+      "elements": {
+        "primary_silhouette": "afa_shield_outline",
+        "hero_graphic": "sun_of_may_icon",
+        "hero_texture": "albiceleste_gradients",
+        "secondary_accents": ["afa_monogram", "three_star_header"],
+        "hero_palette": ["#74ACDF", "#F6B40E", "#FFFFFF"]
+      }
+    },
+    "brazil": {
+      "file_path": "assets/svg-logos/brazil-logo.svg",
+      "elements": {
+        "primary_silhouette": "globe_shield",
+        "hero_graphic": "southern_cross",
+        "hero_texture": "yellow_inner_glow",
+        "secondary_accents": ["cbf_typography", "five_star_arch"],
+        "hero_palette": ["#FFDF00", "#009B3A", "#002776"]
+      }
+    },
+    "france": {
+      "file_path": "assets/svg-logos/france-logo.svg",
+      "elements": {
+        "primary_silhouette": "hexagonal_badge",
+        "hero_graphic": "gallic_rooster",
+        "hero_texture": "tricolore_color_block",
+        "secondary_accents": ["fff_monogram", "two_stars"],
+        "hero_palette": ["#002395", "#ED2939", "#FFFFFF"]
+      }
+    },
+    "england": {
+      "file_path": "assets/svg-logos/england-logo.svg",
+      "elements": {
+        "primary_silhouette": "rounded_shield",
+        "hero_graphic": "three_lions_passant",
+        "hero_texture": "tudor_rose_pattern",
+        "secondary_accents": ["england_script", "star_accent"],
+        "hero_palette": ["#000040", "#CE1124", "#FFFFFF"]
+      }
+    },
+    "germany": {
+      "file_path": "assets/svg-logos/germany-logo.svg",
+      "elements": {
+        "primary_silhouette": "dfb_eagle_circle",
+        "hero_graphic": "federal_eagle",
+        "hero_texture": "diagonal_tricolor_bands",
+        "secondary_accents": ["dfb_monogram", "four_stars"],
+        "hero_palette": ["#000000", "#DD0000", "#FFCE00"]
+      }
+    },
+    "japan": {
+      "file_path": "assets/svg-logos/japan-logo.svg",
+      "elements": {
+        "primary_silhouette": "yatagarasu_shield",
+        "hero_graphic": "three_legged_crow",
+        "hero_texture": "rising_sun_rays",
+        "secondary_accents": ["jfa_type", "red_sun_disk"],
+        "hero_palette": ["#000080", "#ED1A3D", "#FFFFFF"]
+      }
+    },
+    "south-korea": {
+      "file_path": "assets/svg-logos/south-korea-logo.svg",
+      "elements": {
+        "primary_silhouette": "white_tiger_shield",
+        "hero_graphic": "stylized_tiger_head",
+        "hero_texture": "taegeuk_wave_pattern",
+        "secondary_accents": ["kfa_monogram", "blue_red_accents"],
+        "hero_palette": ["#E61E2E", "#0047A0", "#000000"]
+      }
+    },
+    "netherlands": {
+      "file_path": "assets/svg-logos/netherlands-logo.svg",
+      "elements": {
+        "primary_silhouette": "knvb_crest",
+        "hero_graphic": "oranje_lion",
+        "hero_texture": "lion_mane_filigree",
+        "secondary_accents": ["knvb_typography", "crown_motif"],
+        "hero_palette": ["#F36C21", "#000000", "#FFFFFF"]
+      }
+    },
+    "spain": {
+      "file_path": "assets/svg-logos/spain-logo.svg",
+      "elements": {
+        "primary_silhouette": "coat_of_arms_shield",
+        "hero_graphic": "royal_lion_castle",
+        "hero_texture": "cross_hatching_pattern",
+        "secondary_accents": ["rfef_badge", "yellow_star"],
+        "hero_palette": ["#AA151B", "#F1BF00", "#000000"]
+      }
+    },
+    "italy": {
+      "file_path": "assets/svg-logos/italy-logo.svg",
+      "elements": {
+        "primary_silhouette": "figc_badge",
+        "hero_graphic": "gold_blue_shield",
+        "hero_texture": "tricolore_ribbon",
+        "secondary_accents": ["figc_monogram", "four_stars"],
+        "hero_palette": ["#0064AA", "#008C45", "#CD212A"]
+      }
+    },
+    "portugal": {
+      "file_path": "assets/svg-logos/portugal-logo.svg",
+      "elements": {
+        "primary_silhouette": "quinas_shield",
+        "hero_graphic": "armillary_sphere",
+        "hero_texture": "red_green_split_field",
+        "secondary_accents": ["fpf_logo", "cross_of_christ"],
+        "hero_palette": ["#E42518", "#006600", "#FFF200"]
+      }
+    },
+    "belgium": {
+      "file_path": "assets/svg-logos/belgium-logo.svg",
+      "elements": {
+        "primary_silhouette": "rbfa_shield",
+        "hero_graphic": "crowned_shield_icon",
+        "hero_texture": "geometric_b_pattern",
+        "secondary_accents": ["rbfa_lettering", "1895_shard"],
+        "hero_palette": ["#000000", "#E30613", "#FFD200"]
+      }
+    },
+    "morocco": {
+      "file_path": "assets/svg-logos/morocco-logo.svg",
+      "elements": {
+        "primary_silhouette": "pentagram_shield",
+        "hero_graphic": "green_star_icon",
+        "hero_texture": "atlas_mountain_gradients",
+        "secondary_accents": ["frmf_typography", "crown_detail"],
+        "hero_palette": ["#C1272D", "#006233", "#FFFFFF"]
+      }
+    },
+    "senegal": {
+      "file_path": "assets/svg-logos/senegal-logo.svg",
+      "elements": {
+        "primary_silhouette": "circular_crest",
+        "hero_graphic": "lion_head_icon",
+        "hero_texture": "teranga_wave_pattern",
+        "secondary_accents": ["fsf_monogram", "green_star"],
+        "hero_palette": ["#00853F", "#FDEF42", "#E31B23"]
+      }
+    },
+    "uruguay": {
+      "file_path": "assets/svg-logos/uruguay-logo.svg",
+      "elements": {
+        "primary_silhouette": "auf_shield",
+        "hero_graphic": "sun_of_may_shard",
+        "hero_texture": "sky_blue_stripes",
+        "secondary_accents": ["auf_monogram", "four_stars"],
+        "hero_palette": ["#00A7E1", "#FFFFFF", "#FCD116"]
+      }
+    },
+    "colombia": {
+      "file_path": "assets/svg-logos/colombia-logo.svg",
+      "elements": {
+        "primary_silhouette": "fcf_circle",
+        "hero_graphic": "national_colors_band",
+        "hero_texture": "coffee_leaf_silhouette",
+        "secondary_accents": ["fcf_typography", "blue_outer_ring"],
+        "hero_palette": ["#FCD116", "#003893", "#CE1126"]
+      }
+    },
+    "croatia": {
+      "file_path": "assets/svg-logos/croatia-logo.svg",
+      "elements": {
+        "primary_silhouette": "checkerboard_shield",
+        "hero_graphic": "red_white_chequy",
+        "hero_texture": "hns_monogram_texture",
+        "secondary_accents": ["hns_logo", "checker_pattern"],
+        "hero_palette": ["#FF0000", "#FFFFFF", "#171796"]
+      }
+    },
+    "australia": {
+      "file_path": "assets/svg-logos/australia-logo.svg",
+      "elements": {
+        "primary_silhouette": "commonwealth_star_frame",
+        "hero_graphic": "kangaroo_emu_crest",
+        "hero_texture": "golden_wattle_texture",
+        "secondary_accents": ["australia_font", "green_base"],
+        "hero_palette": ["#00843D", "#FFCD00", "#FFFFFF"]
+      }
+    },
+    "switzerland": {
+      "file_path": "assets/svg-logos/switzerland-logo.svg",
+      "elements": {
+        "primary_silhouette": "cross_badge",
+        "hero_graphic": "white_greek_cross",
+        "hero_texture": "alpine_peak_contours",
+        "secondary_accents": ["sfv_asf_monogram", "red_field"],
+        "hero_palette": ["#FF0000", "#FFFFFF"]
+      }
+    },
+    "norway": {
+      "file_path": "assets/svg-logos/norway-logo.svg",
+      "elements": {
+        "primary_silhouette": "nff_shield",
+        "hero_graphic": "lion_with_axe",
+        "hero_texture": "viking_knotwork",
+        "secondary_accents": ["nff_typography", "flag_bar"],
+        "hero_palette": ["#EF2B2D", "#002868", "#FFFFFF"]
+      }
+    },
+    "sweden": {
+      "file_path": "assets/svg-logos/sweden-logo.svg",
+      "elements": {
+        "primary_silhouette": "svff_shield",
+        "hero_graphic": "blue_yellow_banner",
+        "hero_texture": "northern_lights_gradient",
+        "secondary_accents": ["svff_monogram", "crown_icon"],
+        "hero_palette": ["#006AA7", "#FECC00", "#FFFFFF"]
+      }
+    },
+    "scotland": {
+      "file_path": "assets/svg-logos/scotland-logo.svg",
+      "elements": {
+        "primary_silhouette": "lion_rampant_shield",
+        "hero_graphic": "thistle_icon",
+        "hero_texture": "tartan_grid_pattern",
+        "secondary_accents": ["sfa_wordmark", "blue_background"],
+        "hero_palette": ["#003399", "#FFFFFF", "#C8102E"]
+      }
+    },
+    "egypt": {
+      "file_path": "assets/svg-logos/egypt-logo.svg",
+      "elements": {
+        "primary_silhouette": "efa_shield",
+        "hero_graphic": "eagle_of_saladin",
+        "hero_texture": "nile_wave_pattern",
+        "secondary_accents": ["efa_typography", "seven_stars"],
+        "hero_palette": ["#CE1126", "#000000", "#FFFFFF"]
+      }
+    },
+    "ghana": {
+      "file_path": "assets/svg-logos/ghana-logo.svg",
+      "elements": {
+        "primary_silhouette": "gfa_circle",
+        "hero_graphic": "black_star_icon",
+        "hero_texture": "kente_cloth_pattern",
+        "secondary_accents": ["gfa_monogram", "red_yellow_ring"],
+        "hero_palette": ["#EF3340", "#FFCD00", "#009B77", "#000000"]
+      }
+    },
+    "ivory-coast": {
+      "file_path": "assets/svg-logos/ivory-coast-logo.svg",
+      "elements": {
+        "primary_silhouette": "fif_shield",
+        "hero_graphic": "elephant_trunk",
+        "hero_texture": "orange_green_split",
+        "secondary_accents": ["fif_monogram", "white_star"],
+        "hero_palette": ["#FF8200", "#009E60", "#FFFFFF"]
+      }
+    },
+    "saudi-arabia": {
+      "file_path": "assets/svg-logos/saudi-arabia-logo.svg",
+      "elements": {
+        "primary_silhouette": "saff_crest",
+        "hero_graphic": "green_falcon",
+        "hero_texture": "date_palm_fronds",
+        "secondary_accents": ["saff_typography", "green_circle"],
+        "hero_palette": ["#006C35", "#FFFFFF"]
+      }
+    },
+    "south-africa": {
+      "file_path": "assets/svg-logos/south-africa-logo.svg",
+      "elements": {
+        "primary_silhouette": "safa_shield",
+        "hero_graphic": "protea_flower",
+        "hero_texture": "multi_color_y_band",
+        "secondary_accents": ["safa_monogram", "sunray_detail"],
+        "hero_palette": ["#007A4D", "#FFB81C", "#002395", "#E03C31", "#000000", "#FFFFFF"]
+      }
+    },
+    "tunisia": {
+      "file_path": "assets/svg-logos/tunisia-logo.svg",
+      "elements": {
+        "primary_silhouette": "ftf_crest",
+        "hero_graphic": "eagle_head_icon",
+        "hero_texture": "crescent_star_fill",
+        "secondary_accents": ["ftf_typography", "red_ring"],
+        "hero_palette": ["#E70013", "#FFFFFF"]
+      }
+    },
+    "algeria": {
+      "file_path": "assets/svg-logos/algeria-logo.svg",
+      "elements": {
+        "primary_silhouette": "faf_crest",
+        "hero_graphic": "fennec_fox",
+        "hero_texture": "desert_rose_geometry",
+        "secondary_accents": ["faf_monogram", "star_crescent"],
+        "hero_palette": ["#006633", "#D21034", "#FFFFFF"]
+      }
+    },
+    "ecuador": {
+      "file_path": "assets/svg-logos/ecuador-logo.svg",
+      "elements": {
+        "primary_silhouette": "fef_shield",
+        "hero_graphic": "andean_condor",
+        "hero_texture": "equatorial_line_band",
+        "secondary_accents": ["fef_typography", "yellow_field"],
+        "hero_palette": ["#FFDD00", "#034EA2", "#ED1C24"]
+      }
+    },
+    "paraguay": {
+      "file_path": "assets/svg-logos/paraguay-logo.svg",
+      "elements": {
+        "primary_silhouette": "apf_shield",
+        "hero_graphic": "star_of_may",
+        "hero_texture": "vertical_red_stripes",
+        "secondary_accents": ["apf_monogram", "laurel_wreath"],
+        "hero_palette": ["#D52B1E", "#0038A8", "#FFFFFF"]
+      }
+    },
+    "turkiye": {
+      "file_path": "assets/svg-logos/turkiye-logo.svg",
+      "elements": {
+        "primary_silhouette": "crescent_shield",
+        "hero_graphic": "star_and_crescent",
+        "hero_texture": "turkish_knot_pattern",
+        "secondary_accents": ["tff_typography", "red_frame"],
+        "hero_palette": ["#E30A17", "#FFFFFF"]
+      }
+    },
+    "jordan": {
+      "file_path": "assets/svg-logos/jordan-logo.svg",
+      "elements": {
+        "primary_silhouette": "jfa_crest",
+        "hero_graphic": "chivalry_star",
+        "hero_texture": "desert_dune_shading",
+        "secondary_accents": ["jfa_monogram", "red_base"],
+        "hero_palette": ["#CE1126", "#007A33", "#000000", "#FFFFFF"]
+      }
+    },
+    "uzbekistan": {
+      "file_path": "assets/svg-logos/uzbekistan-logo.svg",
+      "elements": {
+        "primary_silhouette": "ufa_shield",
+        "hero_graphic": "humo_bird",
+        "hero_texture": "cotton_flower_texture",
+        "secondary_accents": ["ufa_typography", "blue_band"],
+        "hero_palette": ["#009966", "#0066CC", "#FFFFFF"]
+      }
+    },
+    "qatar": {
+      "file_path": "assets/svg-logos/qatar-logo.svg",
+      "elements": {
+        "primary_silhouette": "qfa_shield",
+        "hero_graphic": "maroon_dhow_icon",
+        "hero_texture": "geometric_scallop",
+        "secondary_accents": ["qfa_monogram", "2026_shard"],
+        "hero_palette": ["#8D1B3D", "#FFFFFF"]
+      }
+    },
+    "curacao": {
+      "file_path": "assets/svg-logos/curacao-logo.svg",
+      "elements": {
+        "primary_silhouette": "ffk_shield",
+        "hero_graphic": "island_silhouette",
+        "hero_texture": "blue_yellow_wave",
+        "secondary_accents": ["ffk_monogram", "five_stars"],
+        "hero_palette": ["#002B7F", "#F9E316", "#FFFFFF"]
+      }
+    },
+    "haiti": {
+      "file_path": "assets/svg-logos/haiti-logo.svg",
+      "elements": {
+        "primary_silhouette": "fhf_crest",
+        "hero_graphic": "palm_tree_cannons",
+        "hero_texture": "haitian_shield_shard",
+        "secondary_accents": ["fhf_typography", "red_blue_field"],
+        "hero_palette": ["#00209F", "#D21034", "#FFFFFF"]
+      }
+    },
+    "panama": {
+      "file_path": "assets/svg-logos/panama-logo.svg",
+      "elements": {
+        "primary_silhouette": "fepafut_shield",
+        "hero_graphic": "harpy_eagle",
+        "hero_texture": "canal_wave_geometry",
+        "secondary_accents": ["fepafut_monogram", "red_blue_border"],
+        "hero_palette": ["#DA121A", "#003893", "#FFFFFF"]
+      }
+    },
+    "czechia": {
+      "file_path": "assets/svg-logos/czechia-logo.svg",
+      "elements": {
+        "primary_silhouette": "facr_shield",
+        "hero_graphic": "double_tailed_lion",
+        "hero_texture": "bohemian_glass_shard",
+        "secondary_accents": ["facr_typography", "red_base"],
+        "hero_palette": ["#D71920", "#11457E", "#FFFFFF"]
+      }
+    },
+    "bosnia": {
+      "file_path": "assets/svg-logos/bosnia-logo.svg",
+      "elements": {
+        "primary_silhouette": "nsbih_shield",
+        "hero_graphic": "map_silhouette",
+        "hero_texture": "yellow_triangle_shard",
+        "secondary_accents": ["nsbih_monogram", "blue_field"],
+        "hero_palette": ["#002395", "#FECB00", "#FFFFFF"]
+      }
+    },
+    "dr-congo": {
+      "file_path": "assets/svg-logos/dr-congo-logo.svg",
+      "elements": {
+        "primary_silhouette": "fecofa_shield",
+        "hero_graphic": "leopard_head",
+        "hero_texture": "blue_yellow_sunray",
+        "secondary_accents": ["fecofa_typography", "red_bar"],
+        "hero_palette": ["#007FFF", "#F7D117", "#CE1126"]
+      }
+    },
+    "iraq": {
+      "file_path": "assets/svg-logos/iraq-logo.svg",
+      "elements": {
+        "primary_silhouette": "ifa_shield",
+        "hero_graphic": "lion_of_babylon",
+        "hero_texture": "mesopotamian_pattern",
+        "secondary_accents": ["ifa_monogram", "green_bar"],
+        "hero_palette": ["#007A3D", "#FFFFFF", "#000000"]
+      }
+    },
+    "cape-verde": {
+      "file_path": "assets/svg-logos/cape-verde-logo.svg",
+      "elements": {
+        "primary_silhouette": "fcf_circle",
+        "hero_graphic": "ten_star_arch",
+        "hero_texture": "atlantic_wave_pattern",
+        "secondary_accents": ["fcf_monogram", "blue_base"],
+        "hero_palette": ["#003893", "#FFFFFF", "#FFD700", "#CF142B"]
+      }
+    },
+    "new-zealand": {
+      "file_path": "assets/svg-logos/new-zealand-logo.svg",
+      "elements": {
+        "primary_silhouette": "silver_fern_crest",
+        "hero_graphic": "silver_fern_leaf",
+        "hero_texture": "koru_spiral_pattern",
+        "secondary_accents": ["nzf_typography", "white_black_field"],
+        "hero_palette": ["#000000", "#FFFFFF"]
+      }
+    },
+    "austria": {
+      "file_path": "assets/svg-logos/austria-logo.svg",
+      "elements": {
+        "primary_silhouette": "ofb_shield",
+        "hero_graphic": "eagle_shield_icon",
+        "hero_texture": "alpine_shard_pattern",
+        "secondary_accents": ["ofb_monogram", "red_white_stripes"],
+        "hero_palette": ["#ED2939", "#FFFFFF", "#000000"]
+      }
+    }
+  }
 }

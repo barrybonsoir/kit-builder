@@ -46,34 +46,27 @@ class handler(BaseHTTPRequestHandler):
             tree_a = etree.fromstring(base64.b64decode(svg_a_enc), parser)
             tree_b = etree.fromstring(base64.b64decode(svg_b_enc), parser)
 
-            # 3. Clean noise (typography labels)
+            # 3. Clean noise based on your semantic audit
             for tree in [tree_a, tree_b]:
                 for noise in tree.xpath(".//*[@id='typography_labels']"):
                     noise.getparent().remove(noise)
 
-            # 4. Extract specific IDs from your semantic audit
+            # 4. Extract specific IDs
             mascot_a = tree_a.xpath(".//*[@id='hero_graphic']")[0]
             shield_b = tree_b.xpath(".//*[@id='primary_silhouette']")[0]
 
             # 5. Build the container
-            # We use tree_b's namespace map to ensure the output is a valid SVG
+            # Using nsmap handles the xmlns declaration automatically.
             combined_svg = etree.Element("svg", nsmap=tree_b.nsmap)
             
-            # Use a standard, large viewBox to prevent clipping 
-            # (matches standard high-fidelity SVG exports)
+            # Set attributes without manual xmlns string to avoid the 'redefined' error
             combined_svg.set("viewBox", "0 0 1000 1000")
-            combined_svg.set("xmlns", "http://www.w3.org/2000/svg")
             
-            # 6. Normalize elements
-            # Force styles to be visible and ensure they scale properly
+            # 6. Ensure visibility and scaling
             shield_b.set("style", "display:inline; opacity:1;")
             mascot_a.set("style", "display:inline; opacity:1;")
             
-            # Optional: If the mascot is still missing, it might be off-canvas.
-            # This transform forces it to the top-left of the 1000x1000 grid.
-            # mascot_a.set("transform", "translate(0,0) scale(1)")
-
-            # 7. Assemble (Shield in back, Mascot in front)
+            # 7. Assemble
             combined_svg.append(shield_b)
             combined_svg.append(mascot_a)
 

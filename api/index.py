@@ -1,13 +1,9 @@
-import os
-from pathlib import Path
+import base64
 from lxml import etree
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
-
-# FORCE BUNDLING: This tells the builder the folder is a dependency
-# We use __file__ to ensure the path is pinned to the Lambda's task root
-CURRENT_DIR = Path(__file__).parent.resolve()
-ASSETS_DIR = CURRENT_DIR / "assets" / "svg-logos"
+# This is the file you just generated
+from .data_assets import TEAM_SVG_DATA 
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -19,38 +15,33 @@ class handler(BaseHTTPRequestHandler):
             self.send_error(400, "Missing parameters 'a' or 'b'")
             return
 
-        # Matches your screenshot: {slug}-national-team.football-logos.cc.svg
-        file_a = ASSETS_DIR / f"{team_a_slug}-national-team.football-logos.cc.svg"
-        file_b = ASSETS_DIR / f"{team_b_slug}-national-team.football-logos.cc.svg"
+        # Get the Base64 strings from our internal dictionary
+        svg_a_enc = TEAM_SVG_DATA.get(team_a_slug)
+        svg_b_enc = TEAM_SVG_DATA.get(team_b_slug)
 
-        if not file_a.exists() or not file_b.exists():
-            # If the folder is still missing, we'll try to find it in the parent
-            # This is a fallback for different Vercel environment configurations
-            alt_path = CURRENT_DIR.parent / "api" / "assets" / "svg-logos"
-            if alt_path.exists():
-                file_a = alt_path / f"{team_a_slug}-national-team.football-logos.cc.svg"
-                file_b = alt_path / f"{team_b_slug}-national-team.football-logos.cc.svg"
-            
-            if not file_a.exists():
-                self.send_error(404, f"Asset missing. Path checked: {ASSETS_DIR}")
-                return
+        if not svg_a_enc or not svg_b_enc:
+            self.send_error(404, f"Team data not found for: {team_a_slug if not svg_a_enc else team_b_slug}")
+            return
 
         try:
+            # Decode and Parse
             parser = etree.XMLParser(remove_blank_text=True)
-            tree_a = etree.parse(str(file_a), parser)
-            tree_b = etree.parse(str(file_b), parser)
+            tree_a = etree.fromstring(base64.b64decode(svg_a_enc), parser)
+            tree_b = etree.fromstring(base64.b64decode(svg_b_enc), parser)
 
-            # Surgical Purge (removes OREA/CBF/Stars)
+            # Surgical Purge (The removal of 'OREA', 'CBF', etc.)
             for tree in [tree_a, tree_b]:
                 for noise in tree.xpath(".//*[@id='typography_labels']"):
                     noise.getparent().remove(noise)
 
-            # Extract elements based on your semantic_audit.py findings
+            # Extract Elements
             mascot_a = tree_a.xpath(".//*[@id='hero_graphic']")[0]
             shield_b = tree_b.xpath(".//*[@id='primary_silhouette']")[0]
 
-            combined_svg = etree.Element("svg", nsmap=tree_b.getroot().nsmap)
-            combined_svg.set("viewBox", tree_b.getroot().get("viewBox", "0 0 100 100"))
+            # Build Combined SVG
+            combined_svg = etree.Element("svg", nsmap=tree_b.nsmap)
+            # Ensure we use the proper viewBox from the shield
+            combined_svg.set("viewBox", tree_b.get("viewBox", "0 0 100 100"))
             combined_svg.set("xmlns", "http://www.w3.org/2000/svg")
 
             combined_svg.append(shield_b)

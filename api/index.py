@@ -4,7 +4,7 @@ from lxml import etree
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-# Pathing: looking inside the 'api' folder where the script lives
+# Absolute path resolution
 CURRENT_DIR = Path(__file__).parent
 ASSETS_DIR = CURRENT_DIR / "assets" / "svg-logos"
 
@@ -18,13 +18,15 @@ class handler(BaseHTTPRequestHandler):
             self.send_error(400, "Missing parameters 'a' or 'b'")
             return
 
-        # MATCHING YOUR FILE LIST: {slug}-national-team.football-logos.cc.svg
+        # Matches your screenshot: {slug}-national-team.football-logos.cc.svg
         file_a = ASSETS_DIR / f"{team_a_slug}-national-team.football-logos.cc.svg"
         file_b = ASSETS_DIR / f"{team_b_slug}-national-team.football-logos.cc.svg"
 
+        # Diagnostic Check
         if not file_a.exists() or not file_b.exists():
-            missing = str(file_a) if not file_a.exists() else str(file_b)
-            self.send_error(404, f"SVG Asset Not Found: {missing}")
+            # Let's see what the container actually contains
+            existing_files = [f.name for f in ASSETS_DIR.glob('*')] if ASSETS_DIR.exists() else "Folder missing"
+            self.send_error(404, f"Asset Not Found. Looking for: {file_a.name}. Available assets: {existing_files}")
             return
 
         try:
@@ -32,12 +34,12 @@ class handler(BaseHTTPRequestHandler):
             tree_a = etree.parse(str(file_a), parser)
             tree_b = etree.parse(str(file_b), parser)
 
-            # SURGICAL PURGE (Clears OREA/CBF/Stars)
+            # Surgical Purge
             for tree in [tree_a, tree_b]:
                 for noise in tree.xpath(".//*[@id='typography_labels']"):
                     noise.getparent().remove(noise)
 
-            # Extract Semantic Elements
+            # Extract Elements
             mascot_a = tree_a.xpath(".//*[@id='hero_graphic']")[0]
             shield_b = tree_b.xpath(".//*[@id='primary_silhouette']")[0]
 

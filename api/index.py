@@ -33,38 +33,65 @@ class handler(BaseHTTPRequestHandler):
                 slug = team_slugs[key].strip().lower() if team_slugs[key] else None
                 if slug and slug in svg_data_map:
                     tree = etree.fromstring(base64.b64decode(svg_data_map[slug]), parser)
-                    # Use the original viewbox if available to help with centering
                     vb = tree.get("viewBox", "0 0 1000 1000")
+                    
+                    # Purge typography labels
                     for noise in tree.xpath(".//*[@id='typography_labels']"):
                         noise.getparent().remove(noise)
+                    
                     target = tree.xpath(f".//*[@id='{role_id}']")
                     if target:
-                        # Wrap the target in a group that preserves its original context
-                        wrapper = etree.Element("svg", viewBox=vb, width="1000", height="1000")
+                        # NEW: Force centering and scaling for each harvested element
+                        wrapper = etree.Element("svg", {
+                            "viewBox": vb,
+                            "preserveAspectRatio": "xMidYMid meet",
+                            "width": "100%",
+                            "height": "100%"
+                        })
                         wrapper.append(target[0])
                         elements[key] = wrapper
 
+            # Final High-Vibe Assembly
             combined_svg = etree.Element("svg", viewBox="0 0 1000 1000", xmlns="http://www.w3.org/2000/svg")
             
-            # CSS for that 2026 Brand Playbook aesthetic[cite: 1, 2]
             style = etree.SubElement(combined_svg, "style")
             style.text = """
                 svg { background: #000; }
                 .chassis { fill: #fff; }
                 .texture { opacity: 0.3; }
-                .hero-main { filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
-                .hero-chaos { fill: #ff3e3e; opacity: 0.8; }
+                .hero-main { fill: #fff; filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)); }
+                .hero-chaos { fill: #ff0000; opacity: 0.8; mix-blend-mode: hard-light; }
             """
 
-            # Sequential Layering
-            def add_layer(el, cls, transform=""):
-                g = etree.SubElement(combined_svg, "g", attrib={"class": cls, "transform": transform})
-                g.append(el)
+            # Helper to place layers into centered containers[cite: 1]
+            def add_layer(el, cls, size="800", offset="100"):
+                # Nested SVG acts as a centering frame[cite: 1]
+                inner_svg = etree.SubElement(combined_svg, "svg", {
+                    "x": offset, "y": offset, 
+                    "width": size, "height": size,
+                    "class": cls
+                })
+                inner_svg.append(el)
 
-            if 'a' in elements: add_layer(elements['a'], "chassis")
-            if 'b' in elements: add_layer(elements['b'], "texture")
-            if 'c' in elements: add_layer(elements['c'], "hero-main", "scale(0.8) translate(125, 125)")
-            if 'd' in elements: add_layer(elements['d'], "hero-chaos", "scale(0.5) translate(500, 500) rotate(15)")
+            # 1. Base Shield (Largest)
+            if 'a' in elements: add_layer(elements['a'], "chassis", "900", "50")
+            
+            # 2. Pattern/Texture[cite: 1, 2]
+            if 'b' in elements: add_layer(elements['b'], "texture", "850", "75")
+            
+            # 3. Main Mascot (Center)[cite: 1, 2]
+            if 'c' in elements: add_layer(elements['c'], "hero-main", "500", "250")
+            
+            # 4. Chaos Mascot (Strange Offset)[cite: 1, 2]
+            if 'd' in elements: 
+                # Slightly rotate the chaos element[cite: 1]
+                g = etree.SubElement(combined_svg, "g", transform="rotate(-15 500 500)")
+                inner_svg = etree.SubElement(g, "svg", {
+                    "x": "300", "y": "300", 
+                    "width": "400", "height": "400",
+                    "class": "hero-chaos"
+                })
+                inner_svg.append(elements['d'])
 
             self.send_response(200)
             self.send_header('Content-type', 'image/svg+xml')

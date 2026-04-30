@@ -14,7 +14,7 @@ from lxml import etree
 # Initialize parameters. Define path to the standardized DNA guide (the Rosetta Stone).
 # Vercel agent reads this guide to securely link standardize slugs to messy filenames.
 # We utilize computational light data extraction (millisecond execution).
-MANIFEST_URL = "https://kit-builder-nu.vercel.app/public/semantic_audit_manifest.json"
+MANIFEST_URL = "https://raw.githubusercontent.com/barrybonsoir/kit-builder/main/public/semantic_audit_manifest.json"
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):

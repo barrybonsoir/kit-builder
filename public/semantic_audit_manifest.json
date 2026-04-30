@@ -1,26 +1,17 @@
 {
-  "england": {
-    "filename_map": "england-national-team.football-logos.cc.svg",
-    "viewBox": "0 0 100 120",
-    "colors": ["#00247D", "#CF142B", "#FFFFFF"],
-    "main_icon_id": "lions-group"
-  },
-  "algeria": {
-    "filename_map": "algeria-national-team.football-logos.cc.svg",
-    "viewBox": "0 0 120 120",
-    "colors": ["#006233", "#D21034", "#FFFFFF"],
-    "main_icon_id": "crescent-star-group"
-  },
-  "brazil": {
-    "filename_map": "brazil-national-team.football-logos.cc.svg",
-    "viewBox": "0 0 100 120",
-    "colors": ["#FEDF00", "#009B3A", "#FFFFFF", "#002776"],
-    "main_icon_id": "cbf-shield-group"
-  },
-  "south-korea": {
-    "filename_map": "south-korea-national-team.football-logos.cc.svg",
-    "viewBox": "0 0 120 120",
-    "colors": ["#CD2E3A", "#0047A0", "#FFFFFF", "#000000"],
-    "main_icon_id": "taegeuk-group"
-  }
+  "algeria": {"filename_map": "algeria-national-team.football-logos.cc.svg", "viewBox": "0 0 120 120"},
+  "argentina": {"filename_map": "argentina-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "australia": {"filename_map": "australia-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "austria": {"filename_map": "austria-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "belgium": {"filename_map": "belgium-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "bosnia-herzegovina": {"filename_map": "bosnia-and-herzegovina-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "brazil": {"filename_map": "brazil-national-team.football-logos.cc.svg", "viewBox": "0 0 56.25 80"},
+  "canada": {"filename_map": "canada-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "england": {"filename_map": "england-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "france": {"filename_map": "france-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "germany": {"filename_map": "germany-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "japan": {"filename_map": "japan-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "mexico": {"filename_map": "mexico-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"},
+  "south-korea": {"filename_map": "south-korea-national-team.football-logos.cc.svg", "viewBox": "0 0 120 120"},
+  "usa": {"filename_map": "usa-national-team.football-logos.cc.svg", "viewBox": "0 0 100 120"}
 }

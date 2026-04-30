@@ -36,6 +36,11 @@ class handler(BaseHTTPRequestHandler):
             tree_a = etree.parse(path_a)
             tree_b = etree.parse(path_b)
             
+            # Insert this after parsing trees A and B in your API handler
+for tree in [tree_a, tree_b]:
+    for noise in tree.xpath(".//*[@id='typography_labels']"):
+        noise.getparent().remove(noise)
+        
             # Extract elements using our injected IDs
             silhouette = tree_a.xpath(".//*[@id='primary_silhouette']")[0]
             hero = tree_b.xpath(".//*[@id='hero_graphic']")[0]

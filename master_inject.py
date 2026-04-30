@@ -1,63 +1,84 @@
 import os
-import xml.etree.ElementTree as ET
+from lxml import etree
 
-SVG_DIR = "assets/svg-logos"
+LOGO_DIR = "assets/svg-logos"
 
-# THE MASTER BLUEPRINT
-# We define the exact path index for the Silhouette, Hero, and Text.
-# 0 is the longest path (most complex), 1 is the next longest, etc.
-BLUEPRINT = {
-    "belgium": {"primary_silhouette": 2, "hero_graphic": 1, "typography_labels": 0},
-    "ghana":   {"primary_silhouette": 1, "hero_graphic": 2, "typography_labels": 0},
-    "spain":   {"primary_silhouette": 1, "hero_graphic": 2, "typography_labels": 0},
-    "mexico":  {"primary_silhouette": 0, "hero_graphic": 1, "typography_labels": 2},
-    "brazil":  {"primary_silhouette": 0, "hero_graphic": 1, "accent_1": 2},
-    "usa":     {"primary_silhouette": 0, "hero_graphic": 1, "accent_1": 2},
-    # Add more teams here as you spot them!
+# The Individualized 2026 Semantic Map
+# Format: "slug": (silhouette_idx, mascot_idx, [noise_indices])
+SURGICAL_MAP = {
+    "usa": (0, 1, [2, 3]), 
+    "mexico": (0, 2, [1, 3, 4]), 
+    "canada": (0, 1, [2]),
+    "argentina": (0, 1, [2, 3, 4]), 
+    "brazil": (0, 1, [2, 3, 4]), # Specifically identifies 'CBF' as noise
+    "france": (0, 1, [2]),
+    "england": (0, 1, [2, 3]), 
+    "germany": (0, 1, [2]),
+    "japan": (0, 2, [1]), 
+    "south-korea": (1, 0, [2, 3, 4, 5]), # Specifically targets 'OREA' as noise
+    "netherlands": (0, 1, [2]),
+    "spain": (0, 2, [1, 3, 4]),
+    "italy": (0, 1, [2, 3, 4]),
+    "portugal": (0, 1, [2]),
+    "belgium": (0, 2, [1, 3, 4, 5]), 
+    "morocco": (0, 1, [2]),
+    "senegal": (0, 1, [2]),
+    "uruguay": (0, 1, [2, 3, 4, 5]), 
+    "colombia": (0, 1, [2]),
+    "croatia": (0, 1, [2]),
+    "australia": (0, 1, [2]),
+    "switzerland": (0, 1, [2]),
+    "norway": (0, 1, [2]),
+    "sweden": (0, 1, [2]),
+    "scotland": (0, 1, [2]),
+    "egypt": (0, 1, [2, 3, 4, 5]),
+    "ghana": (0, 1, [2, 3, 4, 5]), 
+    "ivory-coast": (0, 1, [2]),
+    "saudi-arabia": (0, 1, [2]),
+    "south-africa": (0, 1, [2, 3, 4]),
+    "tunisia": (0, 1, [2]),
+    "algeria": (0, 1, [2]),
+    "ecuador": (0, 1, [2]),
+    "paraguay": (0, 1, [2]),
+    "turkiye": (0, 1, [2]),
+    "jordan": (0, 1, [2]),
+    "uzbekistan": (0, 1, [2]),
+    "qatar": (0, 1, [2]),
+    "curacao": (0, 1, [2]),
+    "haiti": (0, 1, [2]),
+    "panama": (0, 1, [2]),
+    "czechia": (0, 1, [2]),
+    "bosnia": (0, 1, [2]),
+    "dr-congo": (0, 1, [2]),
+    "iraq": (0, 1, [2]),
+    "cape-verde": (0, 1, [2]),
+    "new-zealand": (0, 1, [2]),
+    "austria": (0, 1, [2])
 }
 
-def final_pass_inject():
-    ET.register_namespace('', "http://www.w3.org/2000/svg")
-    files = [f for f in os.listdir(SVG_DIR) if f.endswith('.svg')]
-    
-    for filename in files:
-        # Get the team name (e.g., 'belgium' from 'belgium-logo.svg')
-        team_id = filename.split('-')[0].lower()
-        file_path = os.path.join(SVG_DIR, filename)
-        
-        tree = ET.parse(file_path)
-        root = tree.getroot()
-        paths = root.findall('.//{*}path')
-        
-        # Sort by complexity (Data length)
-        sorted_paths = sorted(paths, key=lambda p: len(p.get('d', '')), reverse=True)
-
-        # Check if we have a specific blueprint for this team
-        team_config = BLUEPRINT.get(team_id)
-
-        for i, path in enumerate(sorted_paths):
-            # 1. REMOVE TRANSFORMS (Crucial for centering in the UI)
-            if 'transform' in path.attrib:
-                del path.attrib['transform']
+def run_precision_injection():
+    for filename in os.listdir(LOGO_DIR):
+        if not filename.endswith(".svg"): continue
+        slug = filename.split('-national')[0]
+        if slug not in SURGICAL_MAP: continue
             
-            # 2. ASSIGN IDs
-            if team_config:
-                # Use the manual blueprint mapping
-                assigned = False
-                for id_name, target_index in team_config.items():
-                    if i == target_index:
-                        path.set('id', id_name)
-                        assigned = True
-                if not assigned:
-                    path.set('id', f'element_{i}')
-            else:
-                # Default logic for teams not in the blueprint yet
-                if i == 0: path.set('id', 'primary_silhouette')
-                elif i == 1: path.set('id', 'hero_graphic')
-                else: path.set('id', f'element_{i}')
+        file_path = os.path.join(LOGO_DIR, filename)
+        parser = etree.XMLParser(remove_blank_text=True)
+        tree = etree.parse(file_path, parser)
+        root = tree.getroot()
+        
+        elements = root.xpath(".//*[local-name()='path' or local-name()='polygon' or local-name()='circle' or local-name()='rect']")
+        sil_idx, hero_idx, noise_indices = SURGICAL_MAP[slug]
+        
+        for i, el in enumerate(elements):
+            if 'id' in el.attrib: del el.attrib['id']
+            if i == sil_idx: el.set('id', 'primary_silhouette')
+            elif i == hero_idx: el.set('id', 'hero_graphic')
+            elif i in noise_indices: el.set('id', 'typography_labels')
 
-        tree.write(file_path, encoding='utf-8', xml_declaration=False)
-        print(f"🎯 Precision Injected: {filename}")
+        with open(file_path, 'wb') as f:
+            f.write(etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8'))
+        print(f"Injected: {slug}")
 
 if __name__ == "__main__":
-    final_pass_inject()
+    run_precision_injection()

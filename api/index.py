@@ -33,45 +33,38 @@ class handler(BaseHTTPRequestHandler):
                 slug = team_slugs[key].strip().lower() if team_slugs[key] else None
                 if slug and slug in svg_data_map:
                     tree = etree.fromstring(base64.b64decode(svg_data_map[slug]), parser)
+                    # Use the original viewbox if available to help with centering
+                    vb = tree.get("viewBox", "0 0 1000 1000")
                     for noise in tree.xpath(".//*[@id='typography_labels']"):
                         noise.getparent().remove(noise)
                     target = tree.xpath(f".//*[@id='{role_id}']")
-                    if target: elements[key] = target[0]
+                    if target:
+                        # Wrap the target in a group that preserves its original context
+                        wrapper = etree.Element("svg", viewBox=vb, width="1000", height="1000")
+                        wrapper.append(target[0])
+                        elements[key] = wrapper
 
-            # 2. Build a high-fidelity container
-            combined_svg = etree.Element("svg", nsmap=elements['a'].nsmap if 'a' in elements else None)
-            combined_svg.set("viewBox", "0 0 1000 1000")
+            combined_svg = etree.Element("svg", viewBox="0 0 1000 1000", xmlns="http://www.w3.org/2000/svg")
             
-            # Inject CSS for unified "Bespoke" look
+            # CSS for that 2026 Brand Playbook aesthetic[cite: 1, 2]
             style = etree.SubElement(combined_svg, "style")
             style.text = """
-                .chassis { fill: #1a1a1a; }
-                .texture { fill: #333333; mix-blend-mode: overlay; }
-                .hero-main { fill: #f5f5f5; }
-                .hero-chaos { fill: #e61e2e; mix-blend-mode: screen; }
+                svg { background: #000; }
+                .chassis { fill: #fff; }
+                .texture { opacity: 0.3; }
+                .hero-main { filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+                .hero-chaos { fill: #ff3e3e; opacity: 0.8; }
             """
 
-            # Create a Mask so textures stay inside the shield
-            defs = etree.SubElement(combined_svg, "defs")
-            if 'a' in elements:
-                mask = etree.SubElement(defs, "clipPath", id="shieldMask")
-                mask.append(etree.fromstring(etree.tostring(elements['a'])))
-
-            # Layering with Alignment
-            def add_layer(el, cls, transform="translate(500,500) scale(1)"):
-                g = etree.SubElement(combined_svg, "g", attrib={
-                    "class": cls,
-                    "transform": transform,
-                    "clip-path": "url(#shieldMask)" if "chassis" not in cls else ""
-                })
-                # Wrap internal paths to center them
-                inner_g = etree.SubElement(g, "g", transform="translate(-500,-500)")
-                inner_g.append(el)
+            # Sequential Layering
+            def add_layer(el, cls, transform=""):
+                g = etree.SubElement(combined_svg, "g", attrib={"class": cls, "transform": transform})
+                g.append(el)
 
             if 'a' in elements: add_layer(elements['a'], "chassis")
             if 'b' in elements: add_layer(elements['b'], "texture")
-            if 'c' in elements: add_layer(elements['c'], "hero-main", "translate(500,500) scale(0.6)")
-            if 'd' in elements: add_layer(elements['d'], "hero-chaos", "translate(500,500) rotate(15) scale(0.4)")
+            if 'c' in elements: add_layer(elements['c'], "hero-main", "scale(0.8) translate(125, 125)")
+            if 'd' in elements: add_layer(elements['d'], "hero-chaos", "scale(0.5) translate(500, 500) rotate(15)")
 
             self.send_response(200)
             self.send_header('Content-type', 'image/svg+xml')
@@ -80,4 +73,4 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(etree.tostring(combined_svg))
 
         except Exception as e:
-            self.send_error(500, f"Vibe Error: {str(e)}")
+            self.send_error(500, f"Logic Error: {str(e)}")

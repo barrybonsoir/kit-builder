@@ -1,9 +1,21 @@
 import base64
+import sys
+import os
 from lxml import etree
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
-# This is the file you just generated
-from .data_assets import TEAM_SVG_DATA 
+
+# FORCE PATH RESOLUTION:
+# This ensures that data_assets.py is findable even in a serverless lambda
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+if CURRENT_DIR not in sys.path:
+    sys.path.append(CURRENT_DIR)
+
+try:
+    import data_assets
+except ImportError:
+    # Fallback for different Vercel execution contexts
+    from . import data_assets
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -15,21 +27,20 @@ class handler(BaseHTTPRequestHandler):
             self.send_error(400, "Missing parameters 'a' or 'b'")
             return
 
-        # Get the Base64 strings from our internal dictionary
-        svg_a_enc = TEAM_SVG_DATA.get(team_a_slug)
-        svg_b_enc = TEAM_SVG_DATA.get(team_b_slug)
+        # Access the dictionary from data_assets.py
+        svg_a_enc = getattr(data_assets, 'TEAM_SVG_DATA', {}).get(team_a_slug)
+        svg_b_enc = getattr(data_assets, 'TEAM_SVG_DATA', {}).get(team_b_slug)
 
         if not svg_a_enc or not svg_b_enc:
-            self.send_error(404, f"Team data not found for: {team_a_slug if not svg_a_enc else team_b_slug}")
+            self.send_error(404, f"Team data missing for: {team_a_slug if not svg_a_enc else team_b_slug}")
             return
 
         try:
-            # Decode and Parse
             parser = etree.XMLParser(remove_blank_text=True)
             tree_a = etree.fromstring(base64.b64decode(svg_a_enc), parser)
             tree_b = etree.fromstring(base64.b64decode(svg_b_enc), parser)
 
-            # Surgical Purge (The removal of 'OREA', 'CBF', etc.)
+            # Surgical Purge (Removing 'OREA', 'CBF', etc.)
             for tree in [tree_a, tree_b]:
                 for noise in tree.xpath(".//*[@id='typography_labels']"):
                     noise.getparent().remove(noise)
@@ -40,7 +51,6 @@ class handler(BaseHTTPRequestHandler):
 
             # Build Combined SVG
             combined_svg = etree.Element("svg", nsmap=tree_b.nsmap)
-            # Ensure we use the proper viewBox from the shield
             combined_svg.set("viewBox", tree_b.get("viewBox", "0 0 100 100"))
             combined_svg.set("xmlns", "http://www.w3.org/2000/svg")
 

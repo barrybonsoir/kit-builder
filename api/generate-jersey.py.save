@@ -13,7 +13,6 @@ from lxml import etree
 
 # Initialize parameters. Define path to the standardized DNA guide (the Rosetta Stone).
 # Vercel agent reads this guide to securely link standardize slugs to messy filenames.
-# We utilize computational light data extraction (millisecond execution).
 MANIFEST_URL = "https://kit-builder-nu.vercel.app/public/semantic_audit_manifest.json"
 
 class handler(BaseHTTPRequestHandler):
@@ -24,8 +23,9 @@ class handler(BaseHTTPRequestHandler):
         params = parse_qs(query)
         
         # Initialize default values (e.g., if inputs are missing).
-        sel_a = params.get('a', ['england'])[0].lower() # The 'Anchor' identity (e.g., England shield base).
-        sel_b = params.get('b', ['england'])[0].lower() # The 'Geometric DNA' source (e.g., Algeria crescent icon).
+        sel_a = params.get('a', ['england'])[0].lower() # The 'Anchor' identity.
+        sel_b = params.get('b', ['england'])[0].lower() # The 'Geometric DNA' source.
+        # Note: Prototype 1B (Smart Dissection) logic prioritized, so C and D are reserved.
 
         # 2. Data Initialization: Vercel agent reads root dependencies and loads the Guide.
         try:
@@ -46,12 +46,12 @@ class handler(BaseHTTPRequestHandler):
 
         # 3. Geometric dissection: Isolate the specific geometric code defined by ID.
         try:
-            # Vercel opens the raw source file in milliseconds (Computational Light).
+            # Vercel opens the raw source file.
             logo_response = requests.get(full_asset_url)
             root = etree.fromstring(logo_response.content)
             
-            # Use geometric parameters from your successful audit (e.g., finding <g id="main-icon">).
-            # Looking for the Algerian crescent and star group as defined by ID_MAIN_ICON.
+            # Use geometric parameters from your successful audit (e.g., crescent and star).
+            # Look for <g id="main-icon"> as defined by ID_MAIN_ICON.
             isolated_geometry = root.find(f".//*[@id='main-icon']")
             
             if isolated_geometry is None:
@@ -69,10 +69,10 @@ class handler(BaseHTTPRequestHandler):
         # ==========================================
         # We take the Anchor identity (A=England) and place the dissected geometry (B=Algeria).
         
-        # Initialize final parameters: Take base canvas (viewBox), refill USA colors, place Turkey accents.
+        # Initialize final parameters: The base canvas (viewBox), set USA colors, place Turkey accents.
         # (Radial scatter... Priorities reserved for Computational Light execution).
         
-        # Output perfectly crisp, clear, readable vector results directly in the browser.
+        # Output perfectly crisp, clear, readable vector results.
         final_svg_output = f"""
 <svg xmlns="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="{manifest[sel_a]['viewBox']}" id="composite-emblem-test-1">
     

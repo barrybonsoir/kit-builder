@@ -1,32 +1,26 @@
 {
   "england": {
-    "filename_map": "england.svg",
+    "filename_map": "england-national-team.football-logos.cc.svg",
     "viewBox": "0 0 100 120",
     "colors": ["#00247D", "#CF142B", "#FFFFFF"],
-    "main_icon_id": "england-lions-group"
+    "main_icon_id": "lions-group"
   },
   "algeria": {
-    "filename_map": "algeria.svg",
+    "filename_map": "algeria-national-team.football-logos.cc.svg",
     "viewBox": "0 0 120 120",
     "colors": ["#006233", "#D21034", "#FFFFFF"],
-    "main_icon_id": "algeria-crescent-star-group"
+    "main_icon_id": "crescent-star-group"
   },
   "brazil": {
-    "filename_map": "brazil.svg",
+    "filename_map": "brazil-national-team.football-logos.cc.svg",
     "viewBox": "0 0 100 120",
     "colors": ["#FEDF00", "#009B3A", "#FFFFFF", "#002776"],
-    "main_icon_id": "brazil-cbf-shield-group"
+    "main_icon_id": "cbf-shield-group"
   },
   "south-korea": {
-    "filename_map": "south-korea.svg",
+    "filename_map": "south-korea-national-team.football-logos.cc.svg",
     "viewBox": "0 0 120 120",
     "colors": ["#CD2E3A", "#0047A0", "#FFFFFF", "#000000"],
-    "main_icon_id": "south-korea-taegeuk-group"
-  },
-  "usa": {
-    "filename_map": "usa.svg",
-    "viewBox": "0 0 100 120",
-    "colors": ["#002868", "#BF0A30", "#FFFFFF"],
-    "main_icon_id": "usa-crest-star-field-group"
+    "main_icon_id": "taegeuk-group"
   }
 }

@@ -13,30 +13,35 @@ class handler(BaseHTTPRequestHandler):
         sel_b = params.get('b', ['brazil'])[0].lower()
 
         try:
-            # 1. Read manifest from local file system
-            manifest_path = os.path.join(os.getcwd(), 'public', 'semantic_audit_manifest.json')
+            # VERCEL PATH FIX: Look for the root directory
+            # 'var/task' is where the script lives, we need the project root
+            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            
+            manifest_path = os.path.join(base_path, 'public', 'semantic_audit_manifest.json')
+            
+            if not os.path.exists(manifest_path):
+                # Fallback: check if Vercel put public inside the task folder
+                manifest_path = os.path.join(os.getcwd(), 'public', 'semantic_audit_manifest.json')
+
             with open(manifest_path, 'r') as f:
                 manifest = json.load(f)
             
-            # 2. Get file paths
-            file_a_path = os.path.join(os.getcwd(), 'public', 'svg-logos', manifest[sel_a]['filename_map'])
-            file_b_path = os.path.join(os.getcwd(), 'public', 'svg-logos', manifest[sel_b]['filename_map'])
+            # Use the same base_path for the logos
+            logo_dir = os.path.join(base_path, 'public', 'svg-logos')
+            
+            file_a_path = os.path.join(logo_dir, manifest[sel_a]['filename_map'])
+            file_b_path = os.path.join(logo_dir, manifest[sel_b]['filename_map'])
 
-            # 3. Read SVG contents
             with open(file_a_path, 'rb') as f:
                 svg_a_raw = f.read()
             with open(file_b_path, 'rb') as f:
                 svg_b_raw = f.read()
             
-            # 4. Parse SVGs
             root_a = etree.fromstring(svg_a_raw)
             root_b = etree.fromstring(svg_b_raw)
             
-            # Extract inner content of B to overlay
             inner_b = "".join([etree.tostring(child, encoding='unicode') for child in root_b])
 
-            # 5. Build the composite SVG
-            # Use ViewBox from Logo A as the master frame
             final_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="{manifest[sel_a]['viewBox']}">
     <g id="base-layer" opacity="0.3">
         {etree.tostring(root_a, encoding='unicode')}
@@ -48,7 +53,6 @@ class handler(BaseHTTPRequestHandler):
 
             self.send_response(200)
             self.send_header('Content-type', 'image/svg+xml')
-            # Important: Add cache control so you see changes immediately
             self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
             self.end_headers()
             self.wfile.write(final_svg.encode('utf-8'))
@@ -57,4 +61,6 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(f"Internal Server Error: {str(e)}".encode())
+            # This will help us debug the path if it fails again
+            debug_info = f"Error: {str(e)}\nCWD: {os.getcwd()}\nFile: {__file__}"
+            self.wfile.write(debug_info.encode())

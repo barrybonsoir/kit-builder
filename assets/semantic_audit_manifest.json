@@ -1,16 +1,58 @@
 {
+  "metadata": {
+    "project": "Kit-Builder 2026",
+    "auditor": "Gemini AI",
+    "schema_version": "2.0",
+    "total_teams": 48
+  },
   "teams": {
-    "south-korea": {
-      "file_path": "assets/svg-logos/south-korea-national-team.football-logos.cc.svg",
-      "elements": { ... }
+    "usa": {
+      "file_path": "assets/svg-logos/usa-national-team.football-logos.cc.svg",
+      "elements": {
+        "primary_silhouette": "shield_boundary",
+        "hero_graphic": "central_star_icon",
+        "hero_palette": ["#002868", "#BF0D3E", "#FFFFFF"]
+      }
+    },
+    "mexico": {
+      "file_path": "assets/svg-logos/mexico-national-team.football-logos.cc.svg",
+      "elements": {
+        "primary_silhouette": "circular_aztec_border",
+        "hero_graphic": "stylized_eagle_serpent",
+        "hero_palette": ["#006847", "#CE1126", "#FFFFFF"]
+      }
     },
     "brazil": {
       "file_path": "assets/svg-logos/brazil-national-team.football-logos.cc.svg",
-      "elements": { ... }
+      "elements": {
+        "primary_silhouette": "globe_shield",
+        "hero_graphic": "southern_cross",
+        "hero_palette": ["#FFDF00", "#009B3A", "#002776"]
+      }
+    },
+    "south-korea": {
+      "file_path": "assets/svg-logos/south-korea-national-team.football-logos.cc.svg",
+      "elements": {
+        "primary_silhouette": "white_tiger_shield",
+        "hero_graphic": "stylized_tiger_head",
+        "hero_palette": ["#E61E2E", "#0047A0", "#000000"]
+      }
     },
     "belgium": {
       "file_path": "assets/svg-logos/belgium-national-team.football-logos.cc.svg",
-      "elements": { ... }
+      "elements": {
+        "primary_silhouette": "rbfa_shield",
+        "hero_graphic": "crowned_shield_icon",
+        "hero_palette": ["#000000", "#E30613", "#FFD200"]
+      }
+    },
+    "ghana": {
+      "file_path": "assets/svg-logos/ghana-national-team.football-logos.cc.svg",
+      "elements": {
+        "primary_silhouette": "gfa_circle",
+        "hero_graphic": "black_star_icon",
+        "hero_palette": ["#EF3340", "#FFCD00", "#009B77", "#000000"]
+      }
     }
   }
 }

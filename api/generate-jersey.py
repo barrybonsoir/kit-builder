@@ -50,16 +50,18 @@ class handler(BaseHTTPRequestHandler):
             # THE NESTED SVG FIX:
             # We wrap the elements in their own viewboxes to force alignment.
             final_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <rect width="100" height="100" fill="none"/>
-    
-    <!-- Outer Container (Silhouette) centered at 100% size -->
+    <!-- 1. The Silhouette (The Container) -->
     <svg viewBox="0 0 500 500" width="100" height="100" preserveAspectRatio="xMidYMid meet">
-        <g fill="{color_a}">{silhouette_str}</g>
+        <g id="silhouette-layer" fill="{color_a}">
+            {silhouette_str}
+        </g>
     </svg>
 
-    <!-- Inner Graphic (Hero) scaled and centered inside the container -->
-    <svg viewBox="0 0 500 500" width="60" height="60" x="20" y="20" preserveAspectRatio="xMidYMid meet">
-        <g fill="{color_b}">{hero_str}</g>
+    <!-- 2. The Hero (The Icon) - Scaled to 50% and centered -->
+    <svg viewBox="0 0 500 500" width="50" height="50" x="25" y="25" preserveAspectRatio="xMidYMid meet">
+        <g id="hero-layer" fill="{color_b}">
+            {hero_str}
+        </g>
     </svg>
 </svg>"""
 

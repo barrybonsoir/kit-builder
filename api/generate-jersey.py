@@ -1,100 +1,64 @@
-# ==========================================
-# api/generate-jersey.py (Frankenstein Engine - Prototype 1B)
-# ==========================================
-# This script executes an automated multi-radial vector reassembly based on user inputs.
-# It uses the high-fidelity geometric DNA sequencing parameters defined by your experiment.
-
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import requests
-import json
-import base64
 from lxml import etree
 
-# Initialize parameters. Define path to the standardized DNA guide (the Rosetta Stone).
-# Vercel agent reads this guide to securely link standardize slugs to messy filenames.
-# We utilize computational light data extraction (millisecond execution).
+# Direct link to the DNA map to ensure the agent never loses the guide.
 MANIFEST_URL = "https://raw.githubusercontent.com/barrybonsoir/kit-builder/main/public/semantic_audit_manifest.json"
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # 1. semantic extraction: Parse the User Inputs (A, B, C, D) from the URL.
-        #    e.g., ?a=england&b=algeria...
         query = urlparse(self.path).query
         params = parse_qs(query)
         
-        # Initialize default values (e.g., if inputs are missing).
-        sel_a = params.get('a', ['england'])[0].lower() # The 'Anchor' identity (e.g., England shield base).
-        sel_b = params.get('b', ['england'])[0].lower() # The 'Geometric DNA' source (e.g., Algeria crescent icon).
+        sel_a = params.get('a', ['england'])[0].lower()
+        sel_b = params.get('b', ['algeria'])[0].lower()
 
-        # 2. Data Initialization: Vercel agent reads root dependencies and loads the Guide.
         try:
-            response = requests.get(MANIFEST_URL)
-            manifest = response.json()
-        except Exception as e:
-            self.send_error(500, f"Critical Error: Guide initialization failed. {str(e)}")
-            return
-
-        # ==========================================
-        # The Frankenstein Engine Sub-Logic
-        # ==========================================
-        # We execute a high-fidelity "Smart Dissection" on Input B (Algeria).
-        
-        # Securely link standard slug to your specific filenames (from image_0.png).
-        target_dna_asset_name = manifest[sel_b]['filename_map']
-        full_asset_url = f"https://kit-builder-nu.vercel.app/public/svg-logos/{target_dna_asset_name}"
-
-        # 3. Geometric dissection: Isolate the specific geometric code defined by ID.
-        try:
-            # Vercel opens the raw source file in milliseconds (Computational Light).
-            logo_response = requests.get(full_asset_url)
-            root = etree.fromstring(logo_response.content)
+            # 1. Load the Guide
+            manifest = requests.get(MANIFEST_URL).json()
             
-            # Use geometric parameters from your successful audit (e.g., finding <g id="main-icon">).
-            # Looking for the Algerian crescent and star group as defined by ID_MAIN_ICON.
+            # 2. Get the SVG data for B (The Icon source)
+            target_dna_asset = manifest[sel_b]['filename_map']
+            # We fetch the raw SVG directly from your public folder
+            asset_url = f"https://kit-builder-nu.vercel.app/public/svg-logos/{target_dna_asset}"
+            logo_svg = requests.get(asset_url).content
+            
+            # 3. SMART DISSECTION (The Safety Net)
+            root = etree.fromstring(logo_svg)
+            # We try to find the "Smart" icon ID first...
             isolated_geometry = root.find(f".//*[@id='main-icon']")
             
+            # IF SMART DISSECTION FAILS: Fallback to capturing the whole group
             if isolated_geometry is None:
-                # Fallback logic for Prototype 1 ("Dumb Collage"): Grab any icon.
-                isolated_geometry = root.find(".//")
+                isolated_geometry = root.find(".//{http://www.w3.org/2000/svg}g")
+                if isolated_geometry is None:
+                    isolated_geometry = root # Final fallback to whole file
             
-            # The dissected geometric code is now captured in memory.
             dissected_icon_code = etree.tostring(isolated_geometry, encoding='unicode')
 
-        except Exception as e:
-            dissected_icon_code = f"<text x='10' y='50'>DNA extraction error: {str(e)}</text>"
-
-        # ==========================================
-        # Finalization: Geometric Reassembly
-        # ==========================================
-        # We take the Anchor identity (A=England) and place the dissected geometry (B=Algeria).
-        
-        # Initialize final parameters: Take base canvas (viewBox), refill USA colors, place Turkey accents.
-        # (Radial scatter... Priorities reserved for Computational Light execution).
-        
-        # Output perfectly crisp, clear, readable vector results directly in the browser.
-        final_svg_output = f"""
-<svg xmlns="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="{manifest[sel_a]['viewBox']}" id="composite-emblem-test-1">
-    
-    <!-- ANCHOR IDENTITY (A=England) base shield perimeter -->
-    <!-- (Using USA colors for base refill). -->
-    <rect width="100%" height="100%" fill="white" /> <!-- Placeholder base -->
-    <text x="20" y="20" font-family="Arial" font-size="12">Base: {sel_a}</text>
-    
-    <!-- DISSECTED GEOMETRY (B=Algeria crescent) reassembled -->
-    <!-- (Using identical geometric parameters defined by your audit). -->
-    <g id="reassembled-icon" transform="translate(10, 40) scale(0.5)">
+            # 4. REASSEMBLY (The Frankenstein Engine)
+            # We wrap the icon in a transform so it sits in the middle of the anchor shield.
+            final_svg_output = f"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="{manifest[sel_a]['viewBox']}">
+    <rect width="100%" height="100%" fill="none" />
+    <g id="base-shield-placeholder" opacity="0.3">
+        <text x="10" y="20" font-family="Arial" font-size="10">Anchor: {sel_a}</text>
+    </g>
+    <g id="reassembled-icon" transform="translate(50, 50) scale(0.8)">
         {dissected_icon_code}
     </g>
-
-    <!-- (Multi-Radial Reassembly - Priority reserved for future iteration) -->
-    <!-- USA Colors, Turkey accents, etc. -->
 </svg>
 """
-        # ==========================================
-        # Data Transmission Protocol
-        # ==========================================
-        self.send_response(200)
-        self.send_header('Content-type', 'image/svg+xml')
-        self.end_headers()
-        self.wfile.write(final_svg_output.encode('utf-8'))
+            self.send_response(200)
+            self.send_header('Content-type', 'image/svg+xml')
+            self.end_headers()
+            self.wfile.write(final_svg_output.encode('utf-8'))
+
+        except Exception as e:
+            # Emergency Recovery Logic: Return a text-based SVG error instead of crashing
+            error_svg = f'<svg xmlns="http://www.w3.org/2000/svg"><text x="10" y="20">Engine Error: {str(e)}</text></svg>'
+            self.send_response(200)
+            self.send_header('Content-type', 'image/svg+xml')
+            self.end_headers()
+            self.wfile.write(error_svg.encode('utf-8'))

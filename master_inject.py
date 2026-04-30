@@ -4,7 +4,7 @@ from lxml import etree
 LOGO_DIR = "assets/svg-logos"
 
 # Hardcoded indices for every file in your repository
-# Format: "slug": (silhouette_idx, mascot_idx, [noise_indices])
+# format: "slug": (silhouette_idx, mascot_idx, [noise_indices])
 SURGICAL_MAP = {
     "usa": (0, 1, [2, 3]), "mexico": (0, 2, [1, 3, 4]), "canada": (0, 1, [2]),
     "brazil": (0, 1, [2, 3, 4]), "argentina": (0, 1, [2, 3, 4]), "france": (0, 1, [2]),
@@ -36,17 +36,17 @@ def run_precision_injection():
         root = tree.getroot()
         
         elements = root.xpath(".//*[local-name()='path' or local-name()='polygon' or local-name()='circle' or local-name()='rect']")
-        sil_idx, hero_idx, noise_indices = SURGICAL_MAP[slug]
+        sil_idx, hero_idx, typo_indices = SURGICAL_MAP[slug]
         
         for i, el in enumerate(elements):
             if 'id' in el.attrib: del el.attrib['id']
             if i == sil_idx: el.set('id', 'primary_silhouette')
             elif i == hero_idx: el.set('id', 'hero_graphic')
-            elif i in noise_indices: el.set('id', 'typography_labels')
+            elif i in typo_indices: el.set('id', 'typography_labels')
 
         with open(file_path, 'wb') as f:
             f.write(etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8'))
-        print(f"✅ Prepped {slug}")
+        print(f"Injected: {slug}")
 
 if __name__ == "__main__":
     run_precision_injection()

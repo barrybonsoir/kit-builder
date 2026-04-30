@@ -1,83 +1,58 @@
-from http.server import BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
-import json
 import os
 from lxml import etree
+from http.server import BaseHTTPRequestHandler
+from urllib.parse import urlparse, parse_qs
+
+# Configuration
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", "svg-logos")
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        query = urlparse(self.path).query
-        params = parse_qs(query)
-        
-        # Get slugs from URL (default to usa/mexico)
-        sel_a = params.get('a', ['usa'])[0].lower()
-        sel_b = params.get('b', ['mexico'])[0].lower()
+        # 1. Parse Parameters
+        query = parse_qs(urlparse(self.path).query)
+        team_a_slug = query.get('a', [None])[0]
+        team_b_slug = query.get('b', [None])[0]
+
+        if not team_a_slug or not team_b_slug:
+            self.send_error(400, "Missing team parameters 'a' or 'b'")
+            return
 
         try:
-            # Vercel environment pathing
-            base_path = os.path.join('/var/task', 'assets')
-            manifest_path = os.path.join(base_path, 'semantic_audit_manifest.json')
-            
-            with open(manifest_path, 'r') as f:
-                manifest_data = json.load(f)
-            
-            teams = manifest_data.get('teams', {})
-            
-            if sel_a not in teams or sel_b not in teams:
-                raise KeyError(f"Team '{sel_a}' or '{sel_b}' not found in manifest.")
+            # 2. Locate and Parse SVGs
+            file_a = os.path.join(ASSETS_DIR, f"{team_a_slug}-national-team-logo.svg")
+            file_b = os.path.join(ASSETS_DIR, f"{team_b_slug}-national-team-logo.svg")
 
-            team_a = teams[sel_a]
-            team_b = teams[sel_b]
+            parser = etree.XMLParser(remove_blank_text=True)
+            tree_a = etree.parse(file_a, parser)
+            tree_b = etree.parse(file_b, parser)
 
-            # Parse SVGs using the explicit file_path from the manifest
-            path_a = os.path.join('/var/task', team_a['file_path'])
-            path_b = os.path.join('/var/task', team_b['file_path'])
-            
-            tree_a = etree.parse(path_a)
-            tree_b = etree.parse(path_b)
-            
-            # Insert this after parsing trees A and B in your API handler
-for tree in [tree_a, tree_b]:
-    for noise in tree.xpath(".//*[@id='typography_labels']"):
-        noise.getparent().remove(noise)
-        
-            # Extract elements using our injected IDs
-            silhouette = tree_a.xpath(".//*[@id='primary_silhouette']")[0]
-            hero = tree_b.xpath(".//*[@id='hero_graphic']")[0]
+            # 3. THE SURGICAL PURGE
+            # This removes 'OREA', 'CBF', and other text artifacts labeled by the inject script
+            for tree in [tree_a, tree_b]:
+                for noise in tree.xpath(".//*[@id='typography_labels']"):
+                    noise.getparent().remove(noise)
 
-            silhouette_str = etree.tostring(silhouette, encoding='unicode')
-            hero_str = etree.tostring(hero, encoding='unicode')
+            # 4. Extract Key Semantic Elements
+            # We prioritize the Mascot from Team A and the Shield from Team B
+            mascot_a = tree_a.xpath(".//*[@id='hero_graphic']")[0]
+            shield_b = tree_b.xpath(".//*[@id='primary_silhouette']")[0]
 
-            # Pull branding colors from manifest
-            color_a = team_a['elements']['hero_palette'][0]
-            color_b = team_b['elements']['hero_palette'][0]
+            # 5. Build the Amalgamated Emblem
+            # Create a fresh SVG container
+            combined_svg = etree.Element("svg", nsmap=tree_a.getroot().nsmap)
+            combined_svg.set("viewBox", tree_b.getroot().get("viewBox", "0 0 100 100"))
+            combined_svg.set("xmlns", "http://www.w3.org/2000/svg")
 
-            # THE NESTED SVG FIX:
-            # We wrap the elements in their own viewboxes to force alignment.
-            final_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <!-- 1. The Silhouette (The Container) -->
-    <svg viewBox="0 0 500 500" width="100" height="100" preserveAspectRatio="xMidYMid meet">
-        <g id="silhouette-layer" fill="{color_a}">
-            {silhouette_str}
-        </g>
-    </svg>
+            # Layering: Shield in back, Mascot in front
+            combined_svg.append(shield_b)
+            combined_svg.append(mascot_a)
 
-    <!-- 2. The Hero (The Icon) - Scaled to 50% and centered -->
-    <svg viewBox="0 0 500 500" width="50" height="50" x="25" y="25" preserveAspectRatio="xMidYMid meet">
-        <g id="hero-layer" fill="{color_b}">
-            {hero_str}
-        </g>
-    </svg>
-</svg>"""
-
+            # 6. Return the Response
             self.send_response(200)
             self.send_header('Content-type', 'image/svg+xml')
-            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(final_svg.encode('utf-8'))
+            self.wfile.write(etree.tostring(combined_svg, pretty_print=True))
 
         except Exception as e:
-            self.send_response(500)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(f"Frankenstein Error: {str(e)}".encode())
+            self.send_error(500, f"Kit-Builder Error: {str(e)}")

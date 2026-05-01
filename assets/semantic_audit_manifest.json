@@ -1,58 +1,2634 @@
 {
   "metadata": {
     "project": "Kit-Builder 2026",
-    "auditor": "Gemini AI",
-    "schema_version": "2.0",
-    "total_teams": 48
+    "schema_version": "3.0",
+    "total_teams": 48,
+    "tag_schema": {
+      "primary_silhouette": "Main bounding shape \u2014 shield, circle, badge outline",
+      "secondary_silhouette": "Inner border or secondary outline/double-line frame",
+      "color_field_primary": "Largest color fill zone behind the crest",
+      "color_field_secondary": "Secondary color zone or panel",
+      "hero_graphic": "Main central icon, mascot or emblem",
+      "sub_graphic_a": "Secondary icon \u2014 wreath, laurel, cross, sword",
+      "sub_graphic_b": "Tertiary icon \u2014 small details, footballs, motifs",
+      "crest_top": "Element at top of crest \u2014 crown, stars, banner",
+      "crest_bottom": "Element at bottom \u2014 ribbon, scroll, base",
+      "crest_left": "Left side panel or supporter",
+      "crest_right": "Right side panel or supporter",
+      "star_cluster": "Stars \u2014 championship stars or decorative",
+      "pattern_fill": "Repeating decorative pattern \u2014 checker, stripes, dots",
+      "badge_element": "Specific badge, patch or seal within the crest",
+      "typography_labels": "Federation name or abbreviation text \u2014 STRIP from output",
+      "typography_motto": "Motto or secondary text \u2014 STRIP from output"
+    }
   },
   "teams": {
-    "usa": {
-      "file_path": "assets/svg-logos/usa-national-team.football-logos.cc.svg",
-      "elements": {
-        "primary_silhouette": "shield_boundary",
-        "hero_graphic": "central_star_icon",
-        "hero_palette": ["#002868", "#BF0D3E", "#FFFFFF"]
-      }
+    "algeria": {
+      "file": "algeria-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#006233",
+        "secondary": "#FFFFFF",
+        "accent": "#D21034",
+        "bg": "#006233"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 3,
+      "available_for_builder": [
+        "primary_silhouette",
+        "hero_graphic"
+      ]
     },
-    "mexico": {
-      "file_path": "assets/svg-logos/mexico-national-team.football-logos.cc.svg",
-      "elements": {
-        "primary_silhouette": "circular_aztec_border",
-        "hero_graphic": "stylized_eagle_serpent",
-        "hero_palette": ["#006847", "#CE1126", "#FFFFFF"]
-      }
+    "argentina": {
+      "file": "argentina-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#74ACDF",
+        "secondary": "#FFFFFF",
+        "accent": "#D5B048",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#d5b048"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#d6b249"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#d5b048"
+        }
+      },
+      "tag_count": 7,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "crest_bottom"
+      ]
     },
-    "brazil": {
-      "file_path": "assets/svg-logos/brazil-national-team.football-logos.cc.svg",
-      "elements": {
-        "primary_silhouette": "globe_shield",
-        "hero_graphic": "southern_cross",
-        "hero_palette": ["#FFDF00", "#009B3A", "#002776"]
-      }
+    "australia": {
+      "file": "australia-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#00843D",
+        "secondary": "#FFD200",
+        "accent": "#FFFFFF",
+        "bg": "#00843D"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#fec20c"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#0f5e2a"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#0f5e2a;fill-opacity:1"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#0f5e2a"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#0f5e2a"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#0f5e2a"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#fec20c"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#0f5e2a"
+        }
+      },
+      "tag_count": 8,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_bottom",
+        "badge_element"
+      ]
     },
-    "south-korea": {
-      "file_path": "assets/svg-logos/south-korea-national-team.football-logos.cc.svg",
-      "elements": {
-        "primary_silhouette": "white_tiger_shield",
-        "hero_graphic": "stylized_tiger_head",
-        "hero_palette": ["#E61E2E", "#0047A0", "#000000"]
-      }
+    "austria": {
+      "file": "austria-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#ED2939",
+        "secondary": "#FFFFFF",
+        "accent": "#ED2939",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#fefefe"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#f1f1f1"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#fdfdfd"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#fe0101"
+        }
+      },
+      "tag_count": 5,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a"
+      ]
     },
     "belgium": {
-      "file_path": "assets/svg-logos/belgium-national-team.football-logos.cc.svg",
-      "elements": {
-        "primary_silhouette": "rbfa_shield",
-        "hero_graphic": "crowned_shield_icon",
-        "hero_palette": ["#000000", "#E30613", "#FFD200"]
-      }
+      "file": "belgium-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#000000",
+        "secondary": "#EF3340",
+        "accent": "#FFD200",
+        "bg": "#000000"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#ffd500"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#e30613"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 6,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "crest_top"
+      ]
+    },
+    "bosnia-and-herzegovina": {
+      "file": "bosnia-and-herzegovina-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#002395",
+        "secondary": "#FFD700",
+        "accent": "#FFFFFF",
+        "bg": "#002395"
+      },
+      "tagged_elements": {
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "#134c9e"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#104a9d"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#0d499c"
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": "#134c9e"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#ffd520"
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 6,
+      "available_for_builder": [
+        "primary_silhouette",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_bottom",
+        "star_cluster",
+        "pattern_fill"
+      ]
+    },
+    "brazil": {
+      "file": "brazil-national-team.football-logos.cc.svg",
+      "shape": "diamond",
+      "palette": {
+        "primary": "#009B3A",
+        "secondary": "#FEDF00",
+        "accent": "#002776",
+        "bg": "#009B3A"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#19ae47;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.78437352"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#0c87d1;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.78437352"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#19ae47;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.78437352"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#fddc02;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.78437352"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#19ae47;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.78437352"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "fill:#193375;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.78437352"
+        }
+      },
+      "tag_count": 6,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "badge_element"
+      ]
+    },
+    "cabo-verde": {
+      "file": "cabo-verde-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#003893",
+        "secondary": "#CF2027",
+        "accent": "#F7D116",
+        "bg": "#003893"
+      },
+      "tagged_elements": {
+        "star_cluster": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#b2770e;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.352778"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#1c2e63;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        }
+      },
+      "tag_count": 5,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "hero_graphic",
+        "star_cluster",
+        "pattern_fill"
+      ]
+    },
+    "canada": {
+      "file": "canada-national-team.football-logos.cc.svg",
+      "shape": "crest",
+      "palette": {
+        "primary": "#FF0000",
+        "secondary": "#FFFFFF",
+        "accent": "#FF0000",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 7,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top"
+      ]
+    },
+    "colombia": {
+      "file": "colombia-national-team.football-logos.cc.svg",
+      "shape": "oval",
+      "palette": {
+        "primary": "#FCD116",
+        "secondary": "#003087",
+        "accent": "#CE1126",
+        "bg": "#FCD116"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#045da3"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "#045da3"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#f5313f"
+        }
+      },
+      "tag_count": 11,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "badge_element"
+      ]
+    },
+    "congo-dr": {
+      "file": "congo-dr-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#007FFF",
+        "secondary": "#F7D618",
+        "accent": "#CE1020",
+        "bg": "#007FFF"
+      },
+      "tagged_elements": {
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 11,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "cote-d-ivoire": {
+      "file": "cote-d-ivoire-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#FF8200",
+        "secondary": "#009A44",
+        "accent": "#FFFFFF",
+        "bg": "#FF8200"
+      },
+      "tagged_elements": {
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 11,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "croatia": {
+      "file": "croatia-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#FF0000",
+        "secondary": "#FFFFFF",
+        "accent": "#003DA5",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill-rule:evenodd;fill:#bf9d6c"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 10,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "star_cluster",
+        "pattern_fill"
+      ]
+    },
+    "curacao": {
+      "file": "curacao-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#002B7F",
+        "secondary": "#F9E300",
+        "accent": "#FFFFFF",
+        "bg": "#002B7F"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#E5A92E"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#FFF"
+        },
+        "typography_labels": {
+          "element_type": "circle",
+          "fill": "#E5A92E"
+        },
+        "color_field_primary": {
+          "element_type": "circle",
+          "fill": "url(#a)"
+        },
+        "color_field_secondary": {
+          "element_type": "circle",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "#FFF"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#2E2C70"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#FFF"
+        }
+      },
+      "tag_count": 8,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "star_cluster",
+        "badge_element"
+      ]
+    },
+    "czech-republic": {
+      "file": "czech-republic-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#11457E",
+        "secondary": "#D7141A",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "#96172e"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#96172e"
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#c9c9c9"
+        }
+      },
+      "tag_count": 12,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "netherlands": {
+      "file": "dutch-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#F36C21",
+        "secondary": "#FFFFFF",
+        "accent": "#003DA5",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_right": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_left": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 14,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "crest_left",
+        "crest_right",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "ecuador": {
+      "file": "ecuador-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#FFD100",
+        "secondary": "#003DA5",
+        "accent": "#CE1126",
+        "bg": "#FFD100"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#d3aa75;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#ffce00;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#e5073a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        }
+      },
+      "tag_count": 4,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "sub_graphic_a"
+      ]
+    },
+    "egypt": {
+      "file": "egypt-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#C8102E",
+        "secondary": "#FFFFFF",
+        "accent": "#000000",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "circle",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:11.4709;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "stroke-width:.460717"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "stroke-width:.460717"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#e2001a"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "stroke-width:.460717"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#009036"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 7,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_bottom"
+      ]
+    },
+    "england": {
+      "file": "england-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#FFFFFF",
+        "secondary": "#CE1124",
+        "accent": "#003082",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 10,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "star_cluster",
+        "pattern_fill"
+      ]
+    },
+    "france": {
+      "file": "france-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#002395",
+        "secondary": "#FFFFFF",
+        "accent": "#ED2939",
+        "bg": "#002395"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff;stroke-width:.18520837"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#cad4d7;stroke-width:.26458335"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#17548c;stroke-width:1.00000012"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#21304d;stroke-width:.26458335"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "opacity:1;fill:#b0babf;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.04136429;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "opacity:1;fill:#17548c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.1984375;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "opacity:1;fill:#17548c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.1984375;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+        }
+      },
+      "tag_count": 7,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top"
+      ]
+    },
+    "germany": {
+      "file": "germany-national-team.football-logos.cc.svg",
+      "shape": "badge",
+      "palette": {
+        "primary": "#000000",
+        "secondary": "#DD0000",
+        "accent": "#FFCE00",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#a9936f;fill-opacity:1"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#a9936f;fill-opacity:1"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#a9936f;fill-opacity:1"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#a9936f;fill-opacity:1"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#a9936f;fill-opacity:1"
+        }
+      },
+      "tag_count": 5,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "hero_graphic"
+      ]
     },
     "ghana": {
-      "file_path": "assets/svg-logos/ghana-national-team.football-logos.cc.svg",
-      "elements": {
-        "primary_silhouette": "gfa_circle",
-        "hero_graphic": "black_star_icon",
-        "hero_palette": ["#EF3340", "#FFCD00", "#009B77", "#000000"]
-      }
+      "file": "ghana-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#EF3340",
+        "secondary": "#FCD116",
+        "accent": "#009B3A",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#fee501"
+        },
+        "star_cluster": {
+          "element_type": "g",
+          "fill": "#000001"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 8,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_bottom",
+        "star_cluster"
+      ]
+    },
+    "haiti": {
+      "file": "haiti-national-team.football-logos.cc.svg",
+      "shape": "crest",
+      "palette": {
+        "primary": "#00209F",
+        "secondary": "#D21034",
+        "accent": "#FFFFFF",
+        "bg": "#00209F"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "circle",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "circle",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:none;stroke:#f2c30c;stroke-miterlimit:10;stroke-width:10px"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#0836a1"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 10,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "badge_element"
+      ]
+    },
+    "iran": {
+      "file": "iran-national-team.football-logos.cc.svg",
+      "shape": "crest",
+      "palette": {
+        "primary": "#239F40",
+        "secondary": "#FFFFFF",
+        "accent": "#C60C30",
+        "bg": "#239F40"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#0e0907;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#fbfdfb;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#0e0907;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#fbfdfb;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#fbfdfb;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": "fill:#fbfdfb;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "fill:#fbfdfb;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        }
+      },
+      "tag_count": 8,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top"
+      ]
+    },
+    "iraq": {
+      "file": "iraq-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#CE1126",
+        "secondary": "#000000",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#100e0c"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#e12125"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#fff"
+        }
+      },
+      "tag_count": 3,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "hero_graphic"
+      ]
+    },
+    "japan": {
+      "file": "japan-national-team.football-logos.cc.svg",
+      "shape": "badge",
+      "palette": {
+        "primary": "#003DA5",
+        "secondary": "#BC002D",
+        "accent": "#FFFFFF",
+        "bg": "#003DA5"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "#e30016"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#0f0d04"
+        }
+      },
+      "tag_count": 5,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "sub_graphic_a",
+        "crest_top"
+      ]
+    },
+    "jordan": {
+      "file": "jordan-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#CE1126",
+        "secondary": "#007A3D",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#fff;fill-opacity:1"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#010202;fill-opacity:1"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#fff;fill-opacity:1"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#010202;fill-opacity:1"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#0d8048;fill-opacity:1"
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "stroke:none;fill-rule:nonzero;fill:#c10a2f;fill-opacity:1"
+        }
+      },
+      "tag_count": 7,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "star_cluster"
+      ]
+    },
+    "mexico": {
+      "file": "mexico-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#006847",
+        "secondary": "#CE1126",
+        "accent": "#FFFFFF",
+        "bg": "#006847"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#3a544c"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "#0a9841"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#3a544c"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#3a544c"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#f33946"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "#0a9841"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#3a544c"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "#f33946"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#3a544c"
+        }
+      },
+      "tag_count": 9,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "badge_element"
+      ]
+    },
+    "morocco": {
+      "file": "morocco-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#C1272D",
+        "secondary": "#006233",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#c8915b"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#40ac79"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#c8915b"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#eb1e28"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#181818"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#40ac79"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-rule:evenodd"
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "fill:#060708"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "fill:#181818"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "fill:#ca8b5c;fill-rule:evenodd"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "fill:#ca8b5c;fill-rule:evenodd"
+        }
+      },
+      "tag_count": 11,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "crest_bottom",
+        "star_cluster",
+        "badge_element"
+      ]
+    },
+    "new-zealand": {
+      "file": "new-zealand-national-team.football-logos.cc.svg",
+      "shape": "badge",
+      "palette": {
+        "primary": "#000000",
+        "secondary": "#FFFFFF",
+        "accent": "#CC0000",
+        "bg": "#000000"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff;stroke:#000;stroke-width:8.18268;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+        }
+      },
+      "tag_count": 1,
+      "available_for_builder": [
+        "primary_silhouette"
+      ]
+    },
+    "norway": {
+      "file": "norway-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#EF2B2D",
+        "secondary": "#FFFFFF",
+        "accent": "#003580",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "clipPath",
+          "fill": ""
+        }
+      },
+      "tag_count": 12,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "panama": {
+      "file": "panama-national-team.football-logos.cc.svg",
+      "shape": "crest",
+      "palette": {
+        "primary": "#DA121A",
+        "secondary": "#002B7F",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#cf9d70"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#c8b198"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "#f8f2ed"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#f9f9f8"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#c79f7b"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "#dfc5b4"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#dcc3b0"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": "#adb4bf"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "#a9afbb"
+        },
+        "crest_left": {
+          "element_type": "path",
+          "fill": "#aab0bb"
+        },
+        "crest_right": {
+          "element_type": "path",
+          "fill": "#afb5c0"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#adb3be"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#aab1bc"
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "#a9b0bb"
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": "#abb1bd"
+        }
+      },
+      "tag_count": 15,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "crest_left",
+        "crest_right",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "paraguay": {
+      "file": "paraguay-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#D52B1E",
+        "secondary": "#FFFFFF",
+        "accent": "#0038A8",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#00619e;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#fc0;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#cc001c;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#00619e;fill-opacity:1;fill-rule:evenodd;stroke:none"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "fill:#00619e;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        }
+      },
+      "tag_count": 6,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "badge_element"
+      ]
+    },
+    "portugal": {
+      "file": "portuguese-football-federation.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#E42518",
+        "secondary": "#004595",
+        "accent": "#D3C084",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "#E42518"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "#D3C084"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "#FFF"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "#D3C084"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#E42518"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": "#FFF"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "#D3C084"
+        },
+        "crest_left": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#D3C084"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "#004595"
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": "#004595"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "#D3C084"
+        },
+        "crest_right": {
+          "element_type": "path",
+          "fill": "#FFF"
+        }
+      },
+      "tag_count": 13,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "crest_left",
+        "crest_right",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "qatar": {
+      "file": "qatar-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#8D1B3D",
+        "secondary": "#FFFFFF",
+        "accent": "#8D1B3D",
+        "bg": "#8D1B3D"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "stroke-width:.999998"
+        },
+        "color_field_primary": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "stroke-width:.999998"
+        },
+        "color_field_secondary": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "clipPath",
+          "fill": ""
+        }
+      },
+      "tag_count": 13,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "crest_bottom",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "saudi-arabia": {
+      "file": "saudi-arabia-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#006C35",
+        "secondary": "#FFFFFF",
+        "accent": "#006C35",
+        "bg": "#006C35"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#09784e"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 5,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_bottom"
+      ]
+    },
+    "scotland": {
+      "file": "scotland-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#005EB8",
+        "secondary": "#FFFFFF",
+        "accent": "#003DA5",
+        "bg": "#005EB8"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#17233a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#fddd04;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#a8173c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#a8173c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "fill:#6b1841;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "fill:#6b1841;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "fill:#6b1841;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "pattern_fill": {
+          "element_type": "path",
+          "fill": "fill:#6b1841;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        }
+      },
+      "tag_count": 10,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "crest_bottom",
+        "pattern_fill",
+        "badge_element"
+      ]
+    },
+    "senegal": {
+      "file": "senegal-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#00853F",
+        "secondary": "#FDEF42",
+        "accent": "#E31B23",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "clip-rule:nonzero;fill:#fff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#e63f23;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#e63f23;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#ffdc00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#ffdc00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#ffdc00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#ffdc00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "star_cluster": {
+          "element_type": "path",
+          "fill": "fill:#ffdc00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": "fill:#006330;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "fill:#006330;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.94956"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "clip-rule:nonzero;fill:none;stroke:#14a335;stroke-width:.409988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1"
+        }
+      },
+      "tag_count": 11,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "crest_bottom",
+        "star_cluster",
+        "badge_element"
+      ]
+    },
+    "south-africa": {
+      "file": "south-africa-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#007A4D",
+        "secondary": "#FFB81C",
+        "accent": "#E03C31",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#ffc525;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#01963a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "color_field_primary": {
+          "element_type": "g",
+          "fill": "fill:#ffc525;fill-opacity:1"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "fill:#ffc525;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "fill:#eed43f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "fill:#eed43f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        },
+        "crest_bottom": {
+          "element_type": "path",
+          "fill": "fill:#eed43f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+        }
+      },
+      "tag_count": 8,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "crest_bottom"
+      ]
+    },
+    "south-korea": {
+      "file": "south-korea-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#CD2E3A",
+        "secondary": "#0047A0",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#021858"
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#fff"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "#ec0f32"
+        },
+        "color_field_primary": {
+          "element_type": "g",
+          "fill": "#021858"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 8,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "badge_element"
+      ]
+    },
+    "spain": {
+      "file": "spain-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#AA151B",
+        "secondary": "#F1BF00",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#ff0028"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_left": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_right": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 10,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_left",
+        "crest_right",
+        "badge_element"
+      ]
+    },
+    "sweden": {
+      "file": "sweden-national-team.football-logos.cc.svg",
+      "shape": "badge",
+      "palette": {
+        "primary": "#015794",
+        "secondary": "#FECC00",
+        "accent": "#FFFFFF",
+        "bg": "#015794"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#015794"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#015794"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "none"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "none"
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": "none"
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": "none"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": "#ffd600"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "none"
+        },
+        "badge_element": {
+          "element_type": "g",
+          "fill": ""
+        }
+      },
+      "tag_count": 9,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "badge_element"
+      ]
+    },
+    "switzerland": {
+      "file": "switzerland-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#DA291C",
+        "secondary": "#FFFFFF",
+        "accent": "#DA291C",
+        "bg": "#DA291C"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "#da291c"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "#fff"
+        }
+      },
+      "tag_count": 2,
+      "available_for_builder": [
+        "primary_silhouette",
+        "hero_graphic"
+      ]
+    },
+    "tunisia": {
+      "file": "tunisia-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#E70013",
+        "secondary": "#FFFFFF",
+        "accent": "#E70013",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "circle",
+          "fill": "fill:#fff;stroke:#e70013;stroke-width:8.2146;stroke-miterlimit:2.1116"
+        },
+        "hero_graphic": {
+          "element_type": "circle",
+          "fill": ""
+        },
+        "color_field_primary": {
+          "element_type": "circle",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": "fill-rule:evenodd;clip-rule:evenodd;fill:#e70013"
+        },
+        "sub_graphic_a": {
+          "element_type": "circle",
+          "fill": "fill:none;stroke:#fff;stroke-width:8.6166;stroke-linecap:round;stroke-miterlimit:2.1116"
+        },
+        "sub_graphic_b": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": "fill:#fff;stroke:#000;stroke-width:1.6429;stroke-miterlimit:2.1116"
+        }
+      },
+      "tag_count": 9,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "badge_element"
+      ]
+    },
+    "turkey": {
+      "file": "turkey-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#E30A17",
+        "secondary": "#FFFFFF",
+        "accent": "#E30A17",
+        "bg": "#E30A17"
+      },
+      "tagged_elements": {
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#e30a17;fill-opacity:1;stroke:none"
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#fff"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": "fill:#fff"
+        }
+      },
+      "tag_count": 3,
+      "available_for_builder": [
+        "primary_silhouette",
+        "color_field_primary",
+        "hero_graphic"
+      ]
+    },
+    "uruguay": {
+      "file": "uruguay-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#0081C6",
+        "secondary": "#FFFFFF",
+        "accent": "#000000",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#55b5e5"
+        },
+        "color_field_primary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "g",
+          "fill": "clip-path:url(#SVGID_2_)"
+        },
+        "crest_top": {
+          "element_type": "path",
+          "fill": ""
+        }
+      },
+      "tag_count": 9,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "crest_top",
+        "star_cluster"
+      ]
+    },
+    "usa": {
+      "file": "usa-national-team.football-logos.cc.svg",
+      "shape": "shield",
+      "palette": {
+        "primary": "#002868",
+        "secondary": "#BF0D3E",
+        "accent": "#FFFFFF",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": "fill:#1f2742"
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": "fill:#fff"
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": "fill:#1f2742"
+        }
+      },
+      "tag_count": 3,
+      "available_for_builder": [
+        "primary_silhouette",
+        "hero_graphic"
+      ]
+    },
+    "uzbekistan": {
+      "file": "uzbekistan-national-team.football-logos.cc.svg",
+      "shape": "circle",
+      "palette": {
+        "primary": "#1EB53A",
+        "secondary": "#0099B5",
+        "accent": "#CE1126",
+        "bg": "#FFFFFF"
+      },
+      "tagged_elements": {
+        "color_field_primary": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "primary_silhouette": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "color_field_secondary": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "hero_graphic": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "secondary_silhouette": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "typography_labels": {
+          "element_type": "path",
+          "fill": ""
+        },
+        "sub_graphic_a": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "star_cluster": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "badge_element": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "pattern_fill": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "crest_top": {
+          "element_type": "clipPath",
+          "fill": ""
+        },
+        "sub_graphic_b": {
+          "element_type": "clipPath",
+          "fill": ""
+        }
+      },
+      "tag_count": 12,
+      "available_for_builder": [
+        "primary_silhouette",
+        "secondary_silhouette",
+        "color_field_primary",
+        "color_field_secondary",
+        "hero_graphic",
+        "sub_graphic_a",
+        "sub_graphic_b",
+        "crest_top",
+        "star_cluster",
+        "pattern_fill",
+        "badge_element"
+      ]
     }
   }
 }

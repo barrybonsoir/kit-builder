@@ -178,3 +178,4 @@ class handler(BaseHTTPRequestHandler):
 except Exception as e:
             import traceback
             self.send_error(500, f"Assembly error: {str(e)}\n{traceback.format_exc()}")
+

@@ -108,7 +108,6 @@ class handler(BaseHTTPRequestHandler):
             combined = etree.Element('svg', {
                 'viewBox': f'0 0 {CANVAS} {CANVAS}',
                 'xmlns': 'http://www.w3.org/2000/svg',
-                'xmlns:xlink': 'http://www.w3.org/1999/xlink',
             })
 
             # Background — use team A's bg palette color

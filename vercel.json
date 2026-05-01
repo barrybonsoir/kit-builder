@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/index.py", "use": "@vercel/python" }
-  ],
+  "functions": {
+    "api/handler.py": {
+      "runtime": "vercel-python@0.0.6"
+    }
+  },
   "routes": [
-    { "src": "/api(.*)", "dest": "api/index.py" }
+    { "src": "/api(.*)", "dest": "api/handler.py" }
   ]
 }
